@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="validation.HomeworkValidatorTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2019-11-06T20:43:19" hostname="RAZVAN" time="0.003">
+  <properties/>
+  <testcase name="validate1()" classname="validation.HomeworkValidatorTest" time="0.001"/>
+  <testcase name="validate2()" classname="validation.HomeworkValidatorTest" time="0.0"/>
+  <testcase name="validate3()" classname="validation.HomeworkValidatorTest" time="0.0"/>
+  <testcase name="validate4()" classname="validation.HomeworkValidatorTest" time="0.001"/>
+  <testcase name="validate5()" classname="validation.HomeworkValidatorTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

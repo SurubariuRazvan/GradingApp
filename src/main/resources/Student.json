@@ -1,0 +1,18 @@
+[
+  {
+    "firstName": "Mihai",
+    "familyName": "Andrei",
+    "id": 0,
+    "email": "mihai.andrei@hotmail.com",
+    "labProfessorId": 0,
+    "group": 345
+  },
+  {
+    "firstName": "Pop",
+    "familyName": "Popescu",
+    "id": 2,
+    "email": "pop.popescu@gmail.com",
+    "labProfessorId": 2,
+    "group": 123
+  }
+]
