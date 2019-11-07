@@ -1,15 +1,23 @@
 [
   {
     "studentId": 2,
-    "feedback": "2",
+    "feedback": "-",
     "homeworkId": 1,
-    "handOverDate": "2019-11-05",
+    "handOverDate": "2019-11-03",
     "givenGrade": 1.0,
     "professorId": 2
   },
   {
+    "studentId": 4,
+    "feedback": "-",
+    "homeworkId": 1,
+    "handOverDate": "2019-11-05",
+    "givenGrade": 8.0,
+    "professorId": 1
+  },
+  {
     "studentId": 0,
-    "feedback": "u",
+    "feedback": "-",
     "homeworkId": 2,
     "handOverDate": "2019-11-04",
     "givenGrade": 6.0,

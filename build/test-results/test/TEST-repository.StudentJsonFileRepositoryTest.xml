@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="repository.StudentJsonFileRepositoryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-11-06T20:43:19" hostname="RAZVAN" time="0.004">
+<testsuite name="repository.StudentJsonFileRepositoryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-11-06T21:08:17" hostname="RAZVAN" time="0.005">
   <properties/>
-  <testcase name="writeAndReadEntity()" classname="repository.StudentJsonFileRepositoryTest" time="0.004"/>
+  <testcase name="writeAndReadEntity()" classname="repository.StudentJsonFileRepositoryTest" time="0.005"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

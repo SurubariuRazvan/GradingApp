@@ -5,6 +5,8 @@ import serviceManager.ServiceManager;
 import validation.ValidationException;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ConsoleUI {
     private ServiceManager service = new ServiceManager();
@@ -16,25 +18,25 @@ public class ConsoleUI {
     }
 
     private void printMenu() {
-        System.out.println(
-                " 0 - Printare meniu\n" +
-                        " 1 - Adaugare tema\n" +
-                        " 2 - Stergere tema\n" +
-                        " 3 - Modificare tema\n" +
-                        " 4 - Afisare teme\n" +
-                        " 5 - Adaugare student\n" +
-                        " 6 - Stergere student\n" +
-                        " 7 - Modificare student\n" +
-                        " 8 - Afisare studenti\n" +
-                        " 9 - Adaugare nota\n" +
-                        "10 - Stergere nota\n" +
-                        "11 - Modificare nota\n" +
-                        "12 - Afisare note\n" +
-                        "13 - Adaugare profesor\n" +
-                        "14 - Stergere profesor\n" +
-                        "15 - Modificare profesor\n" +
-                        "16 - Afisare profesori\n" +
-                        " x - Exit\n"
+        System.out.println(" 0 - Printare meniu\n" +
+                " 1 - Adaugare tema\n" +
+                " 2 - Stergere tema\n" +
+                " 3 - Modificare tema\n" +
+                " 4 - Afisare teme\n" +
+                " 5 - Adaugare student\n" +
+                " 6 - Stergere student\n" +
+                " 7 - Modificare student\n" +
+                " 8 - Afisare studenti\n" +
+                " 9 - Adaugare nota\n" +
+                "10 - Stergere nota\n" +
+                "11 - Modificare nota\n" +
+                "12 - Afisare note\n" +
+                "13 - Adaugare profesor\n" +
+                "14 - Stergere profesor\n" +
+                "15 - Modificare profesor\n" +
+                "16 - Afisare profesori\n" +
+                "17 - Filtrari\n" +
+                " x - Inchidere aplicatie\n"
         );
     }
 
@@ -60,7 +62,7 @@ public class ConsoleUI {
                         updateHomework();
                         break;
                     case "4":
-                        System.out.println(service.findAllHomework());
+                        service.findAllHomework().forEach(System.out::println);
                         break;
                     case "5":
                         saveStudent();
@@ -72,7 +74,7 @@ public class ConsoleUI {
                         updateStudent();
                         break;
                     case "8":
-                        System.out.println(service.findAllStudent());
+                        service.findAllStudent().forEach(System.out::println);
                         break;
                     case "9":
                         saveGrade();
@@ -84,7 +86,7 @@ public class ConsoleUI {
                         updateGrade();
                         break;
                     case "12":
-                        System.out.println(service.findAllGrade());
+                        service.findAllGrade().forEach(System.out::println);
                         break;
                     case "13":
                         saveProfessor();
@@ -96,7 +98,10 @@ public class ConsoleUI {
                         updateProfessor();
                         break;
                     case "16":
-                        System.out.println(service.findAllProfessor());
+                        service.findAllProfessor().forEach(System.out::println);
+                        break;
+                    case "17":
+                        filtersMenu();
                         break;
                     default:
                         printMenu();
@@ -104,8 +109,102 @@ public class ConsoleUI {
                 }
             } catch (ValidationException e) {
                 System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                Pattern p = Pattern.compile("\".*\"");
+                Matcher m = p.matcher(e.getMessage());
+                if (m.find()) {
+                    String userInput = m.group(0);
+                    System.out.println(userInput + " nu este un numar");
+                }
             }
         }
+    }
+
+    private void printFiltersMenu() {
+        System.out.println(" 1 - Toți studenții unei grupe\n" +
+                " 2 - Toți studenții care au predat o anumita tema\n" +
+                " 3 - Toți studenții care au predat o anumita tema unui profesor anume\n" +
+                " 4 - Toate notele la o anumita tema, dintr-o saptamana data\n" +
+                " x - Inchidere meniu filtrare"
+        );
+    }
+
+    private void filtersMenu() {
+        printFiltersMenu();
+        String command;
+        boolean running = true;
+        while (running) {
+            command = input("Filtrare: Introduceti comanda:");
+            try {
+                switch (command) {
+                    case "x":
+                        running = false;
+                        break;
+                    case "1":
+                        filterByStudentGroup();
+                        break;
+                    case "2":
+                        filterByHandOverHomework();
+                        break;
+                    case "3":
+                        filterByHandOverHomeworkToProfessor();
+                        break;
+                    case "4":
+                        filterByHomeworkAndHandOverWeek();
+                        break;
+                    default:
+                        printFiltersMenu();
+                        break;
+                }
+            } catch (ValidationException e) {
+                System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                Pattern p = Pattern.compile("\".*\"");
+                Matcher m = p.matcher(e.getMessage());
+                if (m.find()) {
+                    String userInput = m.group(0);
+                    System.out.println(userInput + " nu este un numar");
+                }
+            }
+        }
+    }
+
+    private void filterByStudentGroup() {
+        Integer group = Integer.parseInt(input("Introduceti grupa cautata:"));
+        Iterable<Student> filteredResult = service.filterByStudentGroup(group);
+        if (filteredResult.iterator().hasNext())
+            filteredResult.forEach(System.out::println);
+        else
+            System.out.println("Nu exista studenti din grupa: " + group);
+    }
+
+    private void filterByHandOverHomework() {
+        Integer homeworkId = Integer.parseInt(input("Introduceti id-ul temei predate:"));
+        Iterable<Student> filteredResult = service.filterByHandOverHomework(homeworkId);
+        if (filteredResult.iterator().hasNext())
+            filteredResult.forEach(System.out::println);
+        else
+            System.out.println("Nu exista studenti care au predat tema cu id-ul: " + homeworkId);
+    }
+
+    private void filterByHandOverHomeworkToProfessor() {
+        Integer homeworkId = Integer.parseInt(input("Introduceti id-ul temei predate:"));
+        Integer professorId = Integer.parseInt(input("Introduceti id-ul profesorului care a preluat tema:"));
+        Iterable<Student> filteredResult = service.filterByHandOverHomeworkAndProfessor(homeworkId, professorId);
+        if (filteredResult.iterator().hasNext())
+            filteredResult.forEach(System.out::println);
+        else
+            System.out.println("Nu exista studenti care au predat tema cu id-ul: " + homeworkId + " profesorului cu id-ul: " + professorId);
+    }
+
+    private void filterByHomeworkAndHandOverWeek() {
+        Integer homeworkId = Integer.parseInt(input("Introduceti id-ul temei predate:"));
+        Integer handOverWeek = Integer.parseInt(input("Introduceti saptamana in care a fost predata tema:"));
+        Iterable<Grade> filteredResult = service.filterByHomeworkAndHandOverWeek(homeworkId, handOverWeek);
+        if (filteredResult.iterator().hasNext())
+            filteredResult.forEach(System.out::println);
+        else
+            System.out.println("Nu exista studenti care au predat tema cu id-ul: " + homeworkId + " in saptamana: " + handOverWeek);
     }
 
     private void saveHomework() {

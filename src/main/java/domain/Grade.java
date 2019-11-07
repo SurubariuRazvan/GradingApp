@@ -68,8 +68,8 @@ public class Grade extends Entity<GradeId> {
 
     @Override
     public String toString() {
-        return "Grade{" +
-                "handOverDate=" + handOverDate +
+        return "Grade{" + " id=" + super.getId() +
+                ", handOverDate=" + handOverDate +
                 ", professor=" + professorId +
                 ", givenGrade=" + givenGrade +
                 ", homework=" + homeworkId +

@@ -10,15 +10,17 @@ import validation.*;
 
 import java.time.LocalDate;
 import java.util.Vector;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class ServiceManager {
     private HomeworkService homeworkServo;
     private GradeService gradeServo;
     private StudentService studentServo;
     private ProfessorService professorServo;
+    private UniversityYearStructure year = yearSetUp();
 
     public ServiceManager() {
-        UniversityYearStructure year = yearSetUp();
         Validator<Homework> homeworkVali = new HomeworkValidator();
         CrudRepository<Integer, Homework> homeworkRepo = new HomeworkJsonFileRepository(homeworkVali, "./src/main/resources/Homework.json");
         homeworkServo = new HomeworkService(homeworkRepo, homeworkVali, year);
@@ -236,5 +238,31 @@ public class ServiceManager {
         gradeServo.saveAll();
         studentServo.saveAll();
         professorServo.saveAll();
+    }
+
+    public Iterable<Student> filterByStudentGroup(Integer group) {
+        return StreamSupport.stream(studentServo.findAll().spliterator(), false)
+                .filter(s -> s.getGroup().equals(group))
+                .collect(Collectors.toList());
+    }
+
+    public Iterable<Student> filterByHandOverHomework(Integer homeworkId) {
+        return StreamSupport.stream(gradeServo.findAll().spliterator(), false)
+                .filter(g -> g.getHomeworkId().equals(homeworkId))
+                .map(g -> studentServo.findOne(g.getId().getStudentId()))
+                .collect(Collectors.toList());
+    }
+
+    public Iterable<Student> filterByHandOverHomeworkAndProfessor(Integer homeworkId, Integer professorId) {
+        return StreamSupport.stream(gradeServo.findAll().spliterator(), false)
+                .filter(g -> g.getHomeworkId().equals(homeworkId) && g.getProfessorId().equals(professorId))
+                .map(g -> studentServo.findOne(g.getId().getStudentId()))
+                .collect(Collectors.toList());
+    }
+
+    public Iterable<Grade> filterByHomeworkAndHandOverWeek(Integer homeworkId, Integer handOverWeek) {
+        return StreamSupport.stream(gradeServo.findAll().spliterator(), false)
+                .filter(g -> g.getHomeworkId().equals(homeworkId) && year.getWeek(g.getHandOverDate()).equals(handOverWeek))
+                .collect(Collectors.toList());
     }
 }

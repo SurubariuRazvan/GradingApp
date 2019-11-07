@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="repository.UniversitySemesterStructureTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-11-06T20:43:19" hostname="RAZVAN" time="0.0">
-  <properties/>
-  <testcase name="getWeek()" classname="repository.UniversitySemesterStructureTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

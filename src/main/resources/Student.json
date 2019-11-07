@@ -5,7 +5,7 @@
     "id": 0,
     "email": "mihai.andrei@hotmail.com",
     "labProfessorId": 0,
-    "group": 345
+    "group": 223
   },
   {
     "firstName": "Pop",
@@ -13,6 +13,30 @@
     "id": 2,
     "email": "pop.popescu@gmail.com",
     "labProfessorId": 2,
-    "group": 123
+    "group": 223
+  },
+  {
+    "firstName": "George",
+    "familyName": "Popescu",
+    "id": 3,
+    "email": "george.popescu@gmail.com",
+    "labProfessorId": 2,
+    "group": 225
+  },
+  {
+    "firstName": "Pop",
+    "familyName": "Gheorghescu",
+    "id": 4,
+    "email": "pop.gheorghescu@gmail.com",
+    "labProfessorId": 2,
+    "group": 225
+  },
+  {
+    "firstName": "Pop",
+    "familyName": "Ianculescu",
+    "id": 5,
+    "email": "pop.ianculescu@gmail.com",
+    "labProfessorId": 2,
+    "group": 227
   }
 ]

@@ -44,8 +44,8 @@ public class Professor extends Entity<Integer> {
 
     @Override
     public String toString() {
-        return "Professor{" +
-                "familyName='" + familyName + '\'' +
+        return "Professor{" + " id=" + super.getId() +
+                ", familyName='" + familyName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", email='" + email + '\'' +
                 '}';

@@ -66,8 +66,8 @@ public class Student extends Entity<Integer> {
 
     @Override
     public String toString() {
-        return "Student{" +
-                "familyName='" + familyName + '\'' +
+        return "Student{" + " id=" + super.getId() +
+                ", familyName='" + familyName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", group=" + group +
                 ", email='" + email + '\'' +

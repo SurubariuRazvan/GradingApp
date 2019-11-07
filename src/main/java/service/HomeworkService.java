@@ -21,8 +21,7 @@ public class HomeworkService extends Service<Integer, Homework> {
     private Integer idSetUp() {
         Integer max = 0;
         for (var i : super.findAll())
-            if (i.getId() > max)
-                max = i.getId();
+            max = i.getId() > max ? i.getId() : max;
         return max;
     }
 

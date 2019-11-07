@@ -22,10 +22,11 @@ public class Homework extends Entity<Integer> {
 
     @Override
     public String toString() {
-        return "Tema{" + super.getId() + " "
-                + description + " "
-                + startWeek + " "
-                + deadlineWeek + '}';
+        return "Homework{" + " id=" + super.getId() +
+                ", description='" + description + '\'' +
+                ", startWeek=" + startWeek +
+                ", deadlineWeek=" + deadlineWeek +
+                '}';
     }
 
     @Override
