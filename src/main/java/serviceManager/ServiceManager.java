@@ -18,23 +18,35 @@ public class ServiceManager {
     private GradeService gradeServo;
     private StudentService studentServo;
     private ProfessorService professorServo;
-    private UniversityYearStructure year = yearSetUp();
+    private UniversityYearStructure year;
+    private String filePath;
 
     public ServiceManager() {
+        year = yearSetUp();
+        filePath = "./src/main/resources/";
+
         Validator<Homework> homeworkVali = new HomeworkValidator();
-        CrudRepository<Integer, Homework> homeworkRepo = new HomeworkJsonFileRepository(homeworkVali, "./src/main/resources/Homework.json");
+        CrudRepository<Integer, Homework> homeworkRepo = new HomeworkJsonFileRepository(homeworkVali, filePath + "Homework.json");
         homeworkServo = new HomeworkService(homeworkRepo, homeworkVali, year);
+
         Validator<Grade> gradeVali = new GradeValidator();
-        CrudRepository<GradeId, Grade> gradeRepo = new GradeJsonFileRepository(gradeVali, "./src/main/resources/Grade.json");
+        CrudRepository<GradeId, Grade> gradeRepo = new GradeJsonFileRepository(gradeVali, filePath + "Grade.json");
         gradeServo = new GradeService(gradeRepo, gradeVali, year);
+
         Validator<Student> studentVali = new StudentValidator();
-        CrudRepository<Integer, Student> studentRepo = new StudentJsonFileRepository(studentVali, "./src/main/resources/Student.json");
+        CrudRepository<Integer, Student> studentRepo = new StudentJsonFileRepository(studentVali, filePath + "Student.json");
         studentServo = new StudentService(studentRepo, studentVali, year);
+
         Validator<Professor> professorVali = new ProfessorValidator();
-        CrudRepository<Integer, Professor> professorRepo = new ProfessorJsonFileRepository(professorVali, "./src/main/resources/Professor.json");
+        CrudRepository<Integer, Professor> professorRepo = new ProfessorJsonFileRepository(professorVali, filePath + "Professor.json");
         professorServo = new ProfessorService(professorRepo, professorVali, year);
     }
 
+    /**
+     * creates a year structure for 2019
+     *
+     * @return the 2019 university year structure
+     */
     private UniversityYearStructure yearSetUp() {
         Vector<Holiday> v1 = new Vector<>();
         v1.add(new Holiday(LocalDate.of(2019, 12, 25), 2));
