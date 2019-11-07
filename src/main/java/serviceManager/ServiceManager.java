@@ -240,12 +240,20 @@ public class ServiceManager {
         professorServo.saveAll();
     }
 
+    /**
+     * @param group Student field
+     * @return an iterable with all the students from a given group
+     */
     public Iterable<Student> filterByStudentGroup(Integer group) {
         return StreamSupport.stream(studentServo.findAll().spliterator(), false)
                 .filter(s -> s.getGroup().equals(group))
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @param homeworkId Grade field
+     * @return an iterable with all the Students that handed over a given homework
+     */
     public Iterable<Student> filterByHandOverHomework(Integer homeworkId) {
         return StreamSupport.stream(gradeServo.findAll().spliterator(), false)
                 .filter(g -> g.getHomeworkId().equals(homeworkId))
@@ -253,6 +261,11 @@ public class ServiceManager {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @param homeworkId  Grade field
+     * @param professorId Grade field
+     * @return an iterable with all the Students that handed over a given homework to a given professor
+     */
     public Iterable<Student> filterByHandOverHomeworkAndProfessor(Integer homeworkId, Integer professorId) {
         return StreamSupport.stream(gradeServo.findAll().spliterator(), false)
                 .filter(g -> g.getHomeworkId().equals(homeworkId) && g.getProfessorId().equals(professorId))
@@ -260,6 +273,11 @@ public class ServiceManager {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @param homeworkId   Grade field
+     * @param handOverWeek Grade field
+     * @return an iterable with all the Grades from a Homework handed oven in a given week
+     */
     public Iterable<Grade> filterByHomeworkAndHandOverWeek(Integer homeworkId, Integer handOverWeek) {
         return StreamSupport.stream(gradeServo.findAll().spliterator(), false)
                 .filter(g -> g.getHomeworkId().equals(homeworkId) && year.getWeek(g.getHandOverDate()).equals(handOverWeek))
