@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="repository.InMemoryRepositoryTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2019-11-06T21:08:17" hostname="RAZVAN" time="0.012">
+<testsuite name="repository.InMemoryRepositoryTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2019-11-09T11:09:55" hostname="RAZVAN" time="0.024">
   <properties/>
   <testcase name="findAll()" classname="repository.InMemoryRepositoryTest" time="0.001"/>
-  <testcase name="findOne1()" classname="repository.InMemoryRepositoryTest" time="0.0"/>
+  <testcase name="findOne1()" classname="repository.InMemoryRepositoryTest" time="0.001"/>
   <testcase name="findOne2()" classname="repository.InMemoryRepositoryTest" time="0.001"/>
   <testcase name="deleteAll()" classname="repository.InMemoryRepositoryTest" time="0.001"/>
-  <testcase name="update1()" classname="repository.InMemoryRepositoryTest" time="0.0"/>
+  <testcase name="update1()" classname="repository.InMemoryRepositoryTest" time="0.001"/>
   <testcase name="update2()" classname="repository.InMemoryRepositoryTest" time="0.001"/>
-  <testcase name="update3()" classname="repository.InMemoryRepositoryTest" time="0.0"/>
+  <testcase name="update3()" classname="repository.InMemoryRepositoryTest" time="0.001"/>
   <testcase name="update4()" classname="repository.InMemoryRepositoryTest" time="0.001"/>
   <testcase name="save1()" classname="repository.InMemoryRepositoryTest" time="0.0"/>
   <testcase name="save2()" classname="repository.InMemoryRepositoryTest" time="0.0"/>
   <testcase name="save3()" classname="repository.InMemoryRepositoryTest" time="0.0"/>
-  <testcase name="delete1()" classname="repository.InMemoryRepositoryTest" time="0.0"/>
-  <testcase name="delete2()" classname="repository.InMemoryRepositoryTest" time="0.001"/>
-  <testcase name="delete3()" classname="repository.InMemoryRepositoryTest" time="0.0"/>
+  <testcase name="delete1()" classname="repository.InMemoryRepositoryTest" time="0.001"/>
+  <testcase name="delete2()" classname="repository.InMemoryRepositoryTest" time="0.002"/>
+  <testcase name="delete3()" classname="repository.InMemoryRepositoryTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

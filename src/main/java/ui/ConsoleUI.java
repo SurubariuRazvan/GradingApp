@@ -217,8 +217,9 @@ public class ConsoleUI {
 
     private void saveGrade() {
         Grade grade = readGrade();
+        Integer a = Integer.parseInt(input("Introduteti numarul de saptamani motivate:"));
         Integer lateProfessor = Integer.parseInt(input("Introduteti numarul de saptamani intarziate de cand trebuia trecuta nota:"));
-        service.saveGrade(grade, lateProfessor);
+        service.saveGrade(grade, lateProfessor + a);
     }
 
     private void saveProfessor() {
@@ -258,10 +259,11 @@ public class ConsoleUI {
     private void updateGrade() {
         Integer homeworkId = Integer.parseInt(input("Introduceti id-ul temei:"));
         Integer studentId = Integer.parseInt(input("Introduceti id-ul studentului:"));
+        Integer a = Integer.parseInt(input("Introduteti numarul de saptamani motivate:"));
         Integer lateProfessor = Integer.parseInt(input("Introduteti numarul de saptamani intarziate de cand trebuia trecuta nota:"));
         GradeId id = new GradeId(homeworkId, studentId);
         Grade g = readGrade();
-        service.updateGrade(id, g, lateProfessor);
+        service.updateGrade(id, g, lateProfessor + a);
     }
 
     private void updateProfessor() {

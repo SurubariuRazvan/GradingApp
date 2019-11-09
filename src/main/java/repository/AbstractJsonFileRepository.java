@@ -12,13 +12,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public abstract class AbstractJsonFileRepository<ID, E extends Entity<ID>> extends InMemoryRepository<ID, E> {
-    private String fileName;
-
-    AbstractJsonFileRepository(Validator<E> validator, String fileName) {
-        super(validator);
-        this.fileName = fileName;
-        readEntities();
+public abstract class AbstractJsonFileRepository<ID, E extends Entity<ID>> extends AbstractInFileRepository<ID, E> {
+    protected AbstractJsonFileRepository(Validator<E> validator, String fileName) {
+        super(validator, fileName);
     }
 
     /**
@@ -40,12 +36,12 @@ public abstract class AbstractJsonFileRepository<ID, E extends Entity<ID>> exten
     /**
      * reads all entities from file and stores them in memory
      */
-    private void readEntities() {
+    void readEntities() {
         super.deleteAll();
         JSONParser jsonParser = new JSONParser();
         try {
             JSONArray entities = (JSONArray) jsonParser.parse(new FileReader(fileName));
-            for (Object entity : entities) {
+            for(Object entity : entities) {
                 E e = readEntity((JSONObject) entity);
                 super.save(e);
             }
@@ -60,9 +56,9 @@ public abstract class AbstractJsonFileRepository<ID, E extends Entity<ID>> exten
      * writes all entities from memory to file
      */
     @SuppressWarnings("unchecked")
-    private void writeEntities() {
+    void writeEntities() {
         JSONArray entities = new JSONArray();
-        for (E entity : super.findAll())
+        for(E entity : super.findAll())
             entities.add(writeEntity(entity));
 
         try (FileWriter file = new FileWriter(fileName)) {
@@ -71,21 +67,5 @@ public abstract class AbstractJsonFileRepository<ID, E extends Entity<ID>> exten
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * deletes all entities from memory and file
-     */
-    @Override
-    public void deleteAll() {
-        super.deleteAll();
-        writeEntities();
-    }
-
-    /**
-     * saves all the entities from memory to file
-     */
-    public void saveAll() {
-        writeEntities();
     }
 }

@@ -2,7 +2,7 @@ package service;
 
 import domain.Entity;
 import domain.UniversityYearStructure;
-import repository.AbstractJsonFileRepository;
+import repository.AbstractInFileRepository;
 import repository.CrudRepository;
 import validation.ValidationException;
 import validation.Validator;
@@ -78,7 +78,7 @@ public abstract class Service<ID, E extends Entity<ID>> {
      * saves the entities from memory to file if the repo is in file
      */
     public void saveAll() {
-        if (repo instanceof AbstractJsonFileRepository)
-            ((AbstractJsonFileRepository<ID, E>) repo).saveAll();
+        if (repo instanceof AbstractInFileRepository)
+            ((AbstractInFileRepository<ID, E>) repo).saveAll();
     }
 }

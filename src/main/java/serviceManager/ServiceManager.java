@@ -30,7 +30,7 @@ public class ServiceManager {
         homeworkServo = new HomeworkService(homeworkRepo, homeworkVali, year);
 
         Validator<Grade> gradeVali = new GradeValidator();
-        CrudRepository<GradeId, Grade> gradeRepo = new GradeJsonFileRepository(gradeVali, filePath + "Grade.json");
+        CrudRepository<GradeId, Grade> gradeRepo = new GradeXmlFileRepository(gradeVali, filePath + "Grade.xml");
         gradeServo = new GradeService(gradeRepo, gradeVali, year);
 
         Validator<Student> studentVali = new StudentValidator();
