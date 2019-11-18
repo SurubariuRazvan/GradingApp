@@ -1,8 +1,1 @@
-[
-  {
-    "firstName": "Pop",
-    "familyName": "Ion",
-    "id": 0,
-    "email": "@yahoo.com"
-  }
-]
+[{"firstName":"Pop","familyName":"Ion","id":0,"email":"@yahoo.com"}]
