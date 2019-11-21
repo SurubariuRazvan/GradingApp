@@ -1,4 +1,4 @@
-package repository;
+package repository.file;
 
 import domain.Homework;
 import org.json.simple.JSONObject;
@@ -10,7 +10,7 @@ public class HomeworkJsonFileRepository extends AbstractJsonFileRepository<Integ
     }
 
     @Override
-    Homework readEntity(JSONObject entity) {
+    protected Homework readEntity(JSONObject entity) {
         Integer id = ((Long) entity.get("id")).intValue();
         String description = (String) entity.get("description");
         Integer startWeek = ((Long) entity.get("startWeek")).intValue();
@@ -20,7 +20,7 @@ public class HomeworkJsonFileRepository extends AbstractJsonFileRepository<Integ
 
     @Override
     @SuppressWarnings("unchecked")
-    JSONObject writeEntity(Homework entity) {
+    protected JSONObject writeEntity(Homework entity) {
         JSONObject o = new JSONObject();
         o.put("id", entity.getId());
         o.put("description", entity.getDescription());

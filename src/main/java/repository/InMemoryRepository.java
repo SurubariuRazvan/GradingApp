@@ -55,7 +55,7 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements CrudReposit
     /**
      * removes all entities from memory
      */
-    void deleteAll() {
+    protected void deleteAll() {
         data.clear();
     }
 }

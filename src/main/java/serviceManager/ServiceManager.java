@@ -1,13 +1,18 @@
 package serviceManager;
 
 import domain.*;
-import repository.*;
+import repository.CrudRepository;
+import repository.sql.GradePostgreSQLRepository;
+import repository.sql.HomeworkPostgreSQLRepository;
+import repository.sql.ProfessorPostgreSQLRepository;
+import repository.sql.StudentPostgreSQLRepository;
 import service.GradeService;
 import service.HomeworkService;
 import service.ProfessorService;
 import service.StudentService;
 import validation.*;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Vector;
 import java.util.stream.Collectors;
@@ -21,24 +26,31 @@ public class ServiceManager {
     private UniversityYearStructure year;
     private String filePath;
 
-    public ServiceManager() {
+    public ServiceManager() throws SQLException, ClassNotFoundException {
         year = yearSetUp();
         filePath = "./src/main/resources/";
+        String url = "jdbc:postgresql://localhost:5432/MAP";
+        String user = "postgres";
+        String password = "793582";
 
         Validator<Homework> homeworkVali = new HomeworkValidator();
-        CrudRepository<Integer, Homework> homeworkRepo = new HomeworkJsonFileRepository(homeworkVali, filePath + "Homework.json");
+        CrudRepository<Integer, Homework> homeworkRepo = new HomeworkPostgreSQLRepository(homeworkVali, url, user, password);
+        //CrudRepository<Integer, Homework> homeworkRepo = new HomeworkJsonFileRepository(homeworkVali, filePath + "Homework.json");
         homeworkServo = new HomeworkService(homeworkRepo, homeworkVali, year);
 
         Validator<Grade> gradeVali = new GradeValidator();
-        CrudRepository<GradeId, Grade> gradeRepo = new GradeXmlFileRepository(gradeVali, filePath + "Grade.xml");
+        CrudRepository<GradeId, Grade> gradeRepo = new GradePostgreSQLRepository(gradeVali, url, user, password);
+        //CrudRepository<GradeId, Grade> gradeRepo = new GradeXmlFileRepository(gradeVali, filePath + "Grade.xml");
         gradeServo = new GradeService(gradeRepo, gradeVali, year);
 
         Validator<Student> studentVali = new StudentValidator();
-        CrudRepository<Integer, Student> studentRepo = new StudentJsonFileRepository(studentVali, filePath + "Student.json");
+        CrudRepository<Integer, Student> studentRepo = new StudentPostgreSQLRepository(studentVali, url, user, password);
+        //CrudRepository<Integer, Student> studentRepo = new StudentJsonFileRepository(studentVali, filePath + "Student.json");
         studentServo = new StudentService(studentRepo, studentVali, year);
 
         Validator<Professor> professorVali = new ProfessorValidator();
-        CrudRepository<Integer, Professor> professorRepo = new ProfessorJsonFileRepository(professorVali, filePath + "Professor.json");
+        CrudRepository<Integer, Professor> professorRepo = new ProfessorPostgreSQLRepository(professorVali, url, user, password);
+        //CrudRepository<Integer, Professor> professorRepo = new ProfessorJsonFileRepository(professorVali, filePath + "Professor.json");
         professorServo = new ProfessorService(professorRepo, professorVali, year);
     }
 

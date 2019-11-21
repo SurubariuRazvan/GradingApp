@@ -1,4 +1,4 @@
-package repository;
+package repository.file;
 
 import domain.Grade;
 import domain.GradeId;
@@ -13,11 +13,11 @@ public class GradeJsonFileRepository extends AbstractJsonFileRepository<GradeId,
     }
 
     @Override
-    Grade readEntity(JSONObject entity) {
+    protected Grade readEntity(JSONObject entity) {
         Integer studentId = ((Long) entity.get("studentId")).intValue();
         Integer homeworkId = ((Long) entity.get("homeworkId")).intValue();
-        Integer professorId = ((Long) entity.get("professorId")).intValue();
         GradeId gradeId = new GradeId(homeworkId, studentId);
+        Integer professorId = ((Long) entity.get("professorId")).intValue();
         LocalDate handOverDate = LocalDate.parse((String) entity.get("handOverDate"));
         Double givenGrade = (Double) entity.get("givenGrade");
         String feedback = (String) entity.get("feedback");
@@ -26,7 +26,7 @@ public class GradeJsonFileRepository extends AbstractJsonFileRepository<GradeId,
 
     @Override
     @SuppressWarnings("unchecked")
-    JSONObject writeEntity(Grade entity) {
+    protected JSONObject writeEntity(Grade entity) {
         JSONObject o = new JSONObject();
         o.put("studentId", entity.getId().getStudentId());
         o.put("homeworkId", entity.getHomeworkId());

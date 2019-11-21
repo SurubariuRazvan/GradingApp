@@ -2,6 +2,7 @@ package repository;
 
 import domain.Professor;
 import org.junit.jupiter.api.Test;
+import repository.file.ProfessorJsonFileRepository;
 import validation.ProfessorValidator;
 import validation.Validator;
 

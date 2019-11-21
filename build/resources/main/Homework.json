@@ -1,1 +1,26 @@
-[{"startWeek":2,"deadlineWeek":5,"description":"Prima tema de laborator","id":1},{"startWeek":3,"deadlineWeek":6,"description":"Adoua tema","id":2},{"startWeek":4,"deadlineWeek":7,"description":"A treia tema","id":3},{"startWeek":6,"deadlineWeek":8,"description":"ui","id":4}]
+[
+  {
+    "startWeek": 2,
+    "deadlineWeek": 5,
+    "description": "Prima tema de laborator",
+    "id": 1
+  },
+  {
+    "startWeek": 3,
+    "deadlineWeek": 6,
+    "description": "Adoua tema",
+    "id": 2
+  },
+  {
+    "startWeek": 4,
+    "deadlineWeek": 7,
+    "description": "A treia tema",
+    "id": 3
+  },
+  {
+    "startWeek": 6,
+    "deadlineWeek": 8,
+    "description": "ui",
+    "id": 4
+  }
+]

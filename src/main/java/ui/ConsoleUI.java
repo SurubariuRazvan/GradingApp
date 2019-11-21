@@ -1,15 +1,25 @@
 package ui;
 
 import domain.*;
+import repository.RepositoryException;
 import serviceManager.ServiceManager;
 import validation.ValidationException;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ConsoleUI {
-    private ServiceManager service = new ServiceManager();
+    private ServiceManager service;
+
+    public ConsoleUI() {
+        try {
+            service = new ServiceManager();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     private String input(String prompt) {
         Scanner input = new Scanner(System.in);
@@ -44,7 +54,7 @@ public class ConsoleUI {
         printMenu();
         String command;
         boolean running = true;
-        while (running) {
+        while(running) {
             command = input("Introduceti comanda:");
             try {
                 switch (command) {
@@ -107,7 +117,7 @@ public class ConsoleUI {
                         printMenu();
                         break;
                 }
-            } catch (ValidationException e) {
+            } catch (ValidationException | RepositoryException e) {
                 System.out.println(e.getMessage());
             } catch (NumberFormatException e) {
                 Pattern p = Pattern.compile("\".*\"");
@@ -133,7 +143,7 @@ public class ConsoleUI {
         printFiltersMenu();
         String command;
         boolean running = true;
-        while (running) {
+        while(running) {
             command = input("Filtrare: Introduceti comanda:");
             try {
                 switch (command) {

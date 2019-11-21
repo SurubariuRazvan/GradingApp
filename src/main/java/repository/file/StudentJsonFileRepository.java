@@ -1,4 +1,4 @@
-package repository;
+package repository.file;
 
 import domain.Student;
 import org.json.simple.JSONObject;
@@ -10,7 +10,7 @@ public class StudentJsonFileRepository extends AbstractJsonFileRepository<Intege
     }
 
     @Override
-    Student readEntity(JSONObject entity) {
+    protected Student readEntity(JSONObject entity) {
         Integer id = ((Long) entity.get("id")).intValue();
         String familyName = (String) entity.get("familyName");
         String firstName = (String) entity.get("firstName");
@@ -22,7 +22,7 @@ public class StudentJsonFileRepository extends AbstractJsonFileRepository<Intege
 
     @Override
     @SuppressWarnings("unchecked")
-    JSONObject writeEntity(Student entity) {
+    protected JSONObject writeEntity(Student entity) {
         JSONObject o = new JSONObject();
         o.put("id", entity.getId());
         o.put("familyName", entity.getFamilyName());

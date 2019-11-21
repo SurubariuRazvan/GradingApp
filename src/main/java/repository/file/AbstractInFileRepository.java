@@ -1,6 +1,7 @@
-package repository;
+package repository.file;
 
 import domain.Entity;
+import repository.InMemoryRepository;
 import validation.Validator;
 
 public abstract class AbstractInFileRepository<ID, E extends Entity<ID>> extends InMemoryRepository<ID, E> {

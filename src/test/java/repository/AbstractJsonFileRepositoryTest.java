@@ -4,6 +4,7 @@ import domain.Entity;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import repository.file.AbstractJsonFileRepository;
 import validation.ValidationException;
 import validation.Validator;
 
@@ -20,14 +21,14 @@ class AbstractJsonFileRepositoryTest {
         };
         repo = new AbstractJsonFileRepository<>(vali, "./src/test/resources/AbstractJsonFileRepositoryTest.json") {
             @Override
-            Entity<Integer> readEntity(JSONObject entity) {
+            protected Entity<Integer> readEntity(JSONObject entity) {
                 Integer id = ((Long) entity.get("id")).intValue();
                 return new Entity<>(id);
             }
 
             @Override
             @SuppressWarnings("unchecked")
-            JSONObject writeEntity(Entity<Integer> entity) {
+            protected JSONObject writeEntity(Entity<Integer> entity) {
                 JSONObject o = new JSONObject();
                 o.put("id", entity.getId());
                 return o;
@@ -44,7 +45,7 @@ class AbstractJsonFileRepositoryTest {
         repo.delete(0);
         repo.delete(1);
         repo.delete(2);
-        for (var i : repo.findAll())
+        for(var i : repo.findAll())
             assert (i.getId() == 0 || i.getId() == 1 || i.getId() == 2);
     }
 }

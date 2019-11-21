@@ -1,4 +1,4 @@
-package repository;
+package repository.file;
 
 import domain.Entity;
 import org.json.simple.JSONArray;
@@ -23,7 +23,7 @@ public abstract class AbstractJsonFileRepository<ID, E extends Entity<ID>> exten
      * @param entity json simple entity format
      * @return a entity that can be stored in memory
      */
-    abstract E readEntity(JSONObject entity);
+    protected abstract E readEntity(JSONObject entity);
 
     /**
      * converts a single entity from memory to file
@@ -31,7 +31,7 @@ public abstract class AbstractJsonFileRepository<ID, E extends Entity<ID>> exten
      * @param entity in memory entity
      * @return a json simple entity that can be stored in a file
      */
-    abstract JSONObject writeEntity(E entity);
+    protected abstract JSONObject writeEntity(E entity);
 
     /**
      * reads all entities from file and stores them in memory

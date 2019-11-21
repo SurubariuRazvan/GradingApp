@@ -1,4 +1,4 @@
-package repository;
+package repository.file;
 
 import domain.Entity;
 import org.w3c.dom.Document;

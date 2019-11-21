@@ -2,8 +2,8 @@ package service;
 
 import domain.Entity;
 import domain.UniversityYearStructure;
-import repository.AbstractInFileRepository;
 import repository.CrudRepository;
+import repository.file.AbstractInFileRepository;
 import validation.ValidationException;
 import validation.Validator;
 
