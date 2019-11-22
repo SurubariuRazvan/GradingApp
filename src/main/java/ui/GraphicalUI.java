@@ -5,10 +5,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import serviceManager.ServiceManager;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class GraphicalUI extends Application {
+    private ServiceManager service;
+
+    public GraphicalUI() {
+        try {
+            service = new ServiceManager();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void start(Stage stage) {
         try {
@@ -17,6 +29,7 @@ public class GraphicalUI extends Application {
             BorderPane rootLayout = loader.load();
             MenuController controller = loader.getController();
 
+            controller.setStudents(service.findAllHomework());
             Scene scene = new Scene(rootLayout);
             stage.setScene(scene);
             stage.show();

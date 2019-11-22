@@ -20,6 +20,11 @@ import java.util.stream.StreamSupport;
 
 public class ServiceManager {
     private HomeworkService homeworkServo;
+
+    public HomeworkService getHomeworkServo() {
+        return homeworkServo;
+    }
+
     private GradeService gradeServo;
     private StudentService studentServo;
     private ProfessorService professorServo;
