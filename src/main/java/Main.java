@@ -1,3 +1,4 @@
+import ui.ConsoleUI;
 import ui.GraphicalUI;
 import validation.ValidationException;
 

@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="center" hgap="10" stylesheets="@Menu1.css" vgap="10"
+<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="center" hgap="10" stylesheets="@Menu.css" vgap="10"
           xmlns="http://javafx.com/javafx/11.0.1" fx:controller="ui.MenuController">
     <Text fx:id="logintext" text="User Login: "/>
     <Label text="Username" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
