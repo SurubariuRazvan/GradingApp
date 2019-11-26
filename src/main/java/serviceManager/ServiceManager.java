@@ -20,11 +20,6 @@ import java.util.stream.StreamSupport;
 
 public class ServiceManager {
     private HomeworkService homeworkServo;
-
-    public HomeworkService getHomeworkServo() {
-        return homeworkServo;
-    }
-
     private GradeService gradeServo;
     private StudentService studentServo;
     private ProfessorService professorServo;
@@ -60,6 +55,13 @@ public class ServiceManager {
     }
 
     /**
+     * @return current week of the semester
+     */
+    public Integer getWeek() {
+        return year.getWeek(LocalDate.now());
+    }
+
+    /**
      * creates a year structure for 2019
      *
      * @return the 2019 university year structure
@@ -77,13 +79,21 @@ public class ServiceManager {
     }
 
     /**
+     * @return returns the next Homework id that would be used to create a new Homework entity
+     */
+    public Integer getNextHomeworkId() {
+        return homeworkServo.getNextId();
+    }
+
+    /**
      * creates a new Homework entity and saves it
      *
      * @param h Homework with the description and deadlineWeek fields filled
      */
     public void saveHomework(Homework h) {
-        Homework homework = homeworkServo.createHomework(h.getDescription(), h.getDeadlineWeek());
-        homeworkServo.save(homework);
+        if (h.getId() == null)
+            h = homeworkServo.createHomework(h.getDescription(), h.getDeadlineWeek());
+        homeworkServo.save(h);
     }
 
     /**
@@ -92,8 +102,9 @@ public class ServiceManager {
      * @param s Student with the familyName, firstName, group, email, labProfessorId fields filled in
      */
     public void saveStudent(Student s) {
-        Student student = studentServo.createStudent(s.getFamilyName(), s.getFirstName(), s.getGroup(), s.getEmail(), s.getLabProfessorId());
-        studentServo.save(student);
+        if (s.getId() == null)
+            s = studentServo.createStudent(s.getFamilyName(), s.getFirstName(), s.getGroup(), s.getEmail(), s.getLabProfessorId());
+        studentServo.save(s);
     }
 
     /**
@@ -118,9 +129,10 @@ public class ServiceManager {
             errors += "Profesor inexistent";
         if (homework == null || student == null || professor == null)
             throw new ValidationException(errors);
-        Grade grade = gradeServo.createGrade(student, professor, g.getGivenGrade(), homework, g.getFeedback(), lateProfessor);
-        gradeServo.save(grade);
-        gradeServo.saveInStudentNameFile(grade, homework, student);
+        if (g.getId() == null)
+            g = gradeServo.createGrade(student, professor, g.getGivenGrade(), homework, g.getFeedback(), lateProfessor);
+        gradeServo.save(g);
+        gradeServo.saveInStudentNameFile(g, homework, student);
     }
 
     /**
@@ -129,8 +141,9 @@ public class ServiceManager {
      * @param p Professor with the familyName, firstName, email fields filler in
      */
     public void saveProfessor(Professor p) {
-        Professor professor = professorServo.createProfessor(p.getFamilyName(), p.getFirstName(), p.getEmail());
-        professorServo.save(professor);
+        if (p.getId() == null)
+            p = professorServo.createProfessor(p.getFamilyName(), p.getFirstName(), p.getEmail());
+        professorServo.save(p);
     }
 
     /**
@@ -176,9 +189,12 @@ public class ServiceManager {
      * @param h  Homework to be saved at the given id
      */
     public void updateHomework(Integer id, Homework h) {
-        Homework homework = homeworkServo.createHomework(h.getDescription(), h.getDeadlineWeek());
-        homework.setId(id);
-        homeworkServo.update(homework);
+        if (h.getId() == null) {
+            h = homeworkServo.createHomework(h.getDescription(), h.getDeadlineWeek());
+            h.setId(id);
+        }
+
+        homeworkServo.update(h);
     }
 
     /**
@@ -188,9 +204,11 @@ public class ServiceManager {
      * @param s  Student to be saved at the given id
      */
     public void updateStudent(Integer id, Student s) {
-        Student student = studentServo.createStudent(s.getFamilyName(), s.getFirstName(), s.getGroup(), s.getEmail(), s.getLabProfessorId());
-        student.setId(id);
-        studentServo.update(student);
+        if (s.getId() == null) {
+            s = studentServo.createStudent(s.getFamilyName(), s.getFirstName(), s.getGroup(), s.getEmail(), s.getLabProfessorId());
+            s.setId(id);
+        }
+        studentServo.update(s);
     }
 
     /**
@@ -214,9 +232,11 @@ public class ServiceManager {
             errors += "Profesor inexistent";
         if (homework == null || student == null || professor == null)
             throw new ValidationException(errors);
-        Grade grade = gradeServo.createGrade(student, professor, g.getGivenGrade(), homework, g.getFeedback(), lateProfessor);
-        grade.setId(id);
-        gradeServo.update(grade);
+        if (g.getId() == null) {
+            g = gradeServo.createGrade(student, professor, g.getGivenGrade(), homework, g.getFeedback(), lateProfessor);
+            g.setId(id);
+        }
+        gradeServo.update(g);
     }
 
     /**
@@ -226,9 +246,11 @@ public class ServiceManager {
      * @param p  Professor to be saved at the given id
      */
     public void updateProfessor(Integer id, Professor p) {
-        Professor professor = professorServo.createProfessor(p.getFamilyName(), p.getFirstName(), p.getEmail());
-        professor.setId(id);
-        professorServo.update(professor);
+        if (p.getId() == null) {
+            p = professorServo.createProfessor(p.getFamilyName(), p.getFirstName(), p.getEmail());
+            p.setId(id);
+        }
+        professorServo.update(p);
     }
 
     /**
@@ -285,7 +307,7 @@ public class ServiceManager {
      */
     public Iterable<Student> filterByHandOverHomework(Integer homeworkId) {
         return StreamSupport.stream(gradeServo.findAll().spliterator(), false)
-                .filter(g -> g.getHomeworkId().equals(homeworkId))
+                .filter(g -> g.getId().getHomeworkId().equals(homeworkId))
                 .map(g -> studentServo.findOne(g.getId().getStudentId()))
                 .collect(Collectors.toList());
     }
@@ -297,7 +319,7 @@ public class ServiceManager {
      */
     public Iterable<Student> filterByHandOverHomeworkAndProfessor(Integer homeworkId, Integer professorId) {
         return StreamSupport.stream(gradeServo.findAll().spliterator(), false)
-                .filter(g -> g.getHomeworkId().equals(homeworkId) && g.getProfessorId().equals(professorId))
+                .filter(g -> g.getId().getHomeworkId().equals(homeworkId) && g.getProfessorId().equals(professorId))
                 .map(g -> studentServo.findOne(g.getId().getStudentId()))
                 .collect(Collectors.toList());
     }
@@ -309,7 +331,7 @@ public class ServiceManager {
      */
     public Iterable<Grade> filterByHomeworkAndHandOverWeek(Integer homeworkId, Integer handOverWeek) {
         return StreamSupport.stream(gradeServo.findAll().spliterator(), false)
-                .filter(g -> g.getHomeworkId().equals(homeworkId) && year.getWeek(g.getHandOverDate()).equals(handOverWeek))
+                .filter(g -> g.getId().getHomeworkId().equals(homeworkId) && year.getWeek(g.getHandOverDate()).equals(handOverWeek))
                 .collect(Collectors.toList());
     }
 }

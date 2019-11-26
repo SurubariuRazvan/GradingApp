@@ -28,8 +28,9 @@ public class GraphicalUI extends Application {
             loader.setLocation(getClass().getResource("/Menu2.fxml"));
             BorderPane rootLayout = loader.load();
             MenuController controller = loader.getController();
+            controller.setService(service);
 
-            controller.setStudents(service.findAllHomework());
+            controller.postInit();
             Scene scene = new Scene(rootLayout);
             stage.setScene(scene);
             stage.show();

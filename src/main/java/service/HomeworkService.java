@@ -3,6 +3,7 @@ package service;
 import domain.Homework;
 import domain.UniversityYearStructure;
 import repository.CrudRepository;
+import validation.ValidationException;
 import validation.Validator;
 
 import java.time.LocalDate;
@@ -20,9 +21,13 @@ public class HomeworkService extends Service<Integer, Homework> {
      */
     private Integer idSetUp() {
         Integer max = 0;
-        for (var i : super.findAll())
+        for(var i : super.findAll())
             max = i.getId() > max ? i.getId() : max;
         return max;
+    }
+
+    public Integer getNextId() {
+        return lastId + 1;
     }
 
     /**
@@ -33,8 +38,14 @@ public class HomeworkService extends Service<Integer, Homework> {
      * @return a new Homework object
      */
     public Homework createHomework(String description, Integer deadlineWeek) {
-        Homework homework = new Homework(++lastId, description, year.getWeek(LocalDate.now()), deadlineWeek);
+        Homework homework = new Homework(getNextId(), description, year.getWeek(LocalDate.now()), deadlineWeek);
         vali.validate(homework);
         return homework;
+    }
+
+    @Override
+    public void save(Homework entity) throws ValidationException {
+        super.save(entity);
+        lastId++;
     }
 }

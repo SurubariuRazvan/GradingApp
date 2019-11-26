@@ -18,7 +18,7 @@ class GradeJsonFileRepositoryTest {
     void writeAndReadEntity() {
         GradeJsonFileRepository repo = new GradeJsonFileRepository(vali, "./src/test/resources/Grade.json");
         GradeId id = new GradeId(5, 1);
-        Grade g = new Grade(id, LocalDate.now(), 0, 6.3, 5, "mer");
+        Grade g = new Grade(id, LocalDate.now(), 0, 6.3, "mer");
         repo.deleteAll();
         repo.save(g);
         repo.saveAll();

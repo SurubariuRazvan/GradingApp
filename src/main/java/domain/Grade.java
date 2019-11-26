@@ -6,23 +6,20 @@ public class Grade extends Entity<GradeId> {
     private LocalDate handOverDate;
     private Integer professorId;
     private Double givenGrade;
-    private Integer homeworkId;
     private String feedback;
 
-    public Grade(LocalDate handOverDate, Integer professorId, Double givenGrade, Integer homeworkId, String feedback) {
+    public Grade(LocalDate handOverDate, Integer professorId, Double givenGrade, String feedback) {
         this.handOverDate = handOverDate;
         this.professorId = professorId;
         this.givenGrade = givenGrade;
-        this.homeworkId = homeworkId;
         this.feedback = feedback;
     }
 
-    public Grade(GradeId id, LocalDate handOverDate, Integer professorId, Double givenGrade, Integer homeworkId, String feedback) {
+    public Grade(GradeId id, LocalDate handOverDate, Integer professorId, Double givenGrade, String feedback) {
         super.setId(id);
         this.handOverDate = handOverDate;
         this.professorId = professorId;
         this.givenGrade = givenGrade;
-        this.homeworkId = homeworkId;
         this.feedback = feedback;
     }
 
@@ -50,14 +47,6 @@ public class Grade extends Entity<GradeId> {
         this.givenGrade = givenGrade;
     }
 
-    public Integer getHomeworkId() {
-        return homeworkId;
-    }
-
-    public void setHomeworkId(Integer homeworkId) {
-        this.homeworkId = homeworkId;
-    }
-
     public String getFeedback() {
         return feedback;
     }
@@ -72,7 +61,6 @@ public class Grade extends Entity<GradeId> {
                 ", handOverDate=" + handOverDate +
                 ", professor=" + professorId +
                 ", givenGrade=" + givenGrade +
-                ", homework=" + homeworkId +
                 ", feedback='" + feedback + '\'' +
                 '}';
     }

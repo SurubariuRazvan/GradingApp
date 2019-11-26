@@ -22,7 +22,7 @@ public class GradePostgreSQLRepository extends AbstractPostgreSQLRepository<Grad
         LocalDate handOverDate = LocalDate.parse(result.getString("handOverDate"));
         Double givenGrade = result.getDouble("givenGrade");
         String feedback = result.getString("feedback");
-        return new Grade(gradeId, handOverDate, professorId, givenGrade, homeworkId, feedback);
+        return new Grade(gradeId, handOverDate, professorId, givenGrade, feedback);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class GradePostgreSQLRepository extends AbstractPostgreSQLRepository<Grad
     protected String insertString(Grade grade) {
         return "INSERT INTO GRADE (studentId, homeworkId, professorId, handOverDate, givenGrade, feedback ) " +
                 "VALUES (" + grade.getId().getStudentId()
-                + "," + grade.getHomeworkId()
+                + "," + grade.getId().getHomeworkId()
                 + "," + grade.getProfessorId()
                 + ",'" + grade.getHandOverDate().toString()
                 + "'," + grade.getGivenGrade()

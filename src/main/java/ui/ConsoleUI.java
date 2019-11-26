@@ -306,7 +306,7 @@ public class ConsoleUI {
         Double givenGrade = Double.parseDouble(input("Introduceti nota:"));
         String feedback = input("Introduceti feedback-ul:");
 
-        return new Grade(new GradeId(homeworkId, studentId), null, professorId, givenGrade, homeworkId, feedback);
+        return new Grade(new GradeId(homeworkId, studentId), null, professorId, givenGrade, feedback);
     }
 
     private Professor readProfessor() {

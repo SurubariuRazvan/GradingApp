@@ -41,7 +41,7 @@ public class GradeService extends Service<GradeId, Grade> {
             e.printStackTrace();
         }
         JSONObject o = new JSONObject();
-        o.put("Tema", grade.getHomeworkId());
+        o.put("Tema", grade.getId().getHomeworkId());
         o.put("Nota", grade.getGivenGrade());
         o.put("Predată în săptămâna", year.getWeek(grade.getHandOverDate()));
         o.put("Deadline", homework.getDeadlineWeek());
@@ -67,7 +67,7 @@ public class GradeService extends Service<GradeId, Grade> {
      * @return a new Grade object
      */
     public Grade createGrade(Student student, Professor professor, Double givenGrade, Homework homework, String feedback, Integer lateProfessor) {
-        Grade grade = new Grade(LocalDate.now(), professor.getId(), givenGrade, homework.getId(), feedback);
+        Grade grade = new Grade(LocalDate.now(), professor.getId(), givenGrade, feedback);
         vali.validate(grade);
         Integer late = (year.getWeek(LocalDate.now()) - lateProfessor) - homework.getDeadlineWeek();
         if (late > 0 && late <= 2) {
@@ -78,4 +78,6 @@ public class GradeService extends Service<GradeId, Grade> {
         grade.setId(new GradeId(homework.getId(), student.getId()));
         return grade;
     }
+
+
 }

@@ -32,7 +32,6 @@ public class GradeXmlFileRepository extends AbstractXmlFileRepository<GradeId, G
         Document dom = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         Element g = dom.createElement("Grade");
         put(dom, g, "studentId", entity.getId().getStudentId());
-        put(dom, g, "homeworkId", entity.getHomeworkId());
         put(dom, g, "professorId", entity.getProfessorId());
         put(dom, g, "handOverDate", entity.getHandOverDate().toString());
         put(dom, g, "givenGrade", entity.getGivenGrade().toString());
@@ -50,7 +49,7 @@ public class GradeXmlFileRepository extends AbstractXmlFileRepository<GradeId, G
         LocalDate handOverDate = LocalDate.parse(entity.getElementsByTagName("handOverDate").item(0).getTextContent());
         Double givenGrade = Double.parseDouble(entity.getElementsByTagName("givenGrade").item(0).getTextContent());
         String feedback = entity.getElementsByTagName("feedback").item(0).getTextContent();
-        return new Grade(gradeId, handOverDate, professorId, givenGrade, homeworkId, feedback);
+        return new Grade(gradeId, handOverDate, professorId, givenGrade, feedback);
 
     }
 }

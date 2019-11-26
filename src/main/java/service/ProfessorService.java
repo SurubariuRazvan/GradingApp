@@ -3,6 +3,7 @@ package service;
 import domain.Professor;
 import domain.UniversityYearStructure;
 import repository.CrudRepository;
+import validation.ValidationException;
 import validation.Validator;
 
 public class ProfessorService extends Service<Integer, Professor> {
@@ -18,9 +19,13 @@ public class ProfessorService extends Service<Integer, Professor> {
      */
     private Integer idSetUp() {
         Integer max = 0;
-        for (var i : super.findAll())
+        for(var i : super.findAll())
             max = i.getId() > max ? i.getId() : max;
         return max;
+    }
+
+    public Integer getNextId() {
+        return lastId + 1;
     }
 
     /**
@@ -32,8 +37,14 @@ public class ProfessorService extends Service<Integer, Professor> {
      * @return a new Professor object
      */
     public Professor createProfessor(String familyName, String firstName, String email) {
-        Professor professor = new Professor(++lastId, familyName, firstName, email);
+        Professor professor = new Professor(getNextId(), familyName, firstName, email);
         vali.validate(professor);
         return professor;
+    }
+
+    @Override
+    public void save(Professor entity) throws ValidationException {
+        super.save(entity);
+        lastId++;
     }
 }
