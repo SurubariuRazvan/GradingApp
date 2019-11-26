@@ -30,7 +30,6 @@ public class GraphicalUI extends Application {
             MenuController controller = loader.getController();
             controller.setService(service);
 
-            controller.postInit();
             Scene scene = new Scene(rootLayout);
             stage.setScene(scene);
             stage.show();
