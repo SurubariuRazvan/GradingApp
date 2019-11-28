@@ -42,10 +42,10 @@
                 <RowConstraints/>
             </rowConstraints>
             <children>
-                <TextField fx:id="searchId" promptText="ID" GridPane.rowIndex="1"/>
+                <TextField fx:id="searchId" onKeyTyped="#searchHomework" promptText="ID" GridPane.rowIndex="1"/>
                 <TextField fx:id="addId" onKeyTyped="#removeBackground" promptText="ID" GridPane.rowIndex="3"/>
-                <TextField fx:id="searchDescription" promptText="Descriere" GridPane.columnIndex="1"
-                           GridPane.rowIndex="1"/>
+                <TextField fx:id="searchDescription" onKeyTyped="#searchHomework" promptText="Descriere"
+                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                 <TextField fx:id="addDescription" onKeyTyped="#removeBackground" promptText="Descriere"
                            GridPane.columnIndex="1" GridPane.rowIndex="3"/>
                 <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308"
@@ -53,8 +53,8 @@
                        GridPane.rowIndex="2"/>
                 <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308"
                        maxWidth="1.7976931348623157E308" text="Filtrare" GridPane.columnSpan="5"/>
-                <Button fx:id="searchButton" cache="true" mnemonicParsing="false" onAction="#searchHomework"
-                        prefWidth="50.0" text="Search" GridPane.columnIndex="4" GridPane.halignment="CENTER"
+                <Button fx:id="clearButton" cache="true" mnemonicParsing="false" onAction="#clearFields"
+                        prefWidth="50.0" text="Clear" GridPane.columnIndex="4" GridPane.halignment="CENTER"
                         GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER"
                         GridPane.vgrow="ALWAYS">
                     <GridPane.margin>
@@ -72,8 +72,10 @@
                         <Insets bottom="2.0" left="4.0" right="4.0" top="2.0"/>
                     </padding>
                 </Button>
-                <Spinner fx:id="searchStartWeek" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-                <Spinner fx:id="searchDeadlineWeek" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                <Spinner fx:id="searchStartWeek" onKeyReleased="#searchHomework" onMousePressed="#searchHomework"
+                         GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <Spinner fx:id="searchDeadlineWeek" onKeyReleased="#searchHomework" onMousePressed="#searchHomework"
+                         GridPane.columnIndex="3" GridPane.rowIndex="1"/>
                 <Spinner fx:id="addStartWeek" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
                 <Spinner fx:id="addDeadlineWeek" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
             </children>

@@ -2,8 +2,6 @@ package ui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Tab;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import serviceManager.ServiceManager;
 
@@ -11,22 +9,19 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {
-
-
-    public Tab HomeworkTab;
-    public BorderPane rootLayout;
-    public VBox homeworkTabContent;
+    public VBox homeworkTab;
     @FXML
-    private HomeworkController homeworkController;
+    HomeworkController homeworkTabController;
 
     private ServiceManager service;
 
     public void setService(ServiceManager service) {
         this.service = service;
-        this.homeworkController.setService(service);
+        homeworkTabController.setService(service);
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        homeworkTabController.init(this);
     }
 }

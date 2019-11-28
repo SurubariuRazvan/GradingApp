@@ -4,6 +4,7 @@ import domain.Homework;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -18,7 +19,7 @@ import validation.ValidationException;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -32,7 +33,7 @@ public class HomeworkController implements Initializable {
     public Spinner<Integer> addStartWeek;
     public Spinner<Integer> searchDeadlineWeek;
     public Spinner<Integer> addDeadlineWeek;
-    public Button searchButton;
+    public Button clearButton;
     public Button addButton;
     public TableColumn<Homework, Integer> homeworkTableId;
     public TableColumn<Homework, String> homeworkTableDescription;
@@ -40,17 +41,18 @@ public class HomeworkController implements Initializable {
     public TableColumn<Homework, Integer> homeworkTableDeadlineWeek;
     public TableColumn<Homework, Void> homeworkTableUpdate;
     public TableColumn<Homework, Void> homeworkTableDelete;
-    private MenuController menuController;
-    private ObservableList<Homework> homeworks;
 
+    private ObservableList<Homework> homeworks;
+    private MenuController menuController;
     private ServiceManager service;
 
-    public void injectMenuController(MenuController menuController) {
+    public void init(MenuController menuController) {
         this.menuController = menuController;
     }
 
     public void setService(ServiceManager service) {
         this.service = service;
+        postInit();
         setHomeworks(service.findAllHomework());
     }
 
@@ -86,7 +88,7 @@ public class HomeworkController implements Initializable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         homeworkTableId.setCellValueFactory(new PropertyValueFactory<>("Id"));
 
         homeworkTableDescription.setCellValueFactory(new PropertyValueFactory<>("Description"));
@@ -98,13 +100,18 @@ public class HomeworkController implements Initializable {
         homeworkTableDeadlineWeek.setCellValueFactory(new PropertyValueFactory<>("DeadlineWeek"));
         IntegerConverter(homeworkTableDeadlineWeek);
 
-        addButtonToTable(homeworkTableUpdate, "Update", h -> service.updateHomework(h.getId(), h));
-        addButtonToTable(homeworkTableDelete, "Delete", h -> service.deleteHomework(h.getId()));
+        addButtonToTable(homeworkTableUpdate, "Update", (i, h) -> {
+            service.updateHomework(h.getId(), h);
+            homeworks.set(i, h);
+        });
+        addButtonToTable(homeworkTableDelete, "Delete", (i, h) -> {
+            service.deleteHomework(h.getId());
+            homeworks.remove(h);
+        });
 
         homeworks = FXCollections.observableArrayList();
         homeworkTable.setItems(homeworks);
         homeworkTable.setEditable(true);
-        postInit();
     }
 
     private void IntegerConverter(TableColumn<Homework, Integer> homeworkTableDeadlineWeek) {
@@ -125,7 +132,7 @@ public class HomeworkController implements Initializable {
         }));
     }
 
-    private void addButtonToTable(TableColumn<Homework, Void> tc, String text, Consumer<Homework> function) {
+    private void addButtonToTable(TableColumn<Homework, Void> tc, String text, BiConsumer<Integer, Homework> function) {
         tc.setCellFactory(new Callback<TableColumn<Homework, Void>, TableCell<Homework, Void>>() {
             @Override
             public TableCell<Homework, Void> call(final TableColumn<Homework, Void> param) {
@@ -133,14 +140,13 @@ public class HomeworkController implements Initializable {
                     private final Button btn = new Button(text);
 
                     {
-                        //TODO changed with CSS
+                        //TODO change with CSS
                         btn.setPadding(new Insets(4));
                         btn.setMaxWidth(100);
                         btn.setOnAction((ActionEvent event) -> {
                             Homework homework = getTableView().getItems().get(getIndex());
                             try {
-                                function.accept(homework);
-                                setHomeworks(service.findAllHomework());
+                                function.accept(getIndex(), homework);
                             } catch (ValidationException | RepositoryException e) {
                                 System.out.println(e.getMessage());
                             }
@@ -190,14 +196,14 @@ public class HomeworkController implements Initializable {
         try {
             Homework h = new Homework(id, description, startWeek, deadlineWeek);
             service.saveHomework(h);
-            setHomeworks(service.findAllHomework());
+            homeworks.add(h);
             addId.setText(service.getNextHomeworkId().toString());
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void searchHomework(ActionEvent actionEvent) {
+    public void searchHomework(Event actionEvent) {
         Integer id = IntegerInput(searchId, false);
         String description = searchDescription.getText();
         Integer startWeek = IntegerInput(searchStartWeek, false);
@@ -241,5 +247,13 @@ public class HomeworkController implements Initializable {
                 homework.setDeadlineWeek((Integer) newValue);
                 break;
         }
+    }
+
+    public void clearFields(ActionEvent actionEvent) {
+        searchId.setText("");
+        searchDescription.setText("");
+        searchStartWeek.getValueFactory().setValue(0);
+        searchDeadlineWeek.getValueFactory().setValue(0);
+        searchHomework(null);
     }
 }

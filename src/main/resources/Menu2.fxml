@@ -4,13 +4,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
             prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1"
-            fx:controller="ui.MenuController" fx:id="rootLayout">
+            fx:controller="ui.MenuController">
     <center>
         <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
             <tabs>
-                <Tab fx:id="HomeworkTab" text="Teme">
+                <Tab text="Teme">
                     <content>
-                        <fx:include fx:id="homeworkTabContent" source="HomeworkTabContent.fxml"/>
+                        <fx:include fx:id="homeworkTab" source="HomeworkTabContent.fxml"/>
                     </content>
                 </Tab>
                 <Tab text="Studenti"/>
