@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="homeworkTabContent" alignment="CENTER"
+      xmlns="http://javafx.com/javafx/11.0.1" fx:controller="ui.HomeworkController">
+    <children>
+        <TableView fx:id="homeworkTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="homeworkTableId" maxWidth="35.0" minWidth="35.0" prefWidth="35.0" resizable="false"
+                             text="ID"/>
+                <TableColumn fx:id="homeworkTableDescription" maxWidth="1.7976931348623157E308" minWidth="100.0"
+                             onEditCommit="#updateField" prefWidth="200.0" text="Descriere"/>
+                <TableColumn fx:id="homeworkTableStartWeek" maxWidth="1.7976931348623157E308" minWidth="70.0"
+                             onEditCommit="#updateField" prefWidth="50.0" text="StartWeek"/>
+                <TableColumn fx:id="homeworkTableDeadlineWeek" maxWidth="1.7976931348623157E308" minWidth="100.0"
+                             onEditCommit="#updateField" prefWidth="50.0" text="DeadlineWeek"/>
+                <TableColumn fx:id="homeworkTableUpdate" maxWidth="60.0" minWidth="60.0" prefWidth="60.0"
+                             resizable="false" text="Update"/>
+                <TableColumn fx:id="homeworkTableDelete" maxWidth="60.0" minWidth="60.0" prefWidth="60.0"
+                             resizable="false" text="Delete"/>
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+        </TableView>
+        <GridPane maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="SOMETIMES">
+            <columnConstraints>
+                <ColumnConstraints maxWidth="35.0" minWidth="35.0" prefWidth="35.0"/>
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="200.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="70.0"
+                                   prefWidth="50.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="100.0"
+                                   prefWidth="50.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="60.0" prefWidth="60.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="20.0"/>
+                <RowConstraints/>
+                <RowConstraints minHeight="10.0" prefHeight="20.0"/>
+                <RowConstraints/>
+            </rowConstraints>
+            <children>
+                <TextField fx:id="searchId" onKeyTyped="#searchHomework" promptText="ID" GridPane.rowIndex="1"/>
+                <TextField fx:id="addId" onKeyTyped="#removeBackground" promptText="ID" GridPane.rowIndex="3"/>
+                <TextField fx:id="searchDescription" onKeyTyped="#searchHomework" promptText="Descriere"
+                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <TextField fx:id="addDescription" onKeyTyped="#removeBackground" promptText="Descriere"
+                           GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308"
+                       maxWidth="1.7976931348623157E308" text="Adaugare/Modificare" GridPane.columnSpan="5"
+                       GridPane.rowIndex="2"/>
+                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308"
+                       maxWidth="1.7976931348623157E308" text="Filtrare" GridPane.columnSpan="5"/>
+                <Button fx:id="clearButton" cache="true" mnemonicParsing="false" onAction="#clearFields"
+                        prefWidth="50.0" text="Clear" GridPane.columnIndex="4" GridPane.halignment="CENTER"
+                        GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER"
+                        GridPane.vgrow="ALWAYS">
+                    <GridPane.margin>
+                        <Insets/>
+                    </GridPane.margin>
+                    <padding>
+                        <Insets bottom="2.0" left="4.0" right="4.0" top="2.0"/>
+                    </padding>
+                </Button>
+                <Button fx:id="addButton" cache="true" mnemonicParsing="false" onAction="#addHomework" prefWidth="50.0"
+                        text="Add" wrapText="true" GridPane.columnIndex="4" GridPane.halignment="CENTER"
+                        GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER"
+                        GridPane.vgrow="ALWAYS">
+                    <padding>
+                        <Insets bottom="2.0" left="4.0" right="4.0" top="2.0"/>
+                    </padding>
+                </Button>
+                <Spinner fx:id="searchStartWeek" onKeyReleased="#searchHomework" onMousePressed="#searchHomework"
+                         GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <Spinner fx:id="searchDeadlineWeek" onKeyReleased="#searchHomework" onMousePressed="#searchHomework"
+                         GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                <Spinner fx:id="addStartWeek" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+                <Spinner fx:id="addDeadlineWeek" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+            </children>
+        </GridPane>
+    </children>
+</VBox>
