@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class Config {
-    public static String CONFIG_LOCATION = Config.class.getClassLoader()
-            .getResource("config.properties").getFile();
+    public static String CONFIG_LOCATION = "./src/main/resources/config.properties";
+    //Config.class.getClassLoader().getResource("config.properties").getFile();
 
     public static Properties getProperties() {
         Properties properties = new Properties();

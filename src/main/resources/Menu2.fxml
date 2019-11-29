@@ -15,7 +15,11 @@
                 </Tab>
                 <Tab text="Studenti"/>
                 <Tab text="Profesori"/>
-                <Tab text="Note"/>
+                <Tab text="Note">
+                    <content>
+                        <fx:include fx:id="gradeTab" source="GradeTab.fxml"/>
+                    </content>
+                </Tab>
             </tabs>
         </TabPane>
     </center>
