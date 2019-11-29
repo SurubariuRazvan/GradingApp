@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import repository.RepositoryException;
@@ -64,10 +65,6 @@ public class HomeworkController implements Initializable {
 
     private void initSpinner(Spinner<Integer> s, Integer start, Integer finish) {
         SpinnerValueFactory<Integer> r = new SpinnerValueFactory.IntegerSpinnerValueFactory(start, finish);
-        if (start == 0)
-            r.setValue(0);
-        else
-            r.setValue(service.getWeek());
         r.setConverter(new StringConverter<Integer>() {
             @Override
             public String toString(Integer object) {
@@ -142,13 +139,14 @@ public class HomeworkController implements Initializable {
                     {
                         //TODO change with CSS
                         btn.setPadding(new Insets(4));
-                        btn.setMaxWidth(100);
+
+                        btn.setMaxSize(100,40);
                         btn.setOnAction((ActionEvent event) -> {
                             Homework homework = getTableView().getItems().get(getIndex());
                             try {
                                 function.accept(getIndex(), homework);
                             } catch (ValidationException | RepositoryException e) {
-                                System.out.println(e.getMessage());
+                                showError("Eroare", e.getMessage());
                             }
                         });
                     }
@@ -188,6 +186,21 @@ public class HomeworkController implements Initializable {
         }
     }
 
+    public void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText("Eroare");
+
+        Text text = new Text("  " + message);
+        alert.getDialogPane().setContent(text);
+        alert.getDialogPane().setPadding(new Insets(0, 5, 0, 10));
+        alert.getDialogPane().setMinWidth(200);
+        text.setWrappingWidth(200);
+
+        alert.showAndWait();
+        System.out.println(message);
+    }
+
     public void addHomework(ActionEvent actionEvent) {
         Integer id = IntegerInput(addId, true);
         String description = addDescription.getText();
@@ -199,7 +212,7 @@ public class HomeworkController implements Initializable {
             homeworks.add(h);
             addId.setText(service.getNextHomeworkId().toString());
         } catch (ValidationException e) {
-            System.out.println(e.getMessage());
+            showError("Eroare la adaugare", e.getMessage());
         }
     }
 
@@ -224,10 +237,16 @@ public class HomeworkController implements Initializable {
 
     public void postInit() {
         initSpinner(addStartWeek, 1, 14);
+        addStartWeek.getValueFactory().setValue(service.getWeek());
         initSpinner(addDeadlineWeek, 1, 14);
+        if (service.getWeek() >= 14)
+            addStartWeek.getValueFactory().setValue(14);
+        else
+            addDeadlineWeek.getValueFactory().setValue(service.getWeek() + 1);
         initSpinner(searchStartWeek, 0, 14);
+        searchStartWeek.getValueFactory().setValue(0);
         initSpinner(searchDeadlineWeek, 0, 14);
-
+        searchDeadlineWeek.getValueFactory().setValue(0);
         addId.setText(service.getNextHomeworkId().toString());
     }
 

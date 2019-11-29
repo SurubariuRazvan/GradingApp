@@ -1,5 +1,6 @@
 package serviceManager;
 
+import config.ApplicationContext;
 import domain.*;
 import repository.CrudRepository;
 import repository.sql.GradePostgreSQLRepository;
@@ -28,10 +29,10 @@ public class ServiceManager {
 
     public ServiceManager() throws SQLException, ClassNotFoundException {
         year = yearSetUp();
-        filePath = "./src/main/resources/";
-        String url = "jdbc:postgresql://localhost:5432/MAP";
-        String user = "postgres";
-        String password = "793582";
+        filePath = ApplicationContext.getPROPERTIES().getProperty("filePath");
+        String url = ApplicationContext.getPROPERTIES().getProperty("url");
+        String user = ApplicationContext.getPROPERTIES().getProperty("user");
+        String password = ApplicationContext.getPROPERTIES().getProperty("password");
 
         Validator<Homework> homeworkVali = new HomeworkValidator();
         CrudRepository<Integer, Homework> homeworkRepo = new HomeworkPostgreSQLRepository(homeworkVali, url, user, password);

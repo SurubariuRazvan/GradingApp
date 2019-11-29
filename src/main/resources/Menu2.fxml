@@ -10,7 +10,7 @@
             <tabs>
                 <Tab text="Teme">
                     <content>
-                        <fx:include fx:id="homeworkTab" source="HomeworkTabContent.fxml"/>
+                        <fx:include fx:id="homeworkTab" source="HomeworkTab.fxml"/>
                     </content>
                 </Tab>
                 <Tab text="Studenti"/>

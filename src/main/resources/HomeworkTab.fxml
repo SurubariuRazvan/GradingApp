@@ -3,7 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="homeworkTabContent" alignment="CENTER"
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="homeworkTab" alignment="CENTER"
       xmlns="http://javafx.com/javafx/11.0.1" fx:controller="ui.HomeworkController">
     <children>
         <TableView fx:id="homeworkTable" VBox.vgrow="ALWAYS">

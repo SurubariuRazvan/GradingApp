@@ -95,7 +95,7 @@ public abstract class AbstractPostgreSQLRepository<ID, E extends Entity<ID>> imp
             stmt.close();
         } catch (SQLException e) {
             if (e.getMessage().contains("violates foreign key constraint"))
-                throw new RepositoryException("Appears in another table");
+                throw new RepositoryException("Apare in alt tabel.");
             e.printStackTrace();
         }
         return null;
