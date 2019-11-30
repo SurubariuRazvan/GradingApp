@@ -6,7 +6,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="gradeTab" alignment="CENTER"
       xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="ui.GradeController">
     <children>
-        <TableView fx:id="homeworkTable" VBox.vgrow="ALWAYS">
+        <TableView fx:id="gradeTable" VBox.vgrow="ALWAYS">
             <columns>
                 <TableColumn fx:id="gradeTableHomework" maxWidth="1.7976931348623157E308" minWidth="80.0"
                              onEditCommit="#updateField" resizable="false" text="Tema"/>

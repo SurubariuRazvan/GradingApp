@@ -140,7 +140,7 @@ public class HomeworkController implements Initializable {
                         //TODO change with CSS
                         btn.setPadding(new Insets(4));
 
-                        btn.setMaxSize(100,40);
+                        btn.setMaxSize(100, 40);
                         btn.setOnAction((ActionEvent event) -> {
                             Homework homework = getTableView().getItems().get(getIndex());
                             try {
@@ -206,14 +206,15 @@ public class HomeworkController implements Initializable {
         String description = addDescription.getText();
         Integer startWeek = IntegerInput(addStartWeek, true);
         Integer deadlineWeek = IntegerInput(addDeadlineWeek, true);
-        try {
-            Homework h = new Homework(id, description, startWeek, deadlineWeek);
-            service.saveHomework(h);
-            homeworks.add(h);
-            addId.setText(service.getNextHomeworkId().toString());
-        } catch (ValidationException e) {
-            showError("Eroare la adaugare", e.getMessage());
-        }
+        if (id != null)
+            try {
+                Homework h = new Homework(id, description, startWeek, deadlineWeek);
+                service.saveHomework(h);
+                homeworks.add(h);
+                addId.setText(service.getNextHomeworkId().toString());
+            } catch (ValidationException e) {
+                showError("Eroare la adaugare", e.getMessage());
+            }
     }
 
     public void searchHomework(Event actionEvent) {

@@ -1,5 +1,6 @@
 package ui;
 
+import domain.Grade;
 import domain.Homework;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,11 +25,29 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class GradeController implements Initializable {
-    public TableView<Homework> homeworkTable;
+    public TableView<Grade> gradeTable;
     public Button clearButton;
     public Button addButton;
+    public TableColumn gradeTableHomework;
+    public TableColumn gradeTableStudent;
+    public TableColumn gradeTableGivenGrade;
+    public TableColumn gradeTableProfessor;
+    public TableColumn gradeTableHandOverDate;
+    public TableColumn gradeTableFeedback;
+    public TableColumn gradeTableUpdate;
+    public TableColumn gradeTableDelete;
+    public ComboBox HomeworkId;
+    public ComboBox searchHomeworkId;
+    public TextField searchStudentName;
+    public TextField studentName;
+    public TextField searchGivenGrade;
+    public TextField givenGrade;
+    public TextField searchProfessorName;
+    public TextField professorName;
+    public DatePicker searchHandOverDate;
+    public DatePicker handOverDate;
 
-    private ObservableList<Homework> homeworks;
+    private ObservableList<Grade> grades;
     private MenuController menuController;
     private ServiceManager service;
 
@@ -39,41 +58,22 @@ public class GradeController implements Initializable {
     public void setService(ServiceManager service) {
         this.service = service;
         postInit();
-        setHomeworks(service.findAllHomework());
+        setGrades(service.findAllGrade());
     }
 
-    private void setHomeworks(Iterable<Homework> homeworks) {
-        this.homeworks.setAll(StreamSupport
-                .stream(homeworks.spliterator(), false)
+    private void setGrades(Iterable<Grade> grades) {
+        this.grades.setAll(StreamSupport
+                .stream(grades.spliterator(), false)
                 .collect(Collectors.toList()));
-    }
-
-    private void initSpinner(Spinner<Integer> s, Integer start, Integer finish) {
-        SpinnerValueFactory<Integer> r = new SpinnerValueFactory.IntegerSpinnerValueFactory(start, finish);
-        r.setConverter(new StringConverter<Integer>() {
-            @Override
-            public String toString(Integer object) {
-                return object.toString();
-            }
-
-            @Override
-            public Integer fromString(String string) {
-                try {
-                    return Integer.parseInt(string);
-                } catch (NumberFormatException e) {
-                    return start;
-                }
-            }
-        });
-        s.setValueFactory(r);
-        s.setEditable(true);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        homeworks = FXCollections.observableArrayList();
-        homeworkTable.setItems(homeworks);
-        homeworkTable.setEditable(true);
+        //TextFields.bind
+
+        grades = FXCollections.observableArrayList();
+        gradeTable.setItems(grades);
+        gradeTable.setEditable(true);
     }
 
     private void IntegerConverter(TableColumn<Homework, Integer> homeworkTableDeadlineWeek) {
@@ -185,18 +185,18 @@ public class GradeController implements Initializable {
 
     //TODO cleaner solution
     public void updateField(TableColumn.CellEditEvent<Homework, Object> homeworkStringCellEditEvent) {
-        Homework homework = homeworkTable.getSelectionModel().getSelectedItem();
+        Grade grade = gradeTable.getSelectionModel().getSelectedItem();
         var newValue = homeworkStringCellEditEvent.getNewValue();
         var oldValue = homeworkStringCellEditEvent.getOldValue();
         switch (homeworkStringCellEditEvent.getTablePosition().getColumn()) {
             case 1:
-                homework.setDescription(newValue.toString());
+                //homework.setDescription(newValue.toString());
                 break;
             case 2:
-                homework.setStartWeek((Integer) newValue);
+                //homework.setStartWeek((Integer) newValue);
                 break;
             case 3:
-                homework.setDeadlineWeek((Integer) newValue);
+                //homework.setDeadlineWeek((Integer) newValue);
                 break;
         }
     }
