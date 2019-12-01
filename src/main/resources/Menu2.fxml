@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-            prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1"
+            prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
             fx:controller="ui.MenuController">
     <center>
         <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
@@ -13,8 +13,16 @@
                         <fx:include fx:id="homeworkTab" source="HomeworkTab.fxml"/>
                     </content>
                 </Tab>
-                <Tab text="Studenti"/>
-                <Tab text="Profesori"/>
+                <Tab text="Studenti">
+                    <content>
+                        <fx:include fx:id="studentTab" source="StudentTab.fxml"/>
+                    </content>
+                </Tab>
+                <Tab text="Profesori">
+                    <content>
+                        <fx:include fx:id="professorTab" source="ProfessorTab.fxml"/>
+                    </content>
+                </Tab>
                 <Tab text="Note">
                     <content>
                         <fx:include fx:id="gradeTab" source="GradeTab.fxml"/>

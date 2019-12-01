@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-            prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1"
-            fx:controller="ui.MenuController">
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MenuController">
     <center>
         <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
             <tabs>
                 <Tab text="Teme">
                     <content>
-                        <fx:include fx:id="homeworkTab" source="HomeworkTab.fxml"/>
+                        <fx:include fx:id="homeworkTab" source="HomeworkTab.fxml" />
                     </content>
                 </Tab>
-                <Tab text="Studenti"/>
-                <Tab text="Profesori"/>
+                <Tab text="Studenti">
+                    <content>
+                        <fx:include fx:id="studentTab" source="StudentTab.fxml" />
+                    </content>
+                </Tab>
+                <Tab text="Profesori">
+                    <content>
+                        <fx:include fx:id="professorTab" source="ProfessorTab.fxml" />
+                    </content>
+                </Tab>
                 <Tab text="Note">
                     <content>
-                        <fx:include fx:id="gradeTab" source="GradeTab.fxml"/>
+                        <fx:include fx:id="gradeTab" source="GradeTab.fxml" />
                     </content>
                 </Tab>
             </tabs>

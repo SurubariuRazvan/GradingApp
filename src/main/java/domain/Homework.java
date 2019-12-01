@@ -7,6 +7,13 @@ public class Homework extends Entity<Integer> {
     private Integer startWeek;
     private Integer deadlineWeek;
 
+    public Homework(Homework homework) {
+        super.setId(homework.getId());
+        this.description = homework.getDescription();
+        this.startWeek = homework.getStartWeek();
+        this.deadlineWeek = homework.getDeadlineWeek();
+    }
+
     public Homework(Integer id, String description, Integer startWeek, Integer deadlineWeek) {
         super.setId(id);
         this.description = description;

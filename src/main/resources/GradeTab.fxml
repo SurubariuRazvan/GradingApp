@@ -8,20 +8,18 @@
     <children>
         <TableView fx:id="gradeTable" VBox.vgrow="ALWAYS">
             <columns>
-                <TableColumn fx:id="gradeTableHomework" maxWidth="1.7976931348623157E308" minWidth="80.0"
-                             onEditCommit="#updateField" resizable="false" text="Tema"/>
-                <TableColumn fx:id="gradeTableStudent" maxWidth="35.0" minWidth="100.0" prefWidth="100.0"
-                             resizable="false" text="Student"/>
-                <TableColumn fx:id="gradeTableGivenGrade" maxWidth="1.7976931348623157E308" minWidth="40.0"
-                             onEditCommit="#updateField" prefWidth="40.0" resizable="false" text="Nota"/>
-                <TableColumn fx:id="gradeTableProfessor" maxWidth="1.7976931348623157E308" minWidth="100.0"
-                             onEditCommit="#updateField" prefWidth="100.0" resizable="false" text="Profesor"/>
-                <TableColumn fx:id="gradeTableHandOverDate" maxWidth="1.7976931348623157E308" minWidth="70.0"
-                             onEditCommit="#updateField" prefWidth="70.0" resizable="false" text="Data"/>
+                <TableColumn fx:id="gradeTableHomework" maxWidth="80.0" minWidth="80.0" onEditCommit="#updateEntity"
+                             resizable="false" text="Tema"/>
+                <TableColumn fx:id="gradeTableStudent" maxWidth="135.0" minWidth="135.0" onEditCommit="#updateEntity"
+                             prefWidth="135.0" resizable="false" text="Student"/>
+                <TableColumn fx:id="gradeTableGivenGrade" maxWidth="45.0" minWidth="45.0" onEditCommit="#updateEntity"
+                             prefWidth="45.0" resizable="false" text="Nota"/>
+                <TableColumn fx:id="gradeTableProfessor" maxWidth="135.0" minWidth="135.0" onEditCommit="#updateEntity"
+                             prefWidth="135.0" resizable="false" text="Profesor"/>
+                <TableColumn fx:id="gradeTableHandOverDate" maxWidth="105.0" minWidth="105.0"
+                             onEditCommit="#updateEntity" prefWidth="105.0" resizable="false" text="Data"/>
                 <TableColumn fx:id="gradeTableFeedback" maxWidth="1.7976931348623157E308" minWidth="100.0"
-                             onEditCommit="#updateField" prefWidth="200.0" text="Feedback"/>
-                <TableColumn fx:id="gradeTableUpdate" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" resizable="false"
-                             text="Update"/>
+                             onEditCommit="#updateEntity" prefWidth="200.0" text="Feedback"/>
                 <TableColumn fx:id="gradeTableDelete" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" resizable="false"
                              text="Delete"/>
             </columns>
@@ -32,10 +30,10 @@
         <GridPane maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="SOMETIMES">
             <columnConstraints>
                 <ColumnConstraints maxWidth="80.0" minWidth="80.0" prefWidth="80.0"/>
-                <ColumnConstraints maxWidth="100.0" minWidth="100.0" prefWidth="100.0"/>
-                <ColumnConstraints hgrow="ALWAYS" maxWidth="40.0" minWidth="40.0" prefWidth="40.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0" minWidth="70.0" prefWidth="70.0"/>
+                <ColumnConstraints maxWidth="135.0" minWidth="135.0" prefWidth="135.0"/>
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="45.0" minWidth="45.0" prefWidth="45.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="135.0" minWidth="135.0" prefWidth="135.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="105.0" minWidth="105.0" prefWidth="105.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="100.0"
                                    prefWidth="200.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="60.0" prefWidth="60.0"/>
@@ -63,7 +61,7 @@
                         <Insets bottom="2.0" left="4.0" right="4.0" top="2.0"/>
                     </padding>
                 </Button>
-                <Button fx:id="addButton" cache="true" mnemonicParsing="false" onAction="#addHomework" prefWidth="50.0"
+                <Button fx:id="addButton" cache="true" mnemonicParsing="false" onAction="#addEntity" prefWidth="50.0"
                         text="Add" wrapText="true" GridPane.columnIndex="6" GridPane.halignment="CENTER"
                         GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER"
                         GridPane.vgrow="ALWAYS">

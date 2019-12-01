@@ -86,6 +86,14 @@ public class ServiceManager {
         return homeworkServo.getNextId();
     }
 
+    public Integer getNextProfessorId() {
+        return professorServo.getNextId();
+    }
+
+    public Integer getNextStudentId() {
+        return studentServo.getNextId();
+    }
+
     /**
      * creates a new Homework entity and saves it
      *
@@ -261,11 +269,19 @@ public class ServiceManager {
         return homeworkServo.findAll();
     }
 
+    public Homework findOneHomework(Integer id) {
+        return homeworkServo.findOne(id);
+    }
+
     /**
      * @return all Student entities found in the repository
      */
     public Iterable<Student> findAllStudent() {
         return studentServo.findAll();
+    }
+
+    public Student findOneStudent(Integer id) {
+        return studentServo.findOne(id);
     }
 
     /**
@@ -275,11 +291,19 @@ public class ServiceManager {
         return gradeServo.findAll();
     }
 
+    public Grade findOneGrade(GradeId id) {
+        return gradeServo.findOne(id);
+    }
+
     /**
      * @return all Professor entities found in the repository
      */
     public Iterable<Professor> findAllProfessor() {
         return professorServo.findAll();
+    }
+
+    public Professor findOneProfessor(Integer id) {
+        return professorServo.findOne(id);
     }
 
     /**

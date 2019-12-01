@@ -5,6 +5,13 @@ public class Professor extends Entity<Integer> {
     private String firstName;
     private String email;
 
+    public Professor(Professor professor) {
+        super.setId(professor.getId());
+        this.familyName = professor.getFamilyName();
+        this.firstName = professor.getFirstName();
+        this.email = professor.getEmail();
+    }
+
     public Professor(String familyName, String firstName, String email) {
         this.familyName = familyName;
         this.firstName = firstName;
@@ -44,10 +51,6 @@ public class Professor extends Entity<Integer> {
 
     @Override
     public String toString() {
-        return "Professor{" + " id=" + super.getId() +
-                ", familyName='" + familyName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return familyName + " " + firstName;
     }
 }

@@ -7,6 +7,15 @@ public class Student extends Entity<Integer> {
     private String email;
     private Integer labProfessorId;
 
+    public Student(Student student) {
+        super.setId(student.getId());
+        this.familyName = student.getFamilyName();
+        this.firstName = student.getFirstName();
+        this.group = student.getGroup();
+        this.email = student.getEmail();
+        this.labProfessorId = student.getLabProfessorId();
+    }
+
     public Student(String familyName, String firstName, Integer group, String email, Integer labProfessorId) {
         this.familyName = familyName;
         this.firstName = firstName;
@@ -66,12 +75,6 @@ public class Student extends Entity<Integer> {
 
     @Override
     public String toString() {
-        return "Student{" + " id=" + super.getId() +
-                ", familyName='" + familyName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", group=" + group +
-                ", email='" + email + '\'' +
-                ", labProfessor=" + labProfessorId +
-                '}';
+        return familyName + " " + firstName;
     }
 }
