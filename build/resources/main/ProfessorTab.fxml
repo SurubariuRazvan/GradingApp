@@ -11,13 +11,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="professorTab" alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.ProfessorController">
+<VBox fx:id="professorTab" alignment="CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.gui.ProfessorController">
     <children>
-        <TableView fx:id="professorTable" VBox.vgrow="ALWAYS">
+        <TableView fx:id="professorTable" editable="true" VBox.vgrow="ALWAYS">
             <columns>
                 <TableColumn fx:id="professorTableId" maxWidth="35.0" minWidth="35.0" prefWidth="35.0" resizable="false" text="ID" />
-                <TableColumn fx:id="professorTableFamilyName" maxWidth="80.0" minWidth="80.0" onEditCommit="#updateEntity" resizable="false" text="Nume" />
-                <TableColumn fx:id="professorTableFirstName" maxWidth="80.0" minWidth="80.0" onEditCommit="#updateEntity" resizable="false" text="Prenume" />
+                <TableColumn fx:id="professorTableFamilyName" maxWidth="100.0" minWidth="100.0" onEditCommit="#updateEntity" prefWidth="100.0" resizable="false" text="Nume" />
+                <TableColumn fx:id="professorTableFirstName" maxWidth="100.0" minWidth="100.0" onEditCommit="#updateEntity" prefWidth="100.0" resizable="false" text="Prenume" />
                 <TableColumn fx:id="professorTableEmail" maxWidth="1.7976931348623157E308" minWidth="100.0" onEditCommit="#updateEntity" prefWidth="200.0" text="Email" />
                 <TableColumn fx:id="professorTableDelete" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" resizable="false" text="Delete" />
             </columns>
@@ -28,8 +28,8 @@
         <GridPane maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="SOMETIMES">
             <columnConstraints>
                 <ColumnConstraints maxWidth="35.0" minWidth="35.0" prefWidth="35.0" />
-                <ColumnConstraints hgrow="ALWAYS" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="200.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" />
             </columnConstraints>
@@ -41,10 +41,10 @@
             </rowConstraints>
             <children>
                 <TextField fx:id="searchId" onKeyTyped="#searchEntity" promptText="ID" GridPane.rowIndex="1" />
-                <TextField fx:id="addId" onKeyTyped="#removeBackground" promptText="ID" GridPane.rowIndex="3" />
+                <TextField fx:id="addId" editable="false" onKeyTyped="#removeBackground" promptText="ID" GridPane.rowIndex="3" />
                 <TextField fx:id="searchFamilyName" onKeyTyped="#searchEntity" promptText="Nume" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <TextField fx:id="addFamilyName" onKeyTyped="#removeBackground" promptText="Nume" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Adaugare/Modificare" GridPane.columnSpan="5" GridPane.rowIndex="2" />
+                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Adaugare" GridPane.columnSpan="5" GridPane.rowIndex="2" />
                 <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Filtrare" GridPane.columnSpan="5" />
                 <Button fx:id="clearButton" cache="true" mnemonicParsing="false" onAction="#clearFields" prefWidth="50.0" text="Clear" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                     <GridPane.margin>
@@ -59,10 +59,10 @@
                         <Insets bottom="2.0" left="4.0" right="4.0" top="2.0" />
                     </padding>
                 </Button>
-            <TextField fx:id="searchFirstName" layoutX="45.0" layoutY="75.0" onKeyTyped="#searchEntity" promptText="Prenume" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <TextField fx:id="addFirstName" layoutX="125.0" layoutY="30.0" onKeyTyped="#removeBackground" promptText="Prenume" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <TextField fx:id="searchEmail" layoutX="125.0" layoutY="30.0" onKeyTyped="#searchEntity" promptText="Email" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <TextField fx:id="addEmail" layoutX="125.0" layoutY="30.0" onKeyTyped="#removeBackground" promptText="Email" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                <TextField fx:id="searchFirstName" layoutX="45.0" layoutY="75.0" onKeyTyped="#searchEntity" promptText="Prenume" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <TextField fx:id="addFirstName" layoutX="125.0" layoutY="30.0" onKeyTyped="#removeBackground" promptText="Prenume" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <TextField fx:id="searchEmail" layoutX="125.0" layoutY="30.0" onKeyTyped="#searchEntity" promptText="Email" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                <TextField fx:id="addEmail" layoutX="125.0" layoutY="30.0" onKeyTyped="#removeBackground" promptText="Email" GridPane.columnIndex="3" GridPane.rowIndex="3" />
             </children>
         </GridPane>
     </children>

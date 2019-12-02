@@ -68,7 +68,6 @@ public abstract class AbstractPostgreSQLRepository<ID, E extends Entity<ID>> imp
         validator.validate(entity);
         try {
             Statement stmt = c.createStatement();
-            String s = insertString(entity);
             stmt.executeUpdate(insertString(entity));
             stmt.close();
         } catch (SQLException e) {
@@ -90,6 +89,7 @@ public abstract class AbstractPostgreSQLRepository<ID, E extends Entity<ID>> imp
             E entity = this.findOne(id);
             if (entity != null) {
                 stmt.executeUpdate(deleteString(id));
+                stmt.close();
                 return entity;
             }
             stmt.close();
@@ -108,8 +108,17 @@ public abstract class AbstractPostgreSQLRepository<ID, E extends Entity<ID>> imp
         if (entity == null)
             throw new IllegalArgumentException("entity is null");
         validator.validate(entity);
-        if (this.delete(entity.getId()) == null)
-            return entity;
-        return this.save(entity);
+        try {
+            Statement stmt = c.createStatement();
+            int action = stmt.executeUpdate(updateString(entity));
+            stmt.close();
+            if (action == 0)
+                return entity;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
+    protected abstract String updateString(E entity);
 }

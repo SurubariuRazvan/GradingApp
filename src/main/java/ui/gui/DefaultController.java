@@ -1,6 +1,12 @@
-package ui;
+package ui.gui;
 
 import domain.Entity;
+import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;
+import impl.org.controlsfx.autocompletion.SuggestionProvider;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
@@ -27,6 +34,16 @@ public abstract class DefaultController<E extends Entity> implements Initializab
     protected ObservableList<E> entities;
     protected ObservableList<E> allEntities;
     protected ServiceManager service;
+
+    public static void addTextLimiter(final TextField tf, final int maxLength) {
+        tf.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                if (tf.getText().length() > maxLength)
+                    tf.setText(tf.getText().substring(0, maxLength));
+            }
+        });
+    }
 
     public void init(MenuController menuController) {
         this.menuController = menuController;
@@ -54,6 +71,37 @@ public abstract class DefaultController<E extends Entity> implements Initializab
                 .collect(Collectors.toList()));
     }
 
+    public <EE extends Entity> void makeAutoCompleBox(ComboBox<EE> cb, ObservableList<EE> list) {
+        cb.setConverter(new StringConverter<EE>() {
+            @Override
+            public String toString(EE item) {
+                if (item != null)
+                    return item.toString();
+                return "";
+            }
+
+            @Override
+            public EE fromString(String string) {
+                if (string == null || string.equals(""))
+                    return null;
+                //return cb.getItems().get(0);
+                return cb.getItems().stream().filter(item -> string.equals(item.toString())).findFirst().orElse(null);
+            }
+        });
+
+        cb.setItems(list);
+        SuggestionProvider<EE> provider = SuggestionProvider.create(list);
+        new AutoCompletionTextFieldBinding<>(cb.getEditor(), provider);
+
+        list.addListener(new InvalidationListener() {
+            @Override
+            public void invalidated(Observable observable) {
+                provider.clearSuggestions();
+                provider.addPossibleSuggestions(list);
+            }
+        });
+    }
+
     public abstract void addEntity(ActionEvent actionEvent);
 
     public abstract void searchEntity(Event actionEvent);
@@ -62,25 +110,19 @@ public abstract class DefaultController<E extends Entity> implements Initializab
 
     public abstract void clearFields(ActionEvent actionEvent);
 
-    protected void initSpinner(Spinner<Integer> s, Integer start, Integer finish) {
-        SpinnerValueFactory<Integer> r = new SpinnerValueFactory.IntegerSpinnerValueFactory(start, finish);
-        r.setConverter(new StringConverter<Integer>() {
-            @Override
-            public String toString(Integer object) {
-                return object.toString();
-            }
+    public abstract void updateAddFields();
 
-            @Override
-            public Integer fromString(String string) {
-                try {
-                    return Integer.parseInt(string);
-                } catch (NumberFormatException e) {
-                    return start;
-                }
-            }
-        });
-        s.setValueFactory(r);
+    protected void initSpinner(Spinner<Integer> s, Integer start, Integer end) {
+        s.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(start, end, start));
         s.setEditable(true);
+        s.getEditor().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                try {
+                    Integer.parseInt(s.getEditor().textProperty().get());
+                } catch (NumberFormatException e) {
+                    s.getEditor().textProperty().set(start.toString());
+                }
+        });
     }
 
     //TODO why does it work?
@@ -133,6 +175,14 @@ public abstract class DefaultController<E extends Entity> implements Initializab
     protected Integer IntegerInput(String s) {
         try {
             return Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    protected Double DoubleInput(String s) {
+        try {
+            return Double.parseDouble(s);
         } catch (NumberFormatException e) {
             return null;
         }

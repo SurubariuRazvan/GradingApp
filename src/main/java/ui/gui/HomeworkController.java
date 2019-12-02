@@ -1,4 +1,4 @@
-package ui;
+package ui.gui;
 
 import domain.Homework;
 import javafx.event.ActionEvent;
@@ -50,9 +50,6 @@ public class HomeworkController extends DefaultController<Homework> {
             entities.remove(h);
             allEntities.remove(h);
         });
-
-        homeworkTable.setEditable(true);
-        addId.setEditable(false);
     }
 
     @Override
@@ -61,19 +58,13 @@ public class HomeworkController extends DefaultController<Homework> {
         homeworkTable.setItems(entities);
         setAllEntities(service.findAllHomework());
 
-        System.out.println(entities);
         initSpinner(addStartWeek, 1, 14);
-        addStartWeek.getValueFactory().setValue(service.getWeek());
         initSpinner(addDeadlineWeek, 1, 14);
-        if (service.getWeek() >= 14)
-            addDeadlineWeek.getValueFactory().setValue(14);
-        else
-            addDeadlineWeek.getValueFactory().setValue(service.getWeek() + 1);
         initSpinner(searchStartWeek, 0, 14);
-        searchStartWeek.getValueFactory().setValue(0);
         initSpinner(searchDeadlineWeek, 0, 14);
-        searchDeadlineWeek.getValueFactory().setValue(0);
-        addId.setText(service.getNextHomeworkId().toString());
+
+        clearFields(null);
+        updateAddFields();
     }
 
     @Override
@@ -88,10 +79,21 @@ public class HomeworkController extends DefaultController<Homework> {
                 service.saveHomework(h);
                 entities.add(h);
                 allEntities.add(h);
-                addId.setText(service.getNextHomeworkId().toString());
+                updateAddFields();
             } catch (ValidationException e) {
                 showError("Eroare la adaugare", e.getMessage());
             }
+    }
+
+    @Override
+    public void updateAddFields() {
+        addId.setText(service.getNextHomeworkId().toString());
+        addDescription.setText("");
+        addStartWeek.getValueFactory().setValue(service.getWeek());
+        if (service.getWeek() >= 14)
+            addDeadlineWeek.getValueFactory().setValue(14);
+        else
+            addDeadlineWeek.getValueFactory().setValue(service.getWeek() + 1);
     }
 
     @Override
@@ -103,10 +105,10 @@ public class HomeworkController extends DefaultController<Homework> {
 
         setEntities(StreamSupport.stream(service.findAllHomework().spliterator(), false)
                 .filter(h -> (id == null || h.getId().toString().contains(id.toString())) &&
-                        (description == null || h.getDescription().contains(description)) &&
+                        (h.getDescription().contains(description)) &&
                         ((startWeek == null) || (startWeek == 0) || h.getStartWeek().toString().contains(startWeek.toString())) &&
-                        ((deadlineWeek == null) || (deadlineWeek == 0) || h.getDeadlineWeek().toString().contains(deadlineWeek.toString()))
-                ).collect(Collectors.toList()));
+                        ((deadlineWeek == null) || (deadlineWeek == 0) || h.getDeadlineWeek().toString().contains(deadlineWeek.toString())))
+                .collect(Collectors.toList()));
     }
 
     @Override
@@ -130,7 +132,7 @@ public class HomeworkController extends DefaultController<Homework> {
 
             try {
                 service.updateHomework(homework.getId(), homework);
-                allEntities.set(allEntities.indexOf(homework), homework);
+                allEntities.set(allEntities.indexOf(backupHomework), new Homework(homework));
             } catch (ValidationException | RepositoryException e) {
                 showError("Eroare", e.getMessage());
                 entities.set(event.getTablePosition().getRow(), backupHomework);

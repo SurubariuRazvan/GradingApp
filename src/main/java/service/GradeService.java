@@ -6,7 +6,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import repository.CrudRepository;
-import validation.ValidationException;
 import validation.Validator;
 
 import java.io.FileNotFoundException;
@@ -69,15 +68,17 @@ public class GradeService extends Service<GradeId, Grade> {
     public Grade createGrade(Student student, Professor professor, Double givenGrade, Homework homework, String feedback, Integer lateProfessor) {
         Grade grade = new Grade(LocalDate.now(), professor.getId(), givenGrade, feedback);
         vali.validate(grade);
-        Integer late = (year.getWeek(LocalDate.now()) - lateProfessor) - homework.getDeadlineWeek();
-        if (late > 0 && late <= 2) {
-            grade.setGivenGrade(givenGrade - late);
-            vali.validate(grade);
-        } else if (late > 2)
-            throw new ValidationException("Intarziere mai mare de 2 saptamani");
+        grade.setGivenGrade(calculateFinalGrade(givenGrade, homework.getDeadlineWeek(), lateProfessor));
         grade.setId(new GradeId(homework.getId(), student.getId()));
         return grade;
     }
 
-
+    public Double calculateFinalGrade(Double givenGrade, Integer deadlineWeek, Integer lateProfessor) {
+        Integer late = (year.getWeek(LocalDate.now()) - lateProfessor) - deadlineWeek;
+        if (late > 0 && late <= 2)
+            givenGrade -= late;
+        else if (late > 2)
+            givenGrade = 1.0;
+        return givenGrade;
+    }
 }

@@ -4,12 +4,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="gradeTab" alignment="CENTER"
-      xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="ui.GradeController">
+      xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="ui.gui.GradeController">
     <children>
-        <TableView fx:id="gradeTable" VBox.vgrow="ALWAYS">
+        <TableView fx:id="gradeTable" editable="true" VBox.vgrow="ALWAYS">
             <columns>
-                <TableColumn fx:id="gradeTableHomework" maxWidth="80.0" minWidth="80.0" onEditCommit="#updateEntity"
-                             resizable="false" text="Tema"/>
+                <TableColumn fx:id="gradeTableHomework" maxWidth="110.0" minWidth="110.0" onEditCommit="#updateEntity"
+                             prefWidth="110.0" resizable="false" text="Tema"/>
                 <TableColumn fx:id="gradeTableStudent" maxWidth="135.0" minWidth="135.0" onEditCommit="#updateEntity"
                              prefWidth="135.0" resizable="false" text="Student"/>
                 <TableColumn fx:id="gradeTableGivenGrade" maxWidth="45.0" minWidth="45.0" onEditCommit="#updateEntity"
@@ -19,7 +19,7 @@
                 <TableColumn fx:id="gradeTableHandOverDate" maxWidth="105.0" minWidth="105.0"
                              onEditCommit="#updateEntity" prefWidth="105.0" resizable="false" text="Data"/>
                 <TableColumn fx:id="gradeTableFeedback" maxWidth="1.7976931348623157E308" minWidth="100.0"
-                             onEditCommit="#updateEntity" prefWidth="200.0" text="Feedback"/>
+                             onEditCommit="#updateEntity" prefWidth="180.0" text="Feedback"/>
                 <TableColumn fx:id="gradeTableDelete" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" resizable="false"
                              text="Delete"/>
             </columns>
@@ -29,27 +29,36 @@
         </TableView>
         <GridPane maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="SOMETIMES">
             <columnConstraints>
-                <ColumnConstraints maxWidth="80.0" minWidth="80.0" prefWidth="80.0"/>
+                <ColumnConstraints maxWidth="110.0" minWidth="110.0" prefWidth="110.0"/>
                 <ColumnConstraints maxWidth="135.0" minWidth="135.0" prefWidth="135.0"/>
                 <ColumnConstraints hgrow="ALWAYS" maxWidth="45.0" minWidth="45.0" prefWidth="45.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="135.0" minWidth="135.0" prefWidth="135.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="105.0" minWidth="105.0" prefWidth="105.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="100.0"
-                                   prefWidth="200.0"/>
+                                   prefWidth="180.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="60.0" prefWidth="60.0"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="20.0"/>
                 <RowConstraints/>
-                <RowConstraints minHeight="10.0" prefHeight="20.0"/>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
                 <RowConstraints/>
             </rowConstraints>
             <children>
                 <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308"
-                       maxWidth="1.7976931348623157E308" text="Adaugare/Modificare" GridPane.columnSpan="7"
-                       GridPane.rowIndex="2"/>
+                       maxWidth="1.7976931348623157E308" text="Adaugare" GridPane.columnSpan="7" GridPane.rowIndex="2">
+                    <GridPane.margin>
+                        <Insets bottom="3.0" top="3.0"/>
+                    </GridPane.margin>
+                </Label>
                 <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308"
-                       maxWidth="1.7976931348623157E308" text="Filtrare" GridPane.columnSpan="7"/>
+                       maxWidth="1.7976931348623157E308" text="Filtrare" GridPane.columnSpan="7">
+                    <GridPane.margin>
+                        <Insets bottom="3.0" top="3.0"/>
+                    </GridPane.margin>
+                </Label>
                 <Button fx:id="clearButton" cache="true" mnemonicParsing="false" onAction="#clearFields"
                         prefWidth="50.0" text="Clear" GridPane.columnIndex="6" GridPane.halignment="CENTER"
                         GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER"
@@ -69,37 +78,66 @@
                         <Insets bottom="2.0" left="4.0" right="4.0" top="2.0"/>
                     </padding>
                 </Button>
-                <ComboBox fx:id="HomeworkId" prefWidth="150.0" promptText="Nr. tema" GridPane.rowIndex="3">
-                    <GridPane.margin>
-                        <Insets/>
-                    </GridPane.margin>
-                    <padding>
-                        <Insets left="-5.0" right="-5.0"/>
-                    </padding>
-                </ComboBox>
-                <ComboBox fx:id="searchHomeworkId" layoutX="10.0" layoutY="71.0" prefWidth="150.0" promptText="Nr. tema"
-                          GridPane.rowIndex="1">
-                    <padding>
-                        <Insets left="-5.0" right="-5.0"/>
-                    </padding>
+                <ComboBox fx:id="addHomeworkId" editable="true" prefWidth="150.0" promptText="Nr. tema"
+                          GridPane.rowIndex="3">
                     <GridPane.margin>
                         <Insets/>
                     </GridPane.margin>
                 </ComboBox>
-                <TextField fx:id="searchStudentName" promptText="Nume student" GridPane.columnIndex="1"
-                           GridPane.rowIndex="1"/>
-                <TextField fx:id="studentName" promptText="Nume student" GridPane.columnIndex="1"
-                           GridPane.rowIndex="3"/>
-                <TextField fx:id="searchGivenGrade" promptText="Nota" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-                <TextField fx:id="givenGrade" promptText="Nota" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
-                <TextField fx:id="searchProfessorName" promptText="Nume profesor" GridPane.columnIndex="3"
-                           GridPane.rowIndex="1"/>
-                <TextField fx:id="professorName" promptText="Nume profesor" GridPane.columnIndex="3"
-                           GridPane.rowIndex="3"/>
-                <DatePicker fx:id="searchHandOverDate" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
-                <DatePicker fx:id="handOverDate" GridPane.columnIndex="4" GridPane.rowIndex="3"/>
-                <TextField promptText="Feedback" GridPane.columnIndex="5" GridPane.rowIndex="1"/>
-                <TextField promptText="Feedback" GridPane.columnIndex="5" GridPane.rowIndex="3"/>
+                <ComboBox fx:id="searchHomeworkId" editable="true" layoutX="10.0" layoutY="71.0"
+                          onAction="#searchEntity" prefWidth="150.0" promptText="Nr. tema" GridPane.rowIndex="1">
+                    <GridPane.margin>
+                        <Insets/>
+                    </GridPane.margin>
+                </ComboBox>
+                <TextField fx:id="searchGivenGrade" onKeyTyped="#searchEntity" promptText="Nota"
+                           GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <TextField fx:id="addGivenGrade" promptText="Nota" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+                <ComboBox fx:id="searchProfessorName" editable="true" onAction="#searchEntity" prefWidth="150.0"
+                          promptText="Nume profesor" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                <ComboBox fx:id="addProfessorName" editable="true" prefWidth="150.0" promptText="Nume profesor"
+                          GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+                <TextField fx:id="searchHandOverDate" onKeyTyped="#searchEntity" promptText="Data"
+                           GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+                <TextField fx:id="addHandOverDate" editable="false" GridPane.columnIndex="4" GridPane.rowIndex="3"/>
+                <TextField fx:id="searchFeedback" onKeyTyped="#searchEntity" promptText="Feedback"
+                           GridPane.columnIndex="5" GridPane.rowIndex="1"/>
+                <TextField fx:id="addFeedback" promptText="Feedback" GridPane.columnIndex="5" GridPane.rowIndex="3"/>
+                <ComboBox fx:id="searchStudentName" editable="true" layoutX="10.0" layoutY="30.0"
+                          onAction="#searchEntity" prefWidth="150.0" promptText="Nume student" GridPane.columnIndex="1"
+                          GridPane.rowIndex="1"/>
+                <ComboBox fx:id="addStudentName" editable="true" layoutX="90.0" layoutY="30.0" prefWidth="150.0"
+                          promptText="Nume student" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <GridPane.margin>
+                        <Insets/>
+                    </GridPane.margin>
+                </ComboBox>
+                <GridPane fx:id="addGivenGradeGrid" onMouseEntered="#openAddGivenGradeGrid"
+                          onMouseExited="#closeAddGivenGradeGrid" stylesheets="@GradeTab.css" visible="false"
+                          GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="2">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308"/>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="45.0" minWidth="45.0"
+                                           prefWidth="45.0"/>
+                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <Spinner fx:id="motivatedWeeks" nodeOrientation="LEFT_TO_RIGHT" prefWidth="100.0"
+                                 GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets/>
+                            </GridPane.margin>
+                        </Spinner>
+                        <Spinner fx:id="lateWeeks" nodeOrientation="RIGHT_TO_LEFT" prefWidth="100.0"
+                                 GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                        <Label text="Saptamani intarziate" GridPane.columnIndex="2"/>
+                        <Label text="Saptamani motivate"/>
+                    </children>
+                </GridPane>
             </children>
         </GridPane>
     </children>

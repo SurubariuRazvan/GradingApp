@@ -1,4 +1,4 @@
-package ui;
+package ui.gui;
 
 import domain.Grade;
 import domain.Homework;
@@ -33,6 +33,7 @@ public class MenuController implements Initializable {
         allProfessors = professorTabController.setService(service);
         allStudents = studentTabController.setService(service);
         allGrades = gradeTabController.setService(service);
+        //TODO refresh tables on tab change
     }
 
     @Override

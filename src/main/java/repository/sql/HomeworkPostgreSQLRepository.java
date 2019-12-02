@@ -44,4 +44,14 @@ public class HomeworkPostgreSQLRepository extends AbstractPostgreSQLRepository<I
     protected String deleteString(Integer id) {
         return "DELETE from HOMEWORK where ID = " + id + ";";
     }
+
+    @Override
+    protected String updateString(Homework homework) {
+        return "UPDATE HOMEWORK SET "
+                + "id= " + homework.getId()
+                + ", description= '" + homework.getDescription()
+                + "', startWeek= " + homework.getStartWeek()
+                + ", deadlineWeek= " + homework.getDeadlineWeek()
+                + " where ID = " + homework.getId() + ";";
+    }
 }

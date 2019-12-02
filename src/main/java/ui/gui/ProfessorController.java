@@ -1,4 +1,4 @@
-package ui;
+package ui.gui;
 
 import domain.Professor;
 import javafx.event.ActionEvent;
@@ -54,9 +54,6 @@ public class ProfessorController extends DefaultController<Professor> {
             entities.remove(p);
             allEntities.remove(p);
         });
-
-        professorTable.setEditable(true);
-        addId.setEditable(false);
     }
 
     @Override
@@ -65,7 +62,8 @@ public class ProfessorController extends DefaultController<Professor> {
         professorTable.setItems(entities);
         setAllEntities(service.findAllProfessor());
 
-        addId.setText(service.getNextProfessorId().toString());
+        clearFields(null);
+        updateAddFields();
     }
 
     @Override
@@ -80,10 +78,18 @@ public class ProfessorController extends DefaultController<Professor> {
                 service.saveProfessor(h);
                 entities.add(h);
                 allEntities.add(h);
-                addId.setText(service.getNextProfessorId().toString());
+                updateAddFields();
             } catch (ValidationException e) {
                 showError("Eroare la adaugare", e.getMessage());
             }
+    }
+
+    @Override
+    public void updateAddFields() {
+        addId.setText(service.getNextProfessorId().toString());
+        addFamilyName.setText("");
+        addFirstName.setText("");
+        addEmail.setText("");
     }
 
     @Override
@@ -122,7 +128,7 @@ public class ProfessorController extends DefaultController<Professor> {
 
             try {
                 service.updateProfessor(professor.getId(), professor);
-                allEntities.set(allEntities.indexOf(professor), professor);
+                allEntities.set(allEntities.indexOf(backupProfessor), new Professor(professor));
             } catch (ValidationException | RepositoryException e) {
                 showError("Eroare", e.getMessage());
                 entities.set(event.getTablePosition().getRow(), backupProfessor);

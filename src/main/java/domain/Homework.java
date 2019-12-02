@@ -29,11 +29,7 @@ public class Homework extends Entity<Integer> {
 
     @Override
     public String toString() {
-        return "Homework{" + " id=" + super.getId() +
-                ", description='" + description + '\'' +
-                ", startWeek=" + startWeek +
-                ", deadlineWeek=" + deadlineWeek +
-                '}';
+        return "Tema " + startWeek + "->" + getDeadlineWeek();
     }
 
     @Override

@@ -227,9 +227,9 @@ public class ConsoleUI {
 
     private void saveGrade() {
         Grade grade = readGrade();
-        Integer a = Integer.parseInt(input("Introduteti numarul de saptamani motivate:"));
+        Integer motivated = Integer.parseInt(input("Introduteti numarul de saptamani motivate:"));
         Integer lateProfessor = Integer.parseInt(input("Introduteti numarul de saptamani intarziate de cand trebuia trecuta nota:"));
-        service.saveGrade(grade, lateProfessor + a);
+        service.saveGrade(grade, lateProfessor + motivated);
     }
 
     private void saveProfessor() {

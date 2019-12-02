@@ -1,12 +1,12 @@
 package ui;
 
-import config.ApplicationContext;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import serviceManager.ServiceManager;
+import ui.gui.MenuController;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -32,6 +32,8 @@ public class GraphicalUI extends Application {
             controller.setService(service);
 
             Scene scene = new Scene(rootLayout);
+            stage.setMinWidth(800);
+            stage.setMinHeight(400);
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {

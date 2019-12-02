@@ -14,6 +14,11 @@ public class HomeworkValidator implements Validator<Homework> {
             Errors = Errors + "Saptamana de finalizat trebuie sa fie in intervalul [1,14]\n";
         if (t.getStartWeek() >= t.getDeadlineWeek())
             Errors = Errors + "Saptamana de inceput trebuie sa fie inainte de saptamana de finalizat\n";
+        if (t.getDescription().length() > 400)
+            Errors = Errors + "Descrierea trebuie sa aibe mai putin de 400 de caractere\n";
+        if (t.getDescription().equals(""))
+            Errors = Errors + "Descrierea trebuie sa existe\n";
+
         if (Errors.length() > 0)
             throw new ValidationException(Errors);
     }

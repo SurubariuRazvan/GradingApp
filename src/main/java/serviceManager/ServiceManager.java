@@ -144,6 +144,15 @@ public class ServiceManager {
         gradeServo.saveInStudentNameFile(g, homework, student);
     }
 
+    public void saveGrade(Grade g, Homework homework, Student student) throws ValidationException {
+        gradeServo.save(g);
+        gradeServo.saveInStudentNameFile(g, homework, student);
+    }
+
+    public Double getFinalGrade(Double givenGrade, Integer deadlineWeek, Integer lateProfessor) {
+        return gradeServo.calculateFinalGrade(givenGrade, deadlineWeek, lateProfessor);
+    }
+
     /**
      * creates a new Professor entity and saves it
      *
@@ -202,7 +211,6 @@ public class ServiceManager {
             h = homeworkServo.createHomework(h.getDescription(), h.getDeadlineWeek());
             h.setId(id);
         }
-
         homeworkServo.update(h);
     }
 
@@ -245,6 +253,10 @@ public class ServiceManager {
             g = gradeServo.createGrade(student, professor, g.getGivenGrade(), homework, g.getFeedback(), lateProfessor);
             g.setId(id);
         }
+        gradeServo.update(g);
+    }
+
+    public void updateGrade(GradeId id, Grade g) throws ValidationException {
         gradeServo.update(g);
     }
 

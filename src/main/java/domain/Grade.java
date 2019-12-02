@@ -8,6 +8,14 @@ public class Grade extends Entity<GradeId> {
     private Double givenGrade;
     private String feedback;
 
+    public Grade(Grade grade) {
+        super.setId(new GradeId(grade.getId().getHomeworkId(), grade.getId().getHomeworkId()));
+        this.handOverDate = grade.getHandOverDate();
+        this.professorId = grade.getProfessorId();
+        this.givenGrade = grade.getGivenGrade();
+        this.feedback = grade.getFeedback();
+    }
+
     public Grade(LocalDate handOverDate, Integer professorId, Double givenGrade, String feedback) {
         this.handOverDate = handOverDate;
         this.professorId = professorId;

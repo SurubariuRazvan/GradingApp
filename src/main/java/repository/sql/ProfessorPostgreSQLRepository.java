@@ -43,4 +43,14 @@ public class ProfessorPostgreSQLRepository extends AbstractPostgreSQLRepository<
     protected String deleteString(Integer id) {
         return "DELETE from PROFESSOR where ID = " + id + ";";
     }
+
+    @Override
+    protected String updateString(Professor professor) {
+        return "UPDATE PROFESSOR SET "
+                + "id= " + professor.getId()
+                + ", familyName= '" + professor.getFamilyName()
+                + "', firstName= '" + professor.getFirstName()
+                + "', email= '" + professor.getEmail()
+                + "' where ID = " + professor.getId() + ";";
+    }
 }

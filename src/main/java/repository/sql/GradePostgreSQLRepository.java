@@ -50,4 +50,17 @@ public class GradePostgreSQLRepository extends AbstractPostgreSQLRepository<Grad
     protected String deleteString(GradeId id) {
         return "DELETE from GRADE where studentID = " + id.getStudentId() + "and homeworkID = " + id.getHomeworkId() + ";";
     }
+
+    @Override
+    protected String updateString(Grade grade) {
+        return "UPDATE GRADE SET "
+                + "studentId= " + grade.getId().getStudentId()
+                + ", homeworkId= " + grade.getId().getHomeworkId()
+                + ", professorId= " + grade.getProfessorId()
+                + ", handOverDate= '" + grade.getHandOverDate().toString()
+                + "', givenGrade= " + grade.getGivenGrade()
+                + ", feedback= '" + grade.getFeedback()
+                + "' where studentID = " + grade.getId().getStudentId()
+                + "and homeworkID = " + grade.getId().getHomeworkId() + ";";
+    }
 }

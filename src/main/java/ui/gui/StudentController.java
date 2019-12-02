@@ -1,18 +1,15 @@
-package ui;
+package ui.gui;
 
 import domain.Professor;
 import domain.Student;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
-import org.controlsfx.control.textfield.TextFields;
 import repository.RepositoryException;
+import ui.utility.ComboBoxEditingCell;
 import validation.ValidationException;
 
 import java.net.URL;
@@ -28,7 +25,7 @@ public class StudentController extends DefaultController<Student> {
     public TableColumn<Student, String> studentTableFirstName;
     public TableColumn<Student, Integer> studentTableGroup;
     public TableColumn<Student, String> studentTableEmail;
-    public TableColumn<Student, String> studentTableProfessor;
+    public TableColumn<Student, Professor> studentTableProfessor;
     public TableColumn<Student, Void> studentTableDelete;
     public TextField searchId;
     public TextField addId;
@@ -61,14 +58,10 @@ public class StudentController extends DefaultController<Student> {
         studentTableEmail.setCellValueFactory(new PropertyValueFactory<>("Email"));
         studentTableEmail.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        studentTableProfessor.setCellValueFactory(new Callback<>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Student, String> param) {
-                Professor professor = service.findOneProfessor(param.getValue().getLabProfessorId());
-                return new ReadOnlyObjectWrapper<String>(professor.getFamilyName() + " " + professor.getFirstName());
-            }
+        studentTableProfessor.setCellValueFactory((TableColumn.CellDataFeatures<Student, Professor> param) -> {
+            Professor professor = service.findOneProfessor(param.getValue().getLabProfessorId());
+            return new ReadOnlyObjectWrapper<Professor>(professor);
         });
-        studentTableProfessor.setCellFactory(TextFieldTableCell.forTableColumn());
 
         addButtonToTable(studentTableDelete, "Delete", (i, p) -> {
             service.deleteStudent(p.getId());
@@ -83,27 +76,13 @@ public class StudentController extends DefaultController<Student> {
         studentTable.setItems(entities);
         setAllEntities(service.findAllStudent());
 
-        addId.setText(service.getNextStudentId().toString());
-        initComboBox();
-    }
+        studentTableProfessor.setCellFactory((TableColumn<Student, Professor> param) -> new ComboBoxEditingCell<>(menuController.allProfessors));
 
-    private void initComboBox() {
-        searchProfessorName.setConverter(new StringConverter<Professor>() {
-            @Override
-            public String toString(Professor item) {
-                if (item != null)
-                    return item.toString();
-                return "";
-            }
+        makeAutoCompleBox(searchProfessorName, menuController.allProfessors);
+        makeAutoCompleBox(addProfessorName, menuController.allProfessors);
 
-            @Override
-            public Professor fromString(String string) {
-                return searchProfessorName.getItems().stream().filter(item -> string.equals(item.getFamilyName() + " " + item.getFirstName())).findFirst().orElse(null);
-            }
-        });
-
-        searchProfessorName.setItems(menuController.allProfessors);
-        TextFields.bindAutoCompletion(searchProfessorName.getEditor(), menuController.allProfessors);
+        clearFields(null);
+        updateAddFields();
     }
 
     @Override
@@ -112,20 +91,37 @@ public class StudentController extends DefaultController<Student> {
         String familyName = addFamilyName.getText();
         String firstName = addFirstName.getText();
         Integer group = IntegerInput(addGroup.getText());
-        String email = addEmail.getText();
-        //TODO find professor
-        //String professorName = addProfessor.getText();
-        Integer labProfessorId = 0;
-        if (id != null)
-            try {
-                Student h = new Student(id, familyName, firstName, group, email, labProfessorId);
-                service.saveStudent(h);
-                entities.add(h);
-                allEntities.add(h);
-                addId.setText(service.getNextStudentId().toString());
-            } catch (ValidationException e) {
-                showError("Eroare la adaugare", e.getMessage());
+        if (group == null)
+            showError("Eroare la adaugare", "Grupa nu are un numar valid");
+        else {
+            String email = addEmail.getText();
+            Professor professor = addProfessorName.getValue();
+            if (professor == null)
+                showError("Eroare la adaugare", "Studentul trebuie sa aibe un profesor la laborator");
+            else {
+                Integer labProfessorId = professor.getId();
+                if (id != null)
+                    try {
+                        Student h = new Student(id, familyName, firstName, group, email, labProfessorId);
+                        service.saveStudent(h);
+                        entities.add(h);
+                        allEntities.add(h);
+                        updateAddFields();
+                    } catch (ValidationException e) {
+                        showError("Eroare la adaugare", e.getMessage());
+                    }
             }
+        }
+    }
+
+    @Override
+    public void updateAddFields() {
+        addId.setText(service.getNextStudentId().toString());
+        addFamilyName.setText("");
+        addFirstName.setText("");
+        addGroup.setText("");
+        addEmail.setText("");
+        addProfessorName.getEditor().setText("");
     }
 
     @Override
@@ -135,9 +131,7 @@ public class StudentController extends DefaultController<Student> {
         String firstName = searchFirstName.getText();
         Integer group = IntegerInput(searchGroup.getText());
         String email = searchEmail.getText();
-        //TODO find professor
-        //String professorName = searchProfessor.getText();
-        Integer labProfessorId = null;
+        Professor professor = searchProfessorName.getValue();
 
         setEntities(StreamSupport.stream(service.findAllStudent().spliterator(), false)
                 .filter(h -> (id == null || h.getId().toString().contains(id.toString())) &&
@@ -145,8 +139,7 @@ public class StudentController extends DefaultController<Student> {
                         (group == null || h.getGroup().toString().contains(group.toString())) &&
                         ((firstName == null) || h.getFirstName().contains(firstName)) &&
                         ((email == null) || h.getEmail().contains(email)) &&
-                        ((labProfessorId == null) || h.getLabProfessorId().toString().contains(labProfessorId.toString()))
-
+                        ((professor == null) || h.getLabProfessorId().toString().contains(professor.getId().toString()))
                 ).collect(Collectors.toList()));
     }
 
@@ -155,30 +148,29 @@ public class StudentController extends DefaultController<Student> {
         Student student = studentTable.getSelectionModel().getSelectedItem();
         var newValue = event.getNewValue();
         var oldValue = event.getOldValue();
-        if (!newValue.equals(oldValue)) {
+        if (!oldValue.equals(newValue)) {
             Student backupStudent = new Student(student);
-            switch (event.getTablePosition().getColumn()) {
-                case 1:
-                    student.setFamilyName(newValue.toString());
-                    break;
-                case 2:
-                    student.setFirstName(newValue.toString());
-                    break;
-                case 3:
-                    student.setGroup((Integer) newValue);
-                    break;
-                case 4:
-                    student.setEmail(newValue.toString());
-                    break;
-                case 5:
-                    //TODO find professor
-                    student.setLabProfessorId((Integer) newValue);
-                    break;
-            }
-
             try {
+                switch (event.getTablePosition().getColumn()) {
+                    case 1:
+                        student.setFamilyName(newValue.toString());
+                        break;
+                    case 2:
+                        student.setFirstName(newValue.toString());
+                        break;
+                    case 3:
+                        student.setGroup((Integer) newValue);
+                        break;
+                    case 4:
+                        student.setEmail(newValue.toString());
+                        break;
+                    case 5:
+                        Professor professor = (Professor) newValue;
+                        student.setLabProfessorId(professor.getId());
+                        break;
+                }
                 service.updateStudent(student.getId(), student);
-                allEntities.set(allEntities.indexOf(student), student);
+                allEntities.set(allEntities.indexOf(backupStudent), new Student(student));
             } catch (ValidationException | RepositoryException e) {
                 showError("Eroare", e.getMessage());
                 entities.set(event.getTablePosition().getRow(), backupStudent);
@@ -194,6 +186,7 @@ public class StudentController extends DefaultController<Student> {
         searchGroup.setText("");
         searchEmail.setText("");
         searchProfessorName.getEditor().setText("");
+        searchProfessorName.setValue(null);
         searchEntity(null);
     }
 }

@@ -47,4 +47,16 @@ public class StudentPostgreSQLRepository extends AbstractPostgreSQLRepository<In
     protected String deleteString(Integer id) {
         return "DELETE from STUDENT where ID = " + id + ";";
     }
+
+    @Override
+    protected String updateString(Student student) {
+        return "UPDATE STUDENT SET "
+                + "id= " + student.getId()
+                + ", familyName= '" + student.getFamilyName()
+                + "', firstName= '" + student.getFirstName()
+                + "', \"group\"= " + student.getGroup()
+                + ", email= '" + student.getEmail()
+                + "', labProfessorId= " + student.getLabProfessorId()
+                + " where ID = " + student.getId() + ";";
+    }
 }
