@@ -142,7 +142,6 @@ public class ReportController extends DefaultController<Student> {
                 .map(x -> new Pair<>(x.getKey(), x.getValue().getKey() / x.getValue().getValue()))
                 .sorted((x, y) -> (int) (x.getValue() - y.getValue()))
                 .collect(Collectors.toList());
-        System.out.println(values);
         hardestHomeworkLabel4.setText(service.findOneHomework(values.get(0).getKey()).toString());
         hardestHomeworkPane4.toFront();
     }

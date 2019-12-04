@@ -7,12 +7,18 @@ import domain.Student;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.VBox;
 import serviceManager.ServiceManager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {
+    public VBox homeworkTab;
+    public VBox studentTab;
+    public VBox professorTab;
+    public VBox gradeTab;
+    public VBox reportTab;
     protected ObservableList<Homework> allHomeworks;
     protected ObservableList<Student> allStudents;
     protected ObservableList<Professor> allProfessors;

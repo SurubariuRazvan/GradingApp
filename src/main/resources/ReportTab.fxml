@@ -3,121 +3,107 @@
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="studentTab" alignment="CENTER"
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER"
       xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="ui.gui.ReportController">
-    <children>
-        <StackPane fx:id="stackPane">
-            <children>
-                <SplitPane fx:id="gradesAveragePane1" dividerPositions="0.6927710843373494" orientation="VERTICAL">
-                    <items>
-                        <TableView fx:id="studentTable1" editable="true">
-                            <columns>
-                                <TableColumn fx:id="studentTableId1" maxWidth="35.0" minWidth="35.0" prefWidth="35.0"
-                                             resizable="false" text="ID"/>
-                                <TableColumn fx:id="studentTableFamilyName1" maxWidth="100.0" minWidth="100.0"
-                                             prefWidth="100.0" resizable="false" text="Nume"/>
-                                <TableColumn fx:id="studentTableFirstName1" maxWidth="100.0" minWidth="100.0"
-                                             prefWidth="100.0" resizable="false" text="Prenume"/>
-                                <TableColumn fx:id="studentTableGroup1" maxWidth="60.0" minWidth="60.0" prefWidth="60.0"
-                                             resizable="false" text="Grupa"/>
-                                <TableColumn fx:id="studentTableEmail1" maxWidth="1.7976931348623157E308"
-                                             minWidth="100.0" prefWidth="200.0" text="Email"/>
-                                <TableColumn fx:id="studentTableProfessor1" maxWidth="150.0" minWidth="150.0"
-                                             prefWidth="150.0" resizable="false" text="Profesor"/>
-                                <TableColumn fx:id="studentTableGradesAverage1" maxWidth="80.0" minWidth="80.0"
-                                             prefWidth="80.0" resizable="false" text="Media"/>
-                            </columns>
-                            <columnResizePolicy>
-                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                            </columnResizePolicy>
-                        </TableView>
-                        <PieChart fx:id="pie1"/>
-                    </items>
-                </SplitPane>
-                <SplitPane fx:id="onTimeHomeworksPane2" dividerPositions="0.6927710843373494" layoutX="10.0"
-                           layoutY="10.0" orientation="VERTICAL" prefHeight="400.0">
-                    <items>
-                        <TableView fx:id="studentTable2" editable="true">
-                            <columns>
-                                <TableColumn fx:id="studentTableId2" maxWidth="35.0" minWidth="35.0" prefWidth="35.0"
-                                             resizable="false" text="ID"/>
-                                <TableColumn fx:id="studentTableFamilyName2" maxWidth="100.0" minWidth="100.0"
-                                             prefWidth="100.0" resizable="false" text="Nume"/>
-                                <TableColumn fx:id="studentTableFirstName2" maxWidth="100.0" minWidth="100.0"
-                                             prefWidth="100.0" resizable="false" text="Prenume"/>
-                                <TableColumn fx:id="studentTableGroup2" maxWidth="60.0" minWidth="60.0" prefWidth="60.0"
-                                             resizable="false" text="Grupa"/>
-                                <TableColumn fx:id="studentTableEmail2" maxWidth="1.7976931348623157E308"
-                                             minWidth="100.0" prefWidth="200.0" text="Email"/>
-                                <TableColumn fx:id="studentTableProfessor2" maxWidth="150.0" minWidth="150.0"
-                                             prefWidth="150.0" resizable="false" text="Profesor"/>
-                            </columns>
-                            <columnResizePolicy>
-                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                            </columnResizePolicy>
-                        </TableView>
-                        <PieChart fx:id="pie2"/>
-                    </items>
-                </SplitPane>
-                <SplitPane fx:id="examEntryPane3" dividerPositions="0.6927710843373494" layoutX="10.0" layoutY="10.0"
-                           orientation="VERTICAL" prefHeight="400.0">
-                    <items>
-                        <TableView fx:id="studentTable3" editable="true">
-                            <columns>
-                                <TableColumn fx:id="studentTableId3" maxWidth="35.0" minWidth="35.0" prefWidth="35.0"
-                                             resizable="false" text="ID"/>
-                                <TableColumn fx:id="studentTableFamilyName3" maxWidth="100.0" minWidth="100.0"
-                                             prefWidth="100.0" resizable="false" text="Nume"/>
-                                <TableColumn fx:id="studentTableFirstName3" maxWidth="100.0" minWidth="100.0"
-                                             prefWidth="100.0" resizable="false" text="Prenume"/>
-                                <TableColumn fx:id="studentTableGroup3" maxWidth="60.0" minWidth="60.0" prefWidth="60.0"
-                                             resizable="false" text="Grupa"/>
-                                <TableColumn fx:id="studentTableEmail3" maxWidth="1.7976931348623157E308"
-                                             minWidth="100.0" prefWidth="200.0" text="Email"/>
-                                <TableColumn fx:id="studentTableProfessor3" maxWidth="150.0" minWidth="150.0"
-                                             prefWidth="150.0" resizable="false" text="Profesor"/>
-                            </columns>
-                            <columnResizePolicy>
-                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                            </columnResizePolicy>
-                        </TableView>
-                        <PieChart fx:id="pie3"/>
-                    </items>
-                </SplitPane>
-                <SplitPane fx:id="hardestHomeworkPane4" dividerPositions="0.5" layoutX="10.0" layoutY="10.0"
-                           orientation="VERTICAL" prefHeight="400.0">
-                    <items>
-                        <Label fx:id="hardestHomeworkLabel4" text="Hardest Homework"/>
-                        <PieChart fx:id="pie4"/>
-                    </items>
-                </SplitPane>
-                <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;"/>
-            </children>
-        </StackPane>
-        <GridPane>
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints vgrow="SOMETIMES"/>
-                <RowConstraints vgrow="SOMETIMES"/>
-            </rowConstraints>
-            <children>
-                <Button fx:id="gradesAverage" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                        mnemonicParsing="false" onAction="#showGradesAverage"
-                        text="Afiseaza media notelor fiecarui student" textOverrun="CLIP" GridPane.rowIndex="1"/>
-                <Button fx:id="onTimeHomeworks" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                        mnemonicParsing="false" onAction="#showOnTimeHomeworks"
-                        text="Afiseaza studentii care au predat temele la timp" GridPane.columnIndex="1"
-                        GridPane.rowIndex="1"/>
-                <Button fx:id="hardestHomework" layoutX="10.0" layoutY="40.0" maxHeight="1.7976931348623157E308"
-                        maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showHardestHomework"
-                        text="Afiseaza cea mai grea tema" textOverrun="CLIP"/>
-                <Button fx:id="examEntry" layoutX="172.0" layoutY="40.0" maxHeight="1.7976931348623157E308"
-                        maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showExamEntry"
-                        text="Afiseaza studentii care pot intra in examen" textOverrun="CLIP" GridPane.columnIndex="1"/>
-            </children>
-        </GridPane>
-    </children>
+    <StackPane fx:id="stackPane">
+        <SplitPane fx:id="gradesAveragePane1" dividerPositions="0.6927710843373494" orientation="VERTICAL">
+            <TableView fx:id="studentTable1" editable="true">
+                <columns>
+                    <TableColumn fx:id="studentTableId1" maxWidth="35.0" minWidth="35.0" prefWidth="35.0"
+                                 resizable="false" text="ID"/>
+                    <TableColumn fx:id="studentTableFamilyName1" maxWidth="100.0" minWidth="100.0"
+                                 prefWidth="100.0" resizable="false" text="Nume"/>
+                    <TableColumn fx:id="studentTableFirstName1" maxWidth="100.0" minWidth="100.0"
+                                 prefWidth="100.0" resizable="false" text="Prenume"/>
+                    <TableColumn fx:id="studentTableGroup1" maxWidth="60.0" minWidth="60.0" prefWidth="60.0"
+                                 resizable="false" text="Grupa"/>
+                    <TableColumn fx:id="studentTableEmail1" maxWidth="1.7976931348623157E308"
+                                 minWidth="100.0" prefWidth="200.0" text="Email"/>
+                    <TableColumn fx:id="studentTableProfessor1" maxWidth="150.0" minWidth="150.0"
+                                 prefWidth="150.0" resizable="false" text="Profesor"/>
+                    <TableColumn fx:id="studentTableGradesAverage1" maxWidth="80.0" minWidth="80.0"
+                                 prefWidth="80.0" resizable="false" text="Media"/>
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
+            </TableView>
+            <PieChart fx:id="pie1"/>
+        </SplitPane>
+        <SplitPane fx:id="onTimeHomeworksPane2" dividerPositions="0.6927710843373494" layoutX="10.0"
+                   layoutY="10.0" orientation="VERTICAL" prefHeight="400.0">
+            <TableView fx:id="studentTable2" editable="true">
+                <columns>
+                    <TableColumn fx:id="studentTableId2" maxWidth="35.0" minWidth="35.0" prefWidth="35.0"
+                                 resizable="false" text="ID"/>
+                    <TableColumn fx:id="studentTableFamilyName2" maxWidth="100.0" minWidth="100.0"
+                                 prefWidth="100.0" resizable="false" text="Nume"/>
+                    <TableColumn fx:id="studentTableFirstName2" maxWidth="100.0" minWidth="100.0"
+                                 prefWidth="100.0" resizable="false" text="Prenume"/>
+                    <TableColumn fx:id="studentTableGroup2" maxWidth="60.0" minWidth="60.0" prefWidth="60.0"
+                                 resizable="false" text="Grupa"/>
+                    <TableColumn fx:id="studentTableEmail2" maxWidth="1.7976931348623157E308"
+                                 minWidth="100.0" prefWidth="200.0" text="Email"/>
+                    <TableColumn fx:id="studentTableProfessor2" maxWidth="150.0" minWidth="150.0"
+                                 prefWidth="150.0" resizable="false" text="Profesor"/>
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
+            </TableView>
+            <PieChart fx:id="pie2"/>
+        </SplitPane>
+        <SplitPane fx:id="examEntryPane3" dividerPositions="0.6927710843373494" layoutX="10.0" layoutY="10.0"
+                   orientation="VERTICAL" prefHeight="400.0">
+            <TableView fx:id="studentTable3" editable="true">
+                <columns>
+                    <TableColumn fx:id="studentTableId3" maxWidth="35.0" minWidth="35.0" prefWidth="35.0"
+                                 resizable="false" text="ID"/>
+                    <TableColumn fx:id="studentTableFamilyName3" maxWidth="100.0" minWidth="100.0"
+                                 prefWidth="100.0" resizable="false" text="Nume"/>
+                    <TableColumn fx:id="studentTableFirstName3" maxWidth="100.0" minWidth="100.0"
+                                 prefWidth="100.0" resizable="false" text="Prenume"/>
+                    <TableColumn fx:id="studentTableGroup3" maxWidth="60.0" minWidth="60.0" prefWidth="60.0"
+                                 resizable="false" text="Grupa"/>
+                    <TableColumn fx:id="studentTableEmail3" maxWidth="1.7976931348623157E308"
+                                 minWidth="100.0" prefWidth="200.0" text="Email"/>
+                    <TableColumn fx:id="studentTableProfessor3" maxWidth="150.0" minWidth="150.0"
+                                 prefWidth="150.0" resizable="false" text="Profesor"/>
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
+            </TableView>
+            <PieChart fx:id="pie3"/>
+        </SplitPane>
+        <SplitPane fx:id="hardestHomeworkPane4" dividerPositions="0.5" layoutX="10.0" layoutY="10.0"
+                   orientation="VERTICAL" prefHeight="400.0">
+            <Label fx:id="hardestHomeworkLabel4" text="Hardest Homework"/>
+            <PieChart fx:id="pie4"/>
+        </SplitPane>
+        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;"/>
+    </StackPane>
+    <GridPane>
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints vgrow="SOMETIMES"/>
+            <RowConstraints vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                mnemonicParsing="false" onAction="#showGradesAverage"
+                text="Afiseaza media notelor fiecarui student" textOverrun="CLIP" GridPane.rowIndex="1"/>
+        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                mnemonicParsing="false" onAction="#showOnTimeHomeworks"
+                text="Afiseaza studentii care au predat temele la timp" GridPane.columnIndex="1"
+                GridPane.rowIndex="1"/>
+        <Button layoutX="10.0" layoutY="40.0" maxHeight="1.7976931348623157E308"
+                maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showHardestHomework"
+                text="Afiseaza cea mai grea tema" textOverrun="CLIP"/>
+        <Button layoutX="172.0" layoutY="40.0" maxHeight="1.7976931348623157E308"
+                maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showExamEntry"
+                text="Afiseaza studentii care pot intra in examen" textOverrun="CLIP" GridPane.columnIndex="1"/>
+    </GridPane>
 </VBox>
