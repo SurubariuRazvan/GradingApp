@@ -3,7 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER"
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="studentTabId" alignment="CENTER"
       xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="ui.gui.StudentController">
     <TableView fx:id="studentTable" editable="true" VBox.vgrow="ALWAYS">
         <columns>

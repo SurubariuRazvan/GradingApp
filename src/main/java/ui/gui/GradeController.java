@@ -48,7 +48,7 @@ public class GradeController extends DefaultController<Grade> {
     public Spinner<Integer> motivatedWeeks;
     public Spinner<Integer> lateWeeks;
 
-    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -150,7 +150,7 @@ public class GradeController extends DefaultController<Grade> {
         return alert.showAndWait().filter(buttonType -> buttonType == ButtonType.OK).isPresent();
     }
 
-    public Boolean validateInputs(Homework homework, Student student, Double givenGrade, Professor professor) {
+    private Boolean validateInputs(Homework homework, Student student, Double givenGrade, Professor professor) {
         String errors = "";
         if (homework == null)
             errors += "Selectati o tema\n";
@@ -200,7 +200,7 @@ public class GradeController extends DefaultController<Grade> {
                 .collect(Collectors.toList()));
     }
 
-    public String getShortDoubleString(Double number) {
+    private String getShortDoubleString(Double number) {
         if (number == null)
             return "";
         if (Integer.valueOf(number.intValue()).doubleValue() == number)
@@ -276,5 +276,10 @@ public class GradeController extends DefaultController<Grade> {
     public void closeAddGivenGradeGrid(MouseEvent mouseEvent) {
         if (!addGivenGrade.focusedProperty().get())
             addGivenGradeGrid.setVisible(false);
+    }
+
+    @Override
+    public void refreshTable() {
+        gradeTable.refresh();
     }
 }

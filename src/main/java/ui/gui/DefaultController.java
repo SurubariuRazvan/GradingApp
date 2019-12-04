@@ -43,6 +43,8 @@ public abstract class DefaultController<E extends Entity> implements Initializab
         this.menuController = menuController;
     }
 
+    public abstract void refreshTable();
+
     protected abstract void postInit();
 
     public ObservableList<E> setService(ServiceManager service) {
@@ -93,15 +95,20 @@ public abstract class DefaultController<E extends Entity> implements Initializab
         });
     }
 
-    public abstract void addEntity(ActionEvent actionEvent);
+    public void addEntity(ActionEvent actionEvent) {
+    }
 
-    public abstract void searchEntity(Event actionEvent);
+    public void searchEntity(Event actionEvent) {
+    }
 
-    public abstract void updateEntity(TableColumn.CellEditEvent<E, Object> event);
+    public void updateEntity(TableColumn.CellEditEvent<E, Object> event) {
+    }
 
-    public abstract void clearFields(ActionEvent actionEvent);
+    public void clearFields(ActionEvent actionEvent) {
+    }
 
-    public abstract void updateAddFields();
+    public void updateAddFields() {
+    }
 
     protected void initSpinner(Spinner<Integer> s, Integer start, Integer end) {
         s.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(start, end, start));

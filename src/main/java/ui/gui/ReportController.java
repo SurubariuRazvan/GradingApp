@@ -1,13 +1,17 @@
 package ui.gui;
 
-import domain.Grade;
-import domain.Homework;
-import domain.Professor;
-import domain.Student;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import domain.*;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
+import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
@@ -16,6 +20,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
 import javafx.util.Pair;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +31,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class ReportController extends DefaultController<Student> {
-
     public SplitPane gradesAveragePane1;
     public TableView<Student> studentTable1;
     public TableColumn<Student, Integer> studentTableId1;
@@ -53,10 +58,10 @@ public class ReportController extends DefaultController<Student> {
     public TableColumn<Student, Professor> studentTableProfessor3;
     public SplitPane hardestHomeworkPane4;
     public Label hardestHomeworkLabel4;
-    public PieChart pie1;
+    public AreaChart<Double, Integer> chart1;
     public PieChart pie2;
     public PieChart pie3;
-    public PieChart pie4;
+    public AreaChart<String, Double> chart4;
     public StackPane stackPane;
 
     @Override
@@ -65,6 +70,9 @@ public class ReportController extends DefaultController<Student> {
         studentTableGradesAverage1.setCellValueFactory((TableColumn.CellDataFeatures<Student, Double> param) -> new ReadOnlyObjectWrapper<>(getGradesAverage(param.getValue(), service.findAllGrade())));
         initTable(studentTableId2, studentTableFamilyName2, studentTableFirstName2, studentTableGroup2, studentTableEmail2, studentTableProfessor2);
         initTable(studentTableId3, studentTableFamilyName3, studentTableFirstName3, studentTableGroup3, studentTableEmail3, studentTableProfessor3);
+
+        chart1.getData().add(new XYChart.Series<>());
+        chart4.getData().add(new XYChart.Series<>());
     }
 
     private void initTable(TableColumn<Student, Integer> tc1, TableColumn<Student, String> tc2, TableColumn<Student, String> tc3, TableColumn<Student, Integer> tc4, TableColumn<Student, String> tc5, TableColumn<Student, Professor> tc6) {
@@ -79,6 +87,59 @@ public class ReportController extends DefaultController<Student> {
         });
     }
 
+    private void saveToPdf(String content, String fileName) {
+        try {
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream("./src/main/resources/pdf/" + fileName + ".pdf"));
+            document.open();
+            Chunk chunk = new Chunk(content);
+            document.add(chunk);
+            document.close();
+        } catch (DocumentException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private <E extends Entity> void saveToPdf(TableView<E> table, String fileName) {
+        try {
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream("./src/main/resources/pdf/" + fileName + ".pdf"));
+            document.open();
+            int nrRows = table.getItems().size();
+            int nrColumns = table.getColumns().size();
+            PdfPTable pdfTable = new PdfPTable(nrColumns);
+            addTableHeader(pdfTable, table);
+            addData(pdfTable, table, nrRows, nrColumns);
+            document.add(pdfTable);
+            document.close();
+        } catch (DocumentException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private <E extends Entity> void addData(PdfPTable pdfTable, TableView<E> table, int nrRows, int nrColumns) {
+        String[][] matrix = new String[nrRows][nrColumns];
+        var columns = table.getColumns();
+        for(int j = 0; j < nrColumns; j++)
+            for(int i = 0; i < nrRows; i++)
+                matrix[i][j] = columns.get(j).getCellData(i).toString();
+        for(int i = 0; i < nrRows; i++)
+            for(int j = 0; j < nrColumns; j++)
+                pdfTable.addCell(matrix[i][j]);
+    }
+
+
+    private <E extends Entity> void addTableHeader(PdfPTable pdfTable, TableView<E> table) {
+        for(var column : table.getColumns()) {
+            PdfPCell header = new PdfPCell();
+            header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            header.setBorderWidth(2);
+            header.setPhrase(new Phrase(column.getText()));
+            pdfTable.addCell(header);
+        }
+    }
+
+
     private Double getGradesAverage(Student student, Iterable<Grade> grades) {
         Double value = 0.0;
         Integer totalWeight = 0;
@@ -89,8 +150,8 @@ public class ReportController extends DefaultController<Student> {
                 totalWeight += weight;
                 value += grade.getGivenGrade() * weight;
             }
-//        if(totalWeight==0)
-//            return 0.0;
+        if (totalWeight == 0)
+            return 0.0;
         return value / totalWeight;
     }
 
@@ -98,11 +159,25 @@ public class ReportController extends DefaultController<Student> {
         setEntities(service.findAllStudent());
         studentTable1.setItems(entities);
         gradesAveragePane1.toFront();
+
+        HashMap<Double, Integer> chartData = new HashMap<>();
+        for(int i = 0; i < studentTable1.getItems().size(); i++) {
+            Double givenGrade = studentTableGradesAverage1.getCellData(i);
+            if (chartData.containsKey(givenGrade))
+                chartData.put(givenGrade, chartData.get(givenGrade) + 1);
+            else
+                chartData.put(givenGrade, 1);
+        }
+        XYChart.Series<Double, Integer> series = new XYChart.Series<>();
+        chartData.entrySet().stream().sorted((x, y) -> (int) (x.getKey() - y.getKey())).forEach(x -> series.getData().add(new XYChart.Data<Double, Integer>(x.getKey(), x.getValue())));
+
+        chart1.getData().set(0, series);
     }
 
     public void showOnTimeHomeworks(ActionEvent actionEvent) {
         Iterable<Grade> grades = service.findAllGrade();
-        List<Student> students = StreamSupport.stream(service.findAllStudent().spliterator(), false)
+        Iterable<Student> students = service.findAllStudent();
+        List<Student> onTimestudents = StreamSupport.stream(students.spliterator(), false)
                 .filter(student -> {
                     for(Grade grade : grades)
                         if (grade.getId().getStudentId().equals(student.getId())) {
@@ -112,19 +187,34 @@ public class ReportController extends DefaultController<Student> {
                         }
                     return true;
                 }).collect(Collectors.toList());
-        setEntities(students);
+        setEntities(onTimestudents);
         studentTable2.setItems(entities);
         onTimeHomeworksPane2.toFront();
+
+        long totalStudents = StreamSupport.stream(students.spliterator(), false).count();
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Studenti intarziati", totalStudents - onTimestudents.size()),
+                new PieChart.Data("Studenti punctuali", onTimestudents.size()));
+
+        pie2.setData(pieChartData);
     }
 
     public void showExamEntry(ActionEvent actionEvent) {
         Iterable<Grade> grades = service.findAllGrade();
-        List<Student> students = StreamSupport.stream(service.findAllStudent().spliterator(), false)
+        Iterable<Student> students = service.findAllStudent();
+        List<Student> filteredStudents = StreamSupport.stream(service.findAllStudent().spliterator(), false)
                 .filter(student -> getGradesAverage(student, grades) > 4)
                 .collect(Collectors.toList());
-        setEntities(students);
+        setEntities(filteredStudents);
         studentTable3.setItems(entities);
         examEntryPane3.toFront();
+
+        long totalStudents = StreamSupport.stream(students.spliterator(), false).count();
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Studenti care nu pot intra in examen", totalStudents - filteredStudents.size()),
+                new PieChart.Data("Studenti care pot intra in examen", filteredStudents.size()));
+
+        pie3.setData(pieChartData);
     }
 
     public void showHardestHomework(ActionEvent actionEvent) {
@@ -138,35 +228,40 @@ public class ReportController extends DefaultController<Student> {
             } else
                 data.put(id, new Pair<>(grade.getGivenGrade(), 1));
         }
-        var values = data.entrySet().stream()
+        List<Pair<Integer, Double>> sortedHomeworks = data.entrySet().stream()
                 .map(x -> new Pair<>(x.getKey(), x.getValue().getKey() / x.getValue().getValue()))
                 .sorted((x, y) -> (int) (x.getValue() - y.getValue()))
                 .collect(Collectors.toList());
-        hardestHomeworkLabel4.setText(service.findOneHomework(values.get(0).getKey()).toString());
+        hardestHomeworkLabel4.setText(service.findOneHomework(sortedHomeworks.get(0).getKey()).toString());
         hardestHomeworkPane4.toFront();
+
+        XYChart.Series<String, Double> series = new XYChart.Series<>();
+        sortedHomeworks.forEach(x -> series.getData().add(new XYChart.Data<String, Double>(service.findOneHomework(x.getKey()).toString(), x.getValue())));
+
+        chart4.getData().set(0, series);
     }
 
     @Override
     protected void postInit() {
     }
 
-    @Override
-    public void addEntity(ActionEvent actionEvent) {
+    public void saveGradesAverageToPdf(ActionEvent actionEvent) {
+        saveToPdf(studentTable1, "Medii");
+    }
+
+    public void saveOnTimeHomeworksToPdf(ActionEvent actionEvent) {
+        saveToPdf(studentTable2, "Studenti_punctuali");
+    }
+
+    public void saveExamEntryToPdf(ActionEvent actionEvent) {
+        saveToPdf(studentTable3, "Studenti_nepicati");
+    }
+
+    public void saveHardestHomeworkToPdf(ActionEvent actionEvent) {
+        saveToPdf(hardestHomeworkLabel4.getText(), "Cea_mai_grea_tema");
     }
 
     @Override
-    public void updateAddFields() {
-    }
-
-    @Override
-    public void searchEntity(Event actionEvent) {
-    }
-
-    @Override
-    public void updateEntity(TableColumn.CellEditEvent<Student, Object> event) {
-    }
-
-    @Override
-    public void clearFields(ActionEvent actionEvent) {
+    public void refreshTable() {
     }
 }

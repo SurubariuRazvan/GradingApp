@@ -144,4 +144,9 @@ public class ProfessorController extends DefaultController<Professor> {
         searchEmail.setText("");
         searchEntity(null);
     }
+
+    @Override
+    public void refreshTable() {
+        professorTable.refresh();
+    }
 }

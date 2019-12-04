@@ -148,4 +148,9 @@ public class HomeworkController extends DefaultController<Homework> {
         searchDeadlineWeek.getValueFactory().setValue(0);
         searchEntity(null);
     }
+
+    @Override
+    public void refreshTable() {
+        homeworkTable.refresh();
+    }
 }

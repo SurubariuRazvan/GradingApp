@@ -186,4 +186,9 @@ public class StudentController extends DefaultController<Student> {
         searchProfessorName.setValue(null);
         searchEntity(null);
     }
+
+    @Override
+    public void refreshTable() {
+        studentTable.refresh();
+    }
 }

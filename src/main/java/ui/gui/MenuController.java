@@ -7,6 +7,7 @@ import domain.Student;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import serviceManager.ServiceManager;
 
@@ -19,6 +20,7 @@ public class MenuController implements Initializable {
     public VBox professorTab;
     public VBox gradeTab;
     public VBox reportTab;
+    public TabPane menuTab;
     protected ObservableList<Homework> allHomeworks;
     protected ObservableList<Student> allStudents;
     protected ObservableList<Professor> allProfessors;
@@ -52,5 +54,16 @@ public class MenuController implements Initializable {
         professorTabController.init(this);
         gradeTabController.init(this);
         reportTabController.init(this);
+        menuTab.getSelectionModel().selectedItemProperty().addListener((param, oldTab, newTab) -> {
+                    if (homeworkTab.getId().equals(newTab.getId()))
+                        homeworkTabController.refreshTable();
+                    else if (studentTab.getId().equals(newTab.getId()))
+                        studentTabController.refreshTable();
+                    else if (professorTab.getId().equals(newTab.getId()))
+                        professorTabController.refreshTable();
+                    else if (gradeTab.getId().equals(newTab.getId()))
+                        gradeTabController.refreshTable();
+                }
+        );
     }
 }

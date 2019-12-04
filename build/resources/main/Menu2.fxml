@@ -6,17 +6,17 @@
             prefHeight="600.0" prefWidth="900.0" stylesheets="@Menu.css" xmlns="http://javafx.com/javafx/8.0.172-ea"
             fx:controller="ui.gui.MenuController">
     <center>
-        <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-            <Tab text="Teme">
+        <TabPane fx:id="menuTab" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <Tab fx:id="homeworkTabId" text="Teme">
                 <fx:include fx:id="homeworkTab" source="HomeworkTab.fxml"/>
             </Tab>
-            <Tab text="Studenti">
+            <Tab fx:id="studentTabId" text="Studenti">
                 <fx:include fx:id="studentTab" source="StudentTab.fxml"/>
             </Tab>
-            <Tab text="Profesori">
+            <Tab fx:id="professorTabId" text="Profesori">
                 <fx:include fx:id="professorTab" source="ProfessorTab.fxml"/>
             </Tab>
-            <Tab text="Note">
+            <Tab fx:id="gradeTabId" text="Note">
                 <fx:include fx:id="gradeTab" source="GradeTab.fxml"/>
             </Tab>
             <Tab text="Rapoarte">

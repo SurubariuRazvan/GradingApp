@@ -19,6 +19,8 @@ dependencies {
     testRuntime('org.junit.jupiter:junit-jupiter-engine:5.4.2')
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
     compile group: 'org.controlsfx', name: 'controlsfx', version: '8.0.5'
+    compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.1'
+    compile group: 'com.itextpdf', name: 'itextpdf', version: '5.0.6'
 }
 
 javafx {
