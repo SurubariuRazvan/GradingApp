@@ -25,6 +25,8 @@ public class MenuController implements Initializable {
     ProfessorController professorTabController;
     @FXML
     GradeController gradeTabController;
+    @FXML
+    ReportController reportTabController;
     private ServiceManager service;
 
     public void setService(ServiceManager service) {
@@ -33,6 +35,7 @@ public class MenuController implements Initializable {
         allProfessors = professorTabController.setService(service);
         allStudents = studentTabController.setService(service);
         allGrades = gradeTabController.setService(service);
+        reportTabController.setService(service);
         //TODO refresh tables on tab change
     }
 
@@ -42,5 +45,6 @@ public class MenuController implements Initializable {
         studentTabController.init(this);
         professorTabController.init(this);
         gradeTabController.init(this);
+        reportTabController.init(this);
     }
 }

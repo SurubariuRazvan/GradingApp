@@ -62,6 +62,10 @@ public class ServiceManager {
         return year.getWeek(LocalDate.now());
     }
 
+    public Integer getWeek(LocalDate date) {
+        return year.getWeek(date);
+    }
+
     /**
      * creates a year structure for 2019
      *

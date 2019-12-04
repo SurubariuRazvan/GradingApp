@@ -4,9 +4,6 @@ import domain.Entity;
 import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
 import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,12 +33,9 @@ public abstract class DefaultController<E extends Entity> implements Initializab
     protected ServiceManager service;
 
     public static void addTextLimiter(final TextField tf, final int maxLength) {
-        tf.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                if (tf.getText().length() > maxLength)
-                    tf.setText(tf.getText().substring(0, maxLength));
-            }
+        tf.textProperty().addListener((ov, oldValue, newValue) -> {
+            if (tf.getText().length() > maxLength)
+                tf.setText(tf.getText().substring(0, maxLength));
         });
     }
 
@@ -72,7 +66,7 @@ public abstract class DefaultController<E extends Entity> implements Initializab
     }
 
     public <EE extends Entity> void makeAutoCompleBox(ComboBox<EE> cb, ObservableList<EE> list) {
-        cb.setConverter(new StringConverter<EE>() {
+        cb.setConverter(new StringConverter<>() {
             @Override
             public String toString(EE item) {
                 if (item != null)
@@ -93,12 +87,9 @@ public abstract class DefaultController<E extends Entity> implements Initializab
         SuggestionProvider<EE> provider = SuggestionProvider.create(list);
         new AutoCompletionTextFieldBinding<>(cb.getEditor(), provider);
 
-        list.addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
-                provider.clearSuggestions();
-                provider.addPossibleSuggestions(list);
-            }
+        list.addListener((InvalidationListener) observable -> {
+            provider.clearSuggestions();
+            provider.addPossibleSuggestions(list);
         });
     }
 
@@ -194,10 +185,10 @@ public abstract class DefaultController<E extends Entity> implements Initializab
     }
 
     protected void addButtonToTable(TableColumn<E, Void> tc, String text, BiConsumer<Integer, E> function) {
-        tc.setCellFactory(new Callback<TableColumn<E, Void>, TableCell<E, Void>>() {
+        tc.setCellFactory(new Callback<>() {
             @Override
             public TableCell<E, Void> call(final TableColumn<E, Void> param) {
-                return new TableCell<E, Void>() {
+                return new TableCell<>() {
                     private final Button btn = new Button(text);
 
                     {

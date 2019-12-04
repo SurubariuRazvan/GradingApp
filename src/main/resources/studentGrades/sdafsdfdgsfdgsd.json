@@ -5,5 +5,12 @@
     "Predată în săptămâna": 10,
     "Deadline": 10,
     "Nota": 9.0
+  },
+  {
+    "Tema": 6,
+    "Feedback": "NOTA A FOST DIMINUATA CU 1 PUNCTE DATORITA INTARZIERILOR",
+    "Predată în săptămâna": 10,
+    "Deadline": 9,
+    "Nota": 4.0
   }
 ]

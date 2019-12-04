@@ -39,7 +39,7 @@ public class UniversitySemesterStructure extends Entity<Integer> {
         if (startingDate.getYear() < currentDate.getYear())
             currentWeek = currentWeek + 52;
         int weekNr = currentWeek - startingWeek + 1;
-        for (var i : freeWeeks)
+        for(var i : freeWeeks)
             if (i.getStartDate().isBefore(currentDate))
                 weekNr = weekNr - i.getDuration();
         return weekNr;

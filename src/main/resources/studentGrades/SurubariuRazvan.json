@@ -1,1 +1,16 @@
-[{"Tema":1,"Feedback":"-","Predată în săptămâna":8,"Deadline":9,"Nota":7.8}]
+[
+  {
+    "Tema": 1,
+    "Feedback": "-",
+    "Predată în săptămâna": 8,
+    "Deadline": 9,
+    "Nota": 7.8
+  },
+  {
+    "Tema": 6,
+    "Feedback": "NOTA A FOST DIMINUATA CU 1 PUNCTE DATORITA INTARZIERILOR",
+    "Predată în săptămâna": 10,
+    "Deadline": 9,
+    "Nota": 7.0
+  }
+]

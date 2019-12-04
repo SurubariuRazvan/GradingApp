@@ -58,10 +58,7 @@ public class StudentController extends DefaultController<Student> {
         studentTableEmail.setCellValueFactory(new PropertyValueFactory<>("Email"));
         studentTableEmail.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        studentTableProfessor.setCellValueFactory((TableColumn.CellDataFeatures<Student, Professor> param) -> {
-            Professor professor = service.findOneProfessor(param.getValue().getLabProfessorId());
-            return new ReadOnlyObjectWrapper<Professor>(professor);
-        });
+        studentTableProfessor.setCellValueFactory((TableColumn.CellDataFeatures<Student, Professor> param) -> new ReadOnlyObjectWrapper<>(service.findOneProfessor(param.getValue().getLabProfessorId())));
 
         addButtonToTable(studentTableDelete, "Delete", (i, p) -> {
             service.deleteStudent(p.getId());

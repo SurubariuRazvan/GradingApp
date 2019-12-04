@@ -9,7 +9,7 @@ public class Grade extends Entity<GradeId> {
     private String feedback;
 
     public Grade(Grade grade) {
-        super.setId(new GradeId(grade.getId().getHomeworkId(), grade.getId().getHomeworkId()));
+        super.setId(new GradeId(grade.getId().getHomeworkId(), grade.getId().getStudentId()));
         this.handOverDate = grade.getHandOverDate();
         this.professorId = grade.getProfessorId();
         this.givenGrade = grade.getGivenGrade();

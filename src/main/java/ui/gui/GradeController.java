@@ -52,27 +52,16 @@ public class GradeController extends DefaultController<Grade> {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        gradeTableHomework.setCellValueFactory((TableColumn.CellDataFeatures<Grade, Homework> param) -> {
-            Homework homework = service.findOneHomework(param.getValue().getId().getHomeworkId());
-            return new ReadOnlyObjectWrapper<Homework>(homework);
-        });
+        gradeTableHomework.setCellValueFactory((TableColumn.CellDataFeatures<Grade, Homework> param) -> new ReadOnlyObjectWrapper<>(service.findOneHomework(param.getValue().getId().getHomeworkId())));
 
-        gradeTableStudent.setCellValueFactory((TableColumn.CellDataFeatures<Grade, Student> param) -> {
-            Student student = service.findOneStudent(param.getValue().getId().getStudentId());
-            return new ReadOnlyObjectWrapper<Student>(student);
-        });
+        gradeTableStudent.setCellValueFactory((TableColumn.CellDataFeatures<Grade, Student> param) -> new ReadOnlyObjectWrapper<>(service.findOneStudent(param.getValue().getId().getStudentId())));
 
         gradeTableGivenGrade.setCellValueFactory(new PropertyValueFactory<>("GivenGrade"));
         gradeTableGivenGrade.setCellFactory(x -> doubleConverter());
 
-        gradeTableProfessor.setCellValueFactory((TableColumn.CellDataFeatures<Grade, Professor> param) -> {
-            Professor professor = service.findOneProfessor(param.getValue().getProfessorId());
-            return new ReadOnlyObjectWrapper<Professor>(professor);
-        });
+        gradeTableProfessor.setCellValueFactory((TableColumn.CellDataFeatures<Grade, Professor> param) -> new ReadOnlyObjectWrapper<>(service.findOneProfessor(param.getValue().getProfessorId())));
 
-        gradeTableHandOverDate.setCellValueFactory((TableColumn.CellDataFeatures<Grade, LocalDate> param) -> {
-            return new ReadOnlyObjectWrapper<LocalDate>(param.getValue().getHandOverDate());
-        });
+        gradeTableHandOverDate.setCellValueFactory((TableColumn.CellDataFeatures<Grade, LocalDate> param) -> new ReadOnlyObjectWrapper<>(param.getValue().getHandOverDate()));
 
         gradeTableFeedback.setCellValueFactory(new PropertyValueFactory<>("Feedback"));
         gradeTableFeedback.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -93,7 +82,7 @@ public class GradeController extends DefaultController<Grade> {
 
         //gradeTableHomework.setCellFactory((TableColumn<Grade, Homework> param) -> new ComboBoxEditingCell<Grade, Homework>(menuController.allHomeworks));
         //gradeTableStudent.setCellFactory((TableColumn<Grade, Student> param) -> new ComboBoxEditingCell<Grade, Student>(menuController.allStudents));
-        gradeTableHandOverDate.setCellFactory((TableColumn<Grade, LocalDate> param) -> new DateEditingCell<Grade>(dateFormatter));
+        gradeTableHandOverDate.setCellFactory((TableColumn<Grade, LocalDate> param) -> new DateEditingCell<>(dateFormatter));
         gradeTableProfessor.setCellFactory((TableColumn<Grade, Professor> param) -> new ComboBoxEditingCell<>(menuController.allProfessors));
 
         makeAutoCompleBox(searchProfessorName, menuController.allProfessors);
@@ -130,7 +119,8 @@ public class GradeController extends DefaultController<Grade> {
             Integer penalization = (int) (givenGrade - finalGrade);
             if (feedback.length() > 0)
                 feedback += "\n";
-            feedback += "NOTA A FOST DIMINUATA CU " + penalization + " PUNCTE DATORITA INTARZIERILOR";
+            if (penalization > 0)
+                feedback += "NOTA A FOST DIMINUATA CU " + penalization + " PUNCTE DATORITA INTARZIERILOR";
             if (addGradeConfirmation(homework, student, handOverDate, professor, finalGrade, feedback, penalization))
                 try {
                     Grade g = new Grade(new GradeId(homework.getId(), student.getId()), handOverDate, professor.getId(), finalGrade, feedback);

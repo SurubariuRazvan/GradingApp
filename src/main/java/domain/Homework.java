@@ -37,14 +37,12 @@ public class Homework extends Entity<Integer> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Homework homework = (Homework) o;
-        return description.equals(homework.description) &&
-                startWeek.equals(homework.startWeek) &&
-                deadlineWeek.equals(homework.deadlineWeek);
+        return super.getId().equals(homework.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, startWeek, deadlineWeek);
+        return Objects.hash(super.getId());
     }
 
     public String getDescription() {

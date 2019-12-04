@@ -28,6 +28,11 @@
                         <fx:include fx:id="gradeTab" source="GradeTab.fxml"/>
                     </content>
                 </Tab>
+                <Tab text="Rapoarte">
+                    <content>
+                        <fx:include fx:id="reportTab" source="ReportTab.fxml"/>
+                    </content>
+                </Tab>
             </tabs>
         </TabPane>
     </center>
