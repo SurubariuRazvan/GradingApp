@@ -23,10 +23,8 @@ import javafx.util.Pair;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -120,17 +118,17 @@ public class ReportController extends DefaultController<Student> {
     private <E extends Entity> void addData(PdfPTable pdfTable, TableView<E> table, int nrRows, int nrColumns) {
         String[][] matrix = new String[nrRows][nrColumns];
         var columns = table.getColumns();
-        for(int j = 0; j < nrColumns; j++)
-            for(int i = 0; i < nrRows; i++)
+        for (int j = 0; j < nrColumns; j++)
+            for (int i = 0; i < nrRows; i++)
                 matrix[i][j] = columns.get(j).getCellData(i).toString();
-        for(int i = 0; i < nrRows; i++)
-            for(int j = 0; j < nrColumns; j++)
+        for (int i = 0; i < nrRows; i++)
+            for (int j = 0; j < nrColumns; j++)
                 pdfTable.addCell(matrix[i][j]);
     }
 
 
     private <E extends Entity> void addTableHeader(PdfPTable pdfTable, TableView<E> table) {
-        for(var column : table.getColumns()) {
+        for (var column : table.getColumns()) {
             PdfPCell header = new PdfPCell();
             header.setBackgroundColor(BaseColor.LIGHT_GRAY);
             header.setBorderWidth(2);
@@ -143,7 +141,7 @@ public class ReportController extends DefaultController<Student> {
     private Double getGradesAverage(Student student, Iterable<Grade> grades) {
         Double value = 0.0;
         Integer totalWeight = 0;
-        for(Grade grade : grades)
+        for (Grade grade : grades)
             if (grade.getId().getStudentId().equals(student.getId())) {
                 Homework homework = service.findOneHomework(grade.getId().getHomeworkId());
                 Integer weight = homework.getDeadlineWeek() - homework.getStartWeek();
@@ -161,15 +159,23 @@ public class ReportController extends DefaultController<Student> {
         gradesAveragePane1.toFront();
 
         HashMap<Double, Integer> chartData = new HashMap<>();
-        for(int i = 0; i < studentTable1.getItems().size(); i++) {
+        for (int i = 0; i < studentTable1.getItems().size(); i++) {
             Double givenGrade = studentTableGradesAverage1.getCellData(i);
             if (chartData.containsKey(givenGrade))
                 chartData.put(givenGrade, chartData.get(givenGrade) + 1);
             else
                 chartData.put(givenGrade, 1);
         }
+
         XYChart.Series<Double, Integer> series = new XYChart.Series<>();
-        chartData.entrySet().stream().sorted((x, y) -> (int) (x.getKey() - y.getKey())).forEach(x -> series.getData().add(new XYChart.Data<Double, Integer>(x.getKey(), x.getValue())));
+        final Integer[] count = {0};
+        chartData.entrySet().stream()
+                .sorted(Comparator.comparingDouble(Map.Entry::getKey))
+                .forEach(z -> {
+                    //System.out.println(z);
+                    count[0] += z.getValue();
+                    series.getData().add(new XYChart.Data<Double, Integer>(z.getKey(), count[0]));
+                });
 
         chart1.getData().set(0, series);
     }
@@ -179,7 +185,7 @@ public class ReportController extends DefaultController<Student> {
         Iterable<Student> students = service.findAllStudent();
         List<Student> onTimestudents = StreamSupport.stream(students.spliterator(), false)
                 .filter(student -> {
-                    for(Grade grade : grades)
+                    for (Grade grade : grades)
                         if (grade.getId().getStudentId().equals(student.getId())) {
                             Homework homework = service.findOneHomework(grade.getId().getHomeworkId());
                             if (service.getWeek(grade.getHandOverDate()) > homework.getDeadlineWeek())
@@ -220,7 +226,7 @@ public class ReportController extends DefaultController<Student> {
     public void showHardestHomework(ActionEvent actionEvent) {
         Iterable<Grade> grades = service.findAllGrade();
         Map<Integer, Pair<Double, Integer>> data = new HashMap<>();
-        for(Grade grade : grades) {
+        for (Grade grade : grades) {
             Integer id = grade.getId().getHomeworkId();
             if (data.containsKey(id)) {
                 Pair<Double, Integer> value = data.get(id);
@@ -230,7 +236,7 @@ public class ReportController extends DefaultController<Student> {
         }
         List<Pair<Integer, Double>> sortedHomeworks = data.entrySet().stream()
                 .map(x -> new Pair<>(x.getKey(), x.getValue().getKey() / x.getValue().getValue()))
-                .sorted((x, y) -> (int) (x.getValue() - y.getValue()))
+                .sorted(Comparator.comparingDouble(Pair::getValue))
                 .collect(Collectors.toList());
         hardestHomeworkLabel4.setText(service.findOneHomework(sortedHomeworks.get(0).getKey()).toString());
         hardestHomeworkPane4.toFront();

@@ -135,7 +135,6 @@ public abstract class DefaultController<E extends Entity> implements Initializab
     private <T> TextFieldTableCell<E, T> genericConverter(Function<String, T> f) {
         TextFieldTableCell<E, T> cell = new TextFieldTableCell<>();
         StringConverter<T> converter = new StringConverter<>() {
-
             @Override
             public String toString(T object) {
                 return object.toString();
@@ -160,7 +159,7 @@ public abstract class DefaultController<E extends Entity> implements Initializab
         alert.setHeaderText("Eroare");
 
         //TODO CSS
-        Text text = new Text("  " + message);
+        Text text = new Text(message);
         alert.getDialogPane().setContent(text);
         alert.getDialogPane().setPadding(new Insets(0, 5, 0, 10));
         alert.getDialogPane().setMinWidth(200);

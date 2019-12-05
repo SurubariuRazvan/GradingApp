@@ -12,6 +12,7 @@ import javafx.scene.layout.GridPane;
 import repository.RepositoryException;
 import ui.utility.ComboBoxEditingCell;
 import ui.utility.DateEditingCell;
+import ui.utility.TextAreaEditingCell;
 import validation.ValidationException;
 
 import java.net.URL;
@@ -64,7 +65,8 @@ public class GradeController extends DefaultController<Grade> {
         gradeTableHandOverDate.setCellValueFactory((TableColumn.CellDataFeatures<Grade, LocalDate> param) -> new ReadOnlyObjectWrapper<>(param.getValue().getHandOverDate()));
 
         gradeTableFeedback.setCellValueFactory(new PropertyValueFactory<>("Feedback"));
-        gradeTableFeedback.setCellFactory(TextFieldTableCell.forTableColumn());
+        //gradeTableFeedback.setCellFactory(TextFieldTableCell.forTableColumn());
+        gradeTableFeedback.setCellFactory((TableColumn<Grade, String> param) -> new TextAreaEditingCell<>());
 
         addButtonToTable(gradeTableDelete, "Delete", (i, g) -> {
             service.deleteGrade(g.getId());

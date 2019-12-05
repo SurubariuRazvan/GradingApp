@@ -1,5 +1,6 @@
 package ui.gui;
 
+import domain.Grade;
 import domain.Homework;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -7,9 +8,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import repository.RepositoryException;
+import ui.utility.DateEditingCell;
+import ui.utility.TextAreaEditingCell;
 import validation.ValidationException;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
