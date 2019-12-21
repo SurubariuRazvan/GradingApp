@@ -31,6 +31,7 @@ public abstract class DefaultController<E extends Entity> implements Initializab
     protected ObservableList<E> entities;
     protected ObservableList<E> allEntities;
     protected ServiceManager service;
+    protected CleranceLevel cleranceLevel;
 
     public static void addTextLimiter(final TextField tf, final int maxLength) {
         tf.textProperty().addListener((ov, oldValue, newValue) -> {
@@ -199,6 +200,7 @@ public abstract class DefaultController<E extends Entity> implements Initializab
 
                     {
                         //TODO CSS
+                        btn.setId(text);
                         btn.setPadding(new Insets(4));
                         btn.setMaxSize(100, 40);
                         btn.setOnAction((ActionEvent event) -> {

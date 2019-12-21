@@ -10,6 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// extends PagingAndSortingRepository<E, Long>
 public abstract class AbstractPostgreSQLRepository<ID, E extends Entity<ID>> implements CrudRepository<ID, E> {
     private Connection c;
     private Validator<E> validator;
@@ -17,7 +18,7 @@ public abstract class AbstractPostgreSQLRepository<ID, E extends Entity<ID>> imp
     AbstractPostgreSQLRepository(Validator<E> validator, String url, String user, String password) throws SQLException, ClassNotFoundException {
         this.validator = validator;
         Class.forName("org.postgresql.Driver");
-        c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/MAP", "postgres", "793582");
+        c = DriverManager.getConnection(url,user,password);
         //c.close();
     }
 

@@ -1,5 +1,5 @@
 #addGivenGradeGrid {
-    -fx-background-color: white;
+    -fx-background-color: rgb(50, 50, 50);
     -fx-border-width: 0;
     -fx-start-margin: 20;
 }

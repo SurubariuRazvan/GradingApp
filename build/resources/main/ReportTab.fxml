@@ -108,7 +108,7 @@
                 </yAxis>
             </AreaChart>
         </SplitPane>
-        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;"/>
+        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgb(50, 50, 50);"/>
     </StackPane>
     <GridPane>
         <columnConstraints>
