@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.*?>
 <?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-
-<VBox fx:id="homeworkTabId" alignment="CENTER" stylesheets="@../css/Menu.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.gui.HomeworkController">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="homeworkTabId" alignment="CENTER" stylesheets="@../css/Menu.css"
+      xmlns="http://javafx.com/javafx/8.0.171" fx:controller="ui.gui.HomeworkController" styleClass="tab-content">
     <TableView fx:id="homeworkTable" editable="true" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="homeworkTableId" editable="false" maxWidth="41.0" minWidth="41.0" prefWidth="41.0" resizable="false" text="ID" />
-            <TableColumn fx:id="homeworkTableDescription" maxWidth="1.7976931348623157E308" minWidth="104.0" onEditCommit="#updateEntity" prefWidth="204.0" text="Descriere" />
-            <TableColumn fx:id="homeworkTableStartWeek" maxWidth="1.7976931348623157E308" minWidth="114.0" onEditCommit="#updateEntity" prefWidth="114.0" text="Start week" />
-            <TableColumn fx:id="homeworkTableDeadlineWeek" maxWidth="1.7976931348623157E308" minWidth="124.0" onEditCommit="#updateEntity" prefWidth="124.0" text="Deadline week" />
+            <TableColumn fx:id="homeworkTableDescription" maxWidth="1.7976931348623157E308" minWidth="104.0"
+                         onEditCommit="#updateEntity" prefWidth="204.0" text="Description"/>
+            <TableColumn fx:id="homeworkTableStartWeek" maxWidth="1.7976931348623157E308" minWidth="134.0"
+                         onEditCommit="#updateEntity" prefWidth="134.0" text="Start week"/>
+            <TableColumn fx:id="homeworkTableDeadlineWeek" maxWidth="1.7976931348623157E308" minWidth="154.0"
+                         onEditCommit="#updateEntity" prefWidth="154.0" text="Deadline week"/>
             <TableColumn fx:id="homeworkTableDelete" editable="false" maxWidth="42.0" minWidth="42.0" prefWidth="42.0" resizable="false" sortable="false" />
         </columns>
         <columnResizePolicy>
@@ -30,8 +27,8 @@
         <columnConstraints>
             <ColumnConstraints maxWidth="35.0" minWidth="35.0" prefWidth="35.0" />
             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="200.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="110.0" prefWidth="110.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="120.0" prefWidth="120.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="130.0" prefWidth="130.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="150.0" prefWidth="150.0"/>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="36.0" minWidth="36.0" prefWidth="36.0" />
         </columnConstraints>
         <rowConstraints>
@@ -41,7 +38,8 @@
             <RowConstraints />
         </rowConstraints>
         <JFXTextField fx:id="searchId" alignment="CENTER" labelFloat="true" onKeyTyped="#searchEntity" promptText="ID" styleClass="search" GridPane.rowIndex="1" />
-        <JFXTextField fx:id="searchDescription" alignment="CENTER" labelFloat="true" onKeyTyped="#searchEntity" promptText="Descriere" styleClass="search" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <JFXTextField fx:id="searchDescription" alignment="CENTER" labelFloat="true" onKeyTyped="#searchEntity"
+                      promptText="Description" styleClass="search" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
       <JFXTextField alignment="CENTER" editable="false" labelFloat="true" promptText="Start week" text=" " GridPane.columnIndex="2" GridPane.rowIndex="1">
          <styleClass>
             <String fx:value="search" />
@@ -68,7 +66,8 @@
          </graphic>
         </JFXButton>
         <JFXTextField fx:id="addId" alignment="CENTER" editable="false" labelFloat="true" promptText="ID" styleClass="add" GridPane.rowIndex="3" />
-        <JFXTextField fx:id="addDescription" alignment="CENTER" labelFloat="true" promptText="Descriere" styleClass="add" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <JFXTextField fx:id="addDescription" alignment="CENTER" labelFloat="true" promptText="Description"
+                      styleClass="add" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
       <JFXTextField alignment="CENTER" editable="false" labelFloat="true" promptText="Start week" text=" " GridPane.columnIndex="2" GridPane.rowIndex="3">
          <styleClass>
             <String fx:value="add" />

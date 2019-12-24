@@ -41,13 +41,12 @@ public class MainWindowController implements Initializable {
 
     public void setStage(Stage stage) {
         this.stage = stage;
-        successfulLogIn(new User("admin", User.encodePassword("admin"), CleranceLevel.Admin));
     }
 
     public void logIn(ActionEvent actionEvent) {
-        //userRepo.save(new User("student", User.encodePassword("student"), CleranceLevel.Student));
-        //userRepo.save(new User("professor", User.encodePassword("professor"), CleranceLevel.Professor));
-        //userRepo.save(new User("admin", User.encodePassword("admin"), CleranceLevel.Admin));
+//        userRepo.save(new User("student", User.encodePassword("student"), CleranceLevel.Student));
+//        userRepo.save(new User("professor", User.encodePassword("professor"), CleranceLevel.Professor));
+//        userRepo.save(new User("admin", User.encodePassword("admin"), CleranceLevel.Admin));
         String username = logInUsername.getText();
         String rawPassword = logInPassword.getText();
 
@@ -80,7 +79,7 @@ public class MainWindowController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Menu.fxml"));
             BorderPane root = loader.load();
             MenuController controller = loader.getController();
-            controller.setService(new ServiceManager());
+            controller.setService(new ServiceManager(), user);
 
             Stage newStage = new Stage(StageStyle.DECORATED);
             newStage.setMinWidth(900);

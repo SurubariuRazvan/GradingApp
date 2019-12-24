@@ -53,63 +53,87 @@ public class GradeController extends DefaultController<Grade> {
     public GridPane addGivenGradeGrid;
     public Spinner<Integer> motivatedWeeks;
     public Spinner<Integer> lateWeeks;
-
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     public ObservableList<Professor> professors;
     public ObservableList<Student> students;
     public ObservableList<Homework> homeworks;
+    public GridPane bottom;
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gradeTableHomework.setCellValueFactory((TableColumn.CellDataFeatures<Grade, Homework> param) -> new ReadOnlyObjectWrapper<>(service.findOneHomework(param.getValue().getId().getHomeworkId())));
-
         gradeTableStudent.setCellValueFactory((TableColumn.CellDataFeatures<Grade, Student> param) -> new ReadOnlyObjectWrapper<>(service.findOneStudent(param.getValue().getId().getStudentId())));
-
         gradeTableGivenGrade.setCellValueFactory(new PropertyValueFactory<>("GivenGrade"));
-        gradeTableGivenGrade.setCellFactory(x -> doubleConverter());
-
         gradeTableProfessor.setCellValueFactory((TableColumn.CellDataFeatures<Grade, Professor> param) -> new ReadOnlyObjectWrapper<>(service.findOneProfessor(param.getValue().getProfessorId())));
-
         gradeTableHandOverDate.setCellValueFactory((TableColumn.CellDataFeatures<Grade, LocalDate> param) -> new ReadOnlyObjectWrapper<>(param.getValue().getHandOverDate()));
-
         gradeTableFeedback.setCellValueFactory(new PropertyValueFactory<>("Feedback"));
-        gradeTableFeedback.setCellFactory((TableColumn<Grade, String> param) -> new TextAreaEditingCell<>());
-
-        addButtonToTable(gradeTableDelete, "deleteButton", () -> new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE_OUTLINE, "30"), (i, g) -> {
-            service.deleteGrade(g.getId());
-            entities.remove(g);
-        });
-
-        addGivenGrade.focusedProperty().addListener((observable, oldValue, newValue) -> focusState(newValue));
     }
 
-    public void postInit() {
-        entities = iterableToObservableList(service.findAllGrade());
-        gradeTable.setItems(entities);
-
-        gradeTableHandOverDate.setCellFactory((TableColumn<Grade, LocalDate> param) -> new DateEditingCell<>(dateFormatter));
-
-        professors = iterableToObservableList(service.findAllProfessor());
-        students = iterableToObservableList(service.findAllStudent());
-        homeworks = iterableToObservableList(service.findAllHomework());
-        gradeTableProfessor.setCellFactory((TableColumn<Grade, Professor> param) -> new ComboBoxEditingCell<>(professors));
-
-        makeAutoCompleteBox(searchProfessorName, professors);
+    private void initAddComponents() {
+        addGivenGrade.focusedProperty().addListener((observable, oldValue, newValue) -> focusState(newValue));
         makeAutoCompleteBox(addProfessorName, professors);
-        makeAutoCompleteBox(searchHomeworkId, homeworks);
         makeAutoCompleteBox(addHomeworkId, homeworks);
-        makeAutoCompleteBox(searchStudentName, students);
         makeAutoCompleteBox(addStudentName, students);
-
         initSpinner(motivatedWeeks, 0, 2);
         initSpinner(lateWeeks, 0, 2);
         lateWeeks.valueProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue <= 2 && newValue >= 0)
                 addHandOverDate.setText(LocalDate.now().minusWeeks(newValue).format(dateFormatter));
         });
+    }
 
+    public void postInit() {
+        entities = iterableToObservableList(service.findAllGrade());
+        gradeTable.setItems(entities);
+
+        if (user.getCleranceLevel().ordinal() <= CleranceLevel.Student.ordinal())
+            initStudentComponents();
+        if (user.getCleranceLevel().ordinal() <= CleranceLevel.Professor.ordinal())
+            initProfessorComponents();
+        if (user.getCleranceLevel().ordinal() <= CleranceLevel.Admin.ordinal())
+            initAdminComponents();
+
+        if (user.getCleranceLevel().ordinal() >= CleranceLevel.Student.ordinal())
+            removeAddRow();
         clearFields(null);
+    }
+
+    private void removeAddRow() {
+        bottom.getChildren().forEach(node -> {
+            if (GridPane.getRowIndex(node) == 2 || GridPane.getRowIndex(node) == 3) {
+                node.setDisable(true);
+                node.setVisible(false);
+                node.setManaged(false);
+            }
+        });
+        bottom.getRowConstraints().get(2).setMinHeight(0);
+        bottom.getRowConstraints().get(2).setPrefHeight(0);
+    }
+
+
+    private void initAdminComponents() {
+    }
+
+    private void initProfessorComponents() {
+        gradeTableGivenGrade.setCellFactory(x -> doubleConverter());
+        gradeTableFeedback.setCellFactory((TableColumn<Grade, String> param) -> new TextAreaEditingCell<>());
+        gradeTableHandOverDate.setCellFactory((TableColumn<Grade, LocalDate> param) -> new DateEditingCell<>(dateFormatter));
+        gradeTableProfessor.setCellFactory((TableColumn<Grade, Professor> param) -> new ComboBoxEditingCell<>(professors));
+        addButtonToTable(gradeTableDelete, "deleteButton", () -> new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE_OUTLINE, "30"), (i, g) -> {
+            service.deleteGrade(g.getId());
+            entities.remove(g);
+        });
+        initAddComponents();
         updateAddFields();
+    }
+
+    private void initStudentComponents() {
+        professors = iterableToObservableList(service.findAllProfessor());
+        homeworks = iterableToObservableList(service.findAllHomework());
+        students = iterableToObservableList(service.findAllStudent());
+        makeAutoCompleteBox(searchProfessorName, professors);
+        makeAutoCompleteBox(searchHomeworkId, homeworks);
+        makeAutoCompleteBox(searchStudentName, students);
     }
 
     @Override
@@ -260,7 +284,11 @@ public class GradeController extends DefaultController<Grade> {
     @Override
     public void clearFields(ActionEvent actionEvent) {
         searchHomeworkId.setValue(null);
-        searchStudentName.setValue(null);
+        if (user.getCleranceLevel().ordinal() == CleranceLevel.Student.ordinal()) {
+            searchStudentName.setValue(students.stream().filter(s -> s.getId().equals(2)).findFirst().orElse(null));
+            searchStudentName.setDisable(true);
+        } else
+            searchStudentName.setValue(null);
         searchGivenGrade.setText("");
         searchProfessorName.setValue(null);
         searchHandOverDate.setText("");

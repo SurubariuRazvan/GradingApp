@@ -1,5 +1,6 @@
 package ui.gui;
 
+import domain.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TabPane;
@@ -27,15 +28,16 @@ public class MenuController implements Initializable {
     @FXML
     ReportController reportTabController;
     private ServiceManager service;
+    private User user;
 
-    public void setService(ServiceManager service) {
+    public void setService(ServiceManager service, User user) {
         this.service = service;
-        homeworkTabController.setService(service);
-        professorTabController.setService(service);
-        studentTabController.setService(service);
-        gradeTabController.setService(service);
-        reportTabController.setService(service);
-        
+        this.user = user;
+        homeworkTabController.setService(service, user);
+        professorTabController.setService(service, user);
+        studentTabController.setService(service, user);
+        gradeTabController.setService(service, user);
+        reportTabController.setService(service, user);
     }
 
     @Override
@@ -53,7 +55,8 @@ public class MenuController implements Initializable {
                     else if (professorTab.getId().equals(newTab.getId()))
                         professorTabController.refreshTable();
                     else if (gradeTab.getId().equals(newTab.getId()))
-                        gradeTabController.refreshTable();
+                        if (user.getCleranceLevel().ordinal() < CleranceLevel.Student.ordinal())
+                            gradeTabController.refreshTable();
                 }
         );
     }

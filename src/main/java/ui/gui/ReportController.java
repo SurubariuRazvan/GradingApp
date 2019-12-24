@@ -13,23 +13,23 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.net.URL;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class ReportController extends DefaultController<Student> {
-    public SplitPane gradesAveragePane1;
+    public VBox gradesAveragePane1;
     public TableView<Student> studentTable1;
     public TableColumn<Student, Integer> studentTableId1;
     public TableColumn<Student, String> studentTableFamilyName1;
@@ -38,7 +38,7 @@ public class ReportController extends DefaultController<Student> {
     public TableColumn<Student, String> studentTableEmail1;
     public TableColumn<Student, Professor> studentTableProfessor1;
     public TableColumn<Student, Double> studentTableGradesAverage1;
-    public SplitPane onTimeHomeworksPane2;
+    public VBox onTimeHomeworksPane2;
     public TableView<Student> studentTable2;
     public TableColumn<Student, Integer> studentTableId2;
     public TableColumn<Student, String> studentTableFamilyName2;
@@ -46,7 +46,7 @@ public class ReportController extends DefaultController<Student> {
     public TableColumn<Student, Integer> studentTableGroup2;
     public TableColumn<Student, String> studentTableEmail2;
     public TableColumn<Student, Professor> studentTableProfessor2;
-    public SplitPane examEntryPane3;
+    public VBox examEntryPane3;
     public TableView<Student> studentTable3;
     public TableColumn<Student, Integer> studentTableId3;
     public TableColumn<Student, String> studentTableFamilyName3;
@@ -54,7 +54,7 @@ public class ReportController extends DefaultController<Student> {
     public TableColumn<Student, Integer> studentTableGroup3;
     public TableColumn<Student, String> studentTableEmail3;
     public TableColumn<Student, Professor> studentTableProfessor3;
-    public SplitPane hardestHomeworkPane4;
+    public VBox hardestHomeworkPane4;
     public Label hardestHomeworkLabel4;
     public AreaChart<Double, Integer> chart1;
     public PieChart pie2;

@@ -1,15 +1,8 @@
 package ui.gui;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXSpinner;
-import de.jensd.fx.glyphs.GlyphIcon;
-import de.jensd.fx.glyphs.GlyphIcons;
-import de.jensd.fx.glyphs.GlyphsBuilder;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import domain.Entity;
+import domain.User;
 import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
 import javafx.beans.InvalidationListener;
@@ -32,7 +25,6 @@ import repository.RepositoryException;
 import serviceManager.ServiceManager;
 import validation.ValidationException;
 
-import java.awt.event.FocusEvent;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -44,7 +36,7 @@ public abstract class DefaultController<E extends Entity> implements Initializab
     protected MenuController menuController;
     protected ObservableList<E> entities;
     protected ServiceManager service;
-    protected CleranceLevel cleranceLevel;
+    protected User user;
 
     public static void addTextLimiter(final TextField tf, final int maxLength) {
         tf.textProperty().addListener((ov, oldValue, newValue) -> {
@@ -61,8 +53,9 @@ public abstract class DefaultController<E extends Entity> implements Initializab
 
     protected abstract void postInit();
 
-    public void setService(ServiceManager service) {
+    public void setService(ServiceManager service, User user) {
         this.service = service;
+        this.user = user;
         postInit();
     }
 
