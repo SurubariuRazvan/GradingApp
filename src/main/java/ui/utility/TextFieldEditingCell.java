@@ -7,6 +7,7 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
 
@@ -68,13 +69,10 @@ class TextFieldEditingCell<E extends Entity, T> extends TableCell<E, String> {
 
         SuggestionProvider<T> provider = SuggestionProvider.create(data);
         new AutoCompletionTextFieldBinding<>(textField, provider);
-
-        data.addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
-                provider.clearSuggestions();
-                provider.addPossibleSuggestions(data);
-            }
+        textField.setAlignment(Pos.CENTER);
+        data.addListener((InvalidationListener) observable -> {
+            provider.clearSuggestions();
+            provider.addPossibleSuggestions(data);
         });
     }
 

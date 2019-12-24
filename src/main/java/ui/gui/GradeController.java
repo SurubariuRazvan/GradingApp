@@ -1,12 +1,17 @@
 package ui.gui;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import domain.*;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import repository.RepositoryException;
@@ -24,8 +29,8 @@ import java.util.stream.StreamSupport;
 
 public class GradeController extends DefaultController<Grade> {
     public TableView<Grade> gradeTable;
-    public Button clearButton;
-    public Button addButton;
+    public JFXButton clearButton;
+    public JFXButton addButton;
     public TableColumn<Grade, Homework> gradeTableHomework;
     public TableColumn<Grade, Student> gradeTableStudent;
     public TableColumn<Grade, Double> gradeTableGivenGrade;
@@ -33,23 +38,26 @@ public class GradeController extends DefaultController<Grade> {
     public TableColumn<Grade, LocalDate> gradeTableHandOverDate;
     public TableColumn<Grade, String> gradeTableFeedback;
     public TableColumn<Grade, Void> gradeTableDelete;
-    public ComboBox<Homework> addHomeworkId;
-    public ComboBox<Homework> searchHomeworkId;
-    public ComboBox<Student> addStudentName;
-    public ComboBox<Student> searchStudentName;
-    public TextField addGivenGrade;
-    public TextField searchGivenGrade;
-    public ComboBox<Professor> addProfessorName;
-    public ComboBox<Professor> searchProfessorName;
-    public TextField searchHandOverDate;
-    public TextField addHandOverDate;
-    public TextField searchFeedback;
-    public TextField addFeedback;
+    public JFXComboBox<Homework> addHomeworkId;
+    public JFXComboBox<Homework> searchHomeworkId;
+    public JFXComboBox<Student> addStudentName;
+    public JFXComboBox<Student> searchStudentName;
+    public JFXTextField addGivenGrade;
+    public JFXTextField searchGivenGrade;
+    public JFXComboBox<Professor> addProfessorName;
+    public JFXComboBox<Professor> searchProfessorName;
+    public JFXTextField searchHandOverDate;
+    public JFXTextField addHandOverDate;
+    public JFXTextField searchFeedback;
+    public JFXTextField addFeedback;
     public GridPane addGivenGradeGrid;
     public Spinner<Integer> motivatedWeeks;
     public Spinner<Integer> lateWeeks;
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    public ObservableList<Professor> professors;
+    public ObservableList<Student> students;
+    public ObservableList<Homework> homeworks;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -65,34 +73,33 @@ public class GradeController extends DefaultController<Grade> {
         gradeTableHandOverDate.setCellValueFactory((TableColumn.CellDataFeatures<Grade, LocalDate> param) -> new ReadOnlyObjectWrapper<>(param.getValue().getHandOverDate()));
 
         gradeTableFeedback.setCellValueFactory(new PropertyValueFactory<>("Feedback"));
-        //gradeTableFeedback.setCellFactory(TextFieldTableCell.forTableColumn());
         gradeTableFeedback.setCellFactory((TableColumn<Grade, String> param) -> new TextAreaEditingCell<>());
 
-        addButtonToTable(gradeTableDelete, "Delete", (i, g) -> {
+        addButtonToTable(gradeTableDelete, "deleteButton", () -> new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE_OUTLINE, "30"), (i, g) -> {
             service.deleteGrade(g.getId());
             entities.remove(g);
-            allEntities.remove(g);
         });
 
         addGivenGrade.focusedProperty().addListener((observable, oldValue, newValue) -> focusState(newValue));
     }
 
     public void postInit() {
-        setEntities(service.findAllGrade());
+        entities = iterableToObservableList(service.findAllGrade());
         gradeTable.setItems(entities);
-        setAllEntities(service.findAllGrade());
 
-        //gradeTableHomework.setCellFactory((TableColumn<Grade, Homework> param) -> new ComboBoxEditingCell<Grade, Homework>(menuController.allHomeworks));
-        //gradeTableStudent.setCellFactory((TableColumn<Grade, Student> param) -> new ComboBoxEditingCell<Grade, Student>(menuController.allStudents));
         gradeTableHandOverDate.setCellFactory((TableColumn<Grade, LocalDate> param) -> new DateEditingCell<>(dateFormatter));
-        gradeTableProfessor.setCellFactory((TableColumn<Grade, Professor> param) -> new ComboBoxEditingCell<>(menuController.allProfessors));
 
-        makeAutoCompleBox(searchProfessorName, menuController.allProfessors);
-        makeAutoCompleBox(addProfessorName, menuController.allProfessors);
-        makeAutoCompleBox(searchHomeworkId, menuController.allHomeworks);
-        makeAutoCompleBox(addHomeworkId, menuController.allHomeworks);
-        makeAutoCompleBox(searchStudentName, menuController.allStudents);
-        makeAutoCompleBox(addStudentName, menuController.allStudents);
+        professors = iterableToObservableList(service.findAllProfessor());
+        students = iterableToObservableList(service.findAllStudent());
+        homeworks = iterableToObservableList(service.findAllHomework());
+        gradeTableProfessor.setCellFactory((TableColumn<Grade, Professor> param) -> new ComboBoxEditingCell<>(professors));
+
+        makeAutoCompleteBox(searchProfessorName, professors);
+        makeAutoCompleteBox(addProfessorName, professors);
+        makeAutoCompleteBox(searchHomeworkId, homeworks);
+        makeAutoCompleteBox(addHomeworkId, homeworks);
+        makeAutoCompleteBox(searchStudentName, students);
+        makeAutoCompleteBox(addStudentName, students);
 
         initSpinner(motivatedWeeks, 0, 2);
         initSpinner(lateWeeks, 0, 2);
@@ -128,7 +135,6 @@ public class GradeController extends DefaultController<Grade> {
                     Grade g = new Grade(new GradeId(homework.getId(), student.getId()), handOverDate, professor.getId(), finalGrade, feedback);
                     service.saveGrade(g, homework, student);
                     entities.add(g);
-                    allEntities.add(g);
                     updateAddFields();
                 } catch (ValidationException e) {
                     showError("Eroare la adaugare", e.getMessage());
@@ -172,7 +178,7 @@ public class GradeController extends DefaultController<Grade> {
 
     @Override
     public void updateAddFields() {
-        menuController.allHomeworks.stream()
+        StreamSupport.stream(service.findAllHomework().spliterator(), false)
                 .filter(h -> h.getDeadlineWeek().equals(service.getWeek()))
                 .findFirst().ifPresent(homework -> addHomeworkId.setValue(homework));
         addHandOverDate.setText(LocalDate.now().format(dateFormatter));
@@ -192,7 +198,7 @@ public class GradeController extends DefaultController<Grade> {
         String handOverDate = searchHandOverDate.getText();
         String feedback = searchFeedback.getText();
 
-        setEntities(StreamSupport.stream(service.findAllGrade().spliterator(), false)
+        entities.setAll(StreamSupport.stream(service.findAllGrade().spliterator(), false)
                 .filter(g -> (homework == null || g.getId().getHomeworkId().equals(homework.getId())) &&
                         (student == null || g.getId().getStudentId().equals(student.getId())) &&
                         (g.getGivenGrade().toString().contains(getShortDoubleString(givenGrade))) &&
@@ -244,7 +250,6 @@ public class GradeController extends DefaultController<Grade> {
             }
             try {
                 service.updateGrade(grade.getId(), grade);
-                allEntities.set(allEntities.indexOf(backupGrade), new Grade(grade));
             } catch (ValidationException | RepositoryException e) {
                 showError("Eroare", e.getMessage());
                 entities.set(event.getTablePosition().getRow(), backupGrade);
@@ -282,6 +287,9 @@ public class GradeController extends DefaultController<Grade> {
 
     @Override
     public void refreshTable() {
+        professors.setAll(iterableToList(service.findAllProfessor()));
+        students.setAll(iterableToList(service.findAllStudent()));
+        homeworks.setAll(iterableToList(service.findAllHomework()));
         gradeTable.refresh();
     }
 }

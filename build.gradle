@@ -8,7 +8,7 @@ plugins {
 
 version '1.0-SNAPSHOT'
 
-/*sourceCompatibility = 1.11 */
+//sourceCompatibility = 1.11
 
 repositories {
     mavenCentral()
@@ -23,12 +23,17 @@ dependencies {
     compile group: 'org.controlsfx', name: 'controlsfx', version: '8.0.5'
     compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.1'
     compile group: 'com.itextpdf', name: 'itextpdf', version: '5.0.6'
-    //implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile group: 'com.jfoenix', name: 'jfoenix', version: '9.0.9'
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
+    compile group: 'de.jensd', name: 'fontawesomefx-commons', version: '9.1.2'
+    compile 'de.jensd:fontawesomefx-fontawesome:4.7.0-9.1.2'
+    compile 'de.jensd:fontawesomefx-materialdesignfont:2.0.26-9.1.2'
+    compile 'de.jensd:fontawesomefx-materialicons:2.2.0-9.1.2'
 }
 
 javafx {
     version = "11.0.2"
-    modules = [ 'javafx.controls' , 'javafx.fxml']
+    modules = ['javafx.controls', 'javafx.fxml']
 }
 
 test {

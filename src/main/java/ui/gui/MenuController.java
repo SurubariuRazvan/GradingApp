@@ -1,10 +1,5 @@
 package ui.gui;
 
-import domain.Grade;
-import domain.Homework;
-import domain.Professor;
-import domain.Student;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TabPane;
@@ -21,10 +16,6 @@ public class MenuController implements Initializable {
     public VBox gradeTab;
     public VBox reportTab;
     public TabPane menuTab;
-    protected ObservableList<Homework> allHomeworks;
-    protected ObservableList<Student> allStudents;
-    protected ObservableList<Professor> allProfessors;
-    protected ObservableList<Grade> allGrades;
     @FXML
     HomeworkController homeworkTabController;
     @FXML
@@ -39,12 +30,12 @@ public class MenuController implements Initializable {
 
     public void setService(ServiceManager service) {
         this.service = service;
-        allHomeworks = homeworkTabController.setService(service);
-        allProfessors = professorTabController.setService(service);
-        allStudents = studentTabController.setService(service);
-        allGrades = gradeTabController.setService(service);
+        homeworkTabController.setService(service);
+        professorTabController.setService(service);
+        studentTabController.setService(service);
+        gradeTabController.setService(service);
         reportTabController.setService(service);
-        //TODO refresh tables on tab change
+        
     }
 
     @Override

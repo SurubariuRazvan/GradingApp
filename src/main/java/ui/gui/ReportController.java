@@ -154,8 +154,7 @@ public class ReportController extends DefaultController<Student> {
     }
 
     public void showGradesAverage(ActionEvent actionEvent) {
-        setEntities(service.findAllStudent());
-        studentTable1.setItems(entities);
+        studentTable1.setItems(iterableToObservableList(service.findAllStudent()));
         gradesAveragePane1.toFront();
 
         HashMap<Double, Integer> chartData = new HashMap<>();
@@ -172,9 +171,8 @@ public class ReportController extends DefaultController<Student> {
         chartData.entrySet().stream()
                 .sorted(Comparator.comparingDouble(Map.Entry::getKey))
                 .forEach(z -> {
-                    //System.out.println(z);
                     count[0] += z.getValue();
-                    series.getData().add(new XYChart.Data<Double, Integer>(z.getKey(), count[0]));
+                    series.getData().add(new XYChart.Data<>(z.getKey(), count[0]));
                 });
 
         chart1.getData().set(0, series);
@@ -183,7 +181,7 @@ public class ReportController extends DefaultController<Student> {
     public void showOnTimeHomeworks(ActionEvent actionEvent) {
         Iterable<Grade> grades = service.findAllGrade();
         Iterable<Student> students = service.findAllStudent();
-        List<Student> onTimestudents = StreamSupport.stream(students.spliterator(), false)
+        List<Student> onTimeStudents = StreamSupport.stream(students.spliterator(), false)
                 .filter(student -> {
                     for (Grade grade : grades)
                         if (grade.getId().getStudentId().equals(student.getId())) {
@@ -193,14 +191,13 @@ public class ReportController extends DefaultController<Student> {
                         }
                     return true;
                 }).collect(Collectors.toList());
-        setEntities(onTimestudents);
-        studentTable2.setItems(entities);
+        studentTable2.setItems(FXCollections.observableList(onTimeStudents));
         onTimeHomeworksPane2.toFront();
 
         long totalStudents = StreamSupport.stream(students.spliterator(), false).count();
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Studenti intarziati", totalStudents - onTimestudents.size()),
-                new PieChart.Data("Studenti punctuali", onTimestudents.size()));
+                new PieChart.Data("Studenti intarziati", totalStudents - onTimeStudents.size()),
+                new PieChart.Data("Studenti punctuali", onTimeStudents.size()));
 
         pie2.setData(pieChartData);
     }
@@ -211,8 +208,7 @@ public class ReportController extends DefaultController<Student> {
         List<Student> filteredStudents = StreamSupport.stream(service.findAllStudent().spliterator(), false)
                 .filter(student -> getGradesAverage(student, grades) > 4)
                 .collect(Collectors.toList());
-        setEntities(filteredStudents);
-        studentTable3.setItems(entities);
+        studentTable3.setItems(FXCollections.observableList(filteredStudents));
         examEntryPane3.toFront();
 
         long totalStudents = StreamSupport.stream(students.spliterator(), false).count();

@@ -1,6 +1,7 @@
 package ui.gui;
 
-import domain.Grade;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import domain.Homework;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -8,12 +9,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import repository.RepositoryException;
-import ui.utility.DateEditingCell;
-import ui.utility.TextAreaEditingCell;
 import validation.ValidationException;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -49,18 +47,16 @@ public class HomeworkController extends DefaultController<Homework> {
         homeworkTableDeadlineWeek.setCellValueFactory(new PropertyValueFactory<>("DeadlineWeek"));
         homeworkTableDeadlineWeek.setCellFactory(x -> integerConverter());
 
-        addButtonToTable(homeworkTableDelete, "Delete", (i, h) -> {
+        addButtonToTable(homeworkTableDelete, "deleteButton", () -> new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE_OUTLINE, "30"), (i, h) -> {
             service.deleteHomework(h.getId());
             entities.remove(h);
-            allEntities.remove(h);
         });
     }
 
     @Override
     protected void postInit() {
-        setEntities(service.findAllHomework());
+        entities = iterableToObservableList(service.findAllHomework());
         homeworkTable.setItems(entities);
-        setAllEntities(service.findAllHomework());
 
         initSpinner(addStartWeek, 1, 14);
         initSpinner(addDeadlineWeek, 1, 14);
@@ -82,7 +78,6 @@ public class HomeworkController extends DefaultController<Homework> {
                 Homework h = new Homework(id, description, startWeek, deadlineWeek);
                 service.saveHomework(h);
                 entities.add(h);
-                allEntities.add(h);
                 updateAddFields();
             } catch (ValidationException e) {
                 showError("Eroare la adaugare", e.getMessage());
@@ -107,7 +102,7 @@ public class HomeworkController extends DefaultController<Homework> {
         Integer startWeek = searchStartWeek.getValue();
         Integer deadlineWeek = searchDeadlineWeek.getValue();
 
-        setEntities(StreamSupport.stream(service.findAllHomework().spliterator(), false)
+        entities.setAll(StreamSupport.stream(service.findAllHomework().spliterator(), false)
                 .filter(h -> (id == null || h.getId().toString().contains(id.toString())) &&
                         (h.getDescription().contains(description)) &&
                         ((startWeek == null) || (startWeek == 0) || h.getStartWeek().toString().contains(startWeek.toString())) &&
@@ -136,7 +131,6 @@ public class HomeworkController extends DefaultController<Homework> {
 
             try {
                 service.updateHomework(homework.getId(), homework);
-                allEntities.set(allEntities.indexOf(backupHomework), new Homework(homework));
             } catch (ValidationException | RepositoryException e) {
                 showError("Eroare", e.getMessage());
                 entities.set(event.getTablePosition().getRow(), backupHomework);

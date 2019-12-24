@@ -1,5 +1,7 @@
 package ui.gui;
 
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import domain.Professor;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -49,18 +51,16 @@ public class ProfessorController extends DefaultController<Professor> {
         professorTableEmail.setCellValueFactory(new PropertyValueFactory<>("Email"));
         professorTableEmail.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        addButtonToTable(professorTableDelete, "Delete", (i, p) -> {
+        addButtonToTable(professorTableDelete, "deleteButton", () -> new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE_OUTLINE, "30"), (i, p) -> {
             service.deleteProfessor(p.getId());
             entities.remove(p);
-            allEntities.remove(p);
         });
     }
 
     @Override
     protected void postInit() {
-        setEntities(service.findAllProfessor());
+        entities = iterableToObservableList(service.findAllProfessor());
         professorTable.setItems(entities);
-        setAllEntities(service.findAllProfessor());
 
         clearFields(null);
         updateAddFields();
@@ -77,7 +77,6 @@ public class ProfessorController extends DefaultController<Professor> {
                 Professor h = new Professor(id, familyName, firstName, email);
                 service.saveProfessor(h);
                 entities.add(h);
-                allEntities.add(h);
                 updateAddFields();
             } catch (ValidationException e) {
                 showError("Eroare la adaugare", e.getMessage());
@@ -99,7 +98,7 @@ public class ProfessorController extends DefaultController<Professor> {
         String firstName = searchFirstName.getText();
         String email = searchEmail.getText();
 
-        setEntities(StreamSupport.stream(service.findAllProfessor().spliterator(), false)
+        entities.setAll(StreamSupport.stream(service.findAllProfessor().spliterator(), false)
                 .filter(h -> (id == null || h.getId().toString().contains(id.toString())) &&
                         (familyName == null || h.getFamilyName().contains(familyName)) &&
                         ((firstName == null) || h.getFirstName().contains(firstName)) &&
@@ -128,7 +127,6 @@ public class ProfessorController extends DefaultController<Professor> {
 
             try {
                 service.updateProfessor(professor.getId(), professor);
-                allEntities.set(allEntities.indexOf(backupProfessor), new Professor(professor));
             } catch (ValidationException | RepositoryException e) {
                 showError("Eroare", e.getMessage());
                 entities.set(event.getTablePosition().getRow(), backupProfessor);

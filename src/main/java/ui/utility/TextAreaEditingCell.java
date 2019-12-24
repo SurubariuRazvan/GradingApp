@@ -2,6 +2,7 @@ package ui.utility;
 
 import domain.Entity;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
@@ -38,10 +39,7 @@ public class TextAreaEditingCell<E extends Entity, T> extends TableCell<E, Strin
             setGraphic(null);
         } else {
             if (isEditing()) {
-                if (textArea != null) {
-                    textArea.setText(getString());
-                    //setGraphic(null);
-                }
+                if (textArea != null) textArea.setText(getString());
                 setText(null);
                 setGraphic(textArea);
             } else {

@@ -1,5 +1,14 @@
 package ui.gui;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXSpinner;
+import de.jensd.fx.glyphs.GlyphIcon;
+import de.jensd.fx.glyphs.GlyphIcons;
+import de.jensd.fx.glyphs.GlyphsBuilder;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import domain.Entity;
 import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
@@ -10,6 +19,8 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
@@ -21,15 +32,17 @@ import repository.RepositoryException;
 import serviceManager.ServiceManager;
 import validation.ValidationException;
 
+import java.awt.event.FocusEvent;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public abstract class DefaultController<E extends Entity> implements Initializable {
     protected MenuController menuController;
     protected ObservableList<E> entities;
-    protected ObservableList<E> allEntities;
     protected ServiceManager service;
     protected CleranceLevel cleranceLevel;
 
@@ -40,7 +53,7 @@ public abstract class DefaultController<E extends Entity> implements Initializab
         });
     }
 
-    public void init(MenuController menuController) {
+    void init(MenuController menuController) {
         this.menuController = menuController;
     }
 
@@ -48,27 +61,21 @@ public abstract class DefaultController<E extends Entity> implements Initializab
 
     protected abstract void postInit();
 
-    public ObservableList<E> setService(ServiceManager service) {
-        entities = FXCollections.observableArrayList();
-        allEntities = FXCollections.observableArrayList();
+    public void setService(ServiceManager service) {
         this.service = service;
         postInit();
-        return allEntities;
     }
 
-    protected void setEntities(Iterable<E> entities) {
-        this.entities.setAll(StreamSupport
-                .stream(entities.spliterator(), false)
-                .collect(Collectors.toList()));
+    protected <EE> List<EE> iterableToList(Iterable<EE> entities) {
+        return StreamSupport.stream(entities.spliterator(), false)
+                .collect(Collectors.toList());
     }
 
-    protected void setAllEntities(Iterable<E> entities) {
-        this.allEntities.setAll(StreamSupport
-                .stream(entities.spliterator(), false)
-                .collect(Collectors.toList()));
+    protected <EE> ObservableList<EE> iterableToObservableList(Iterable<EE> entities) {
+        return FXCollections.observableList(iterableToList(entities));
     }
 
-    public <EE extends Entity> void makeAutoCompleBox(ComboBox<EE> cb, ObservableList<EE> list) {
+    public <EE extends Entity> void makeAutoCompleteBox(ComboBox<EE> cb, ObservableList<EE> list) {
         cb.setConverter(new StringConverter<>() {
             @Override
             public String toString(EE item) {
@@ -81,12 +88,18 @@ public abstract class DefaultController<E extends Entity> implements Initializab
             public EE fromString(String string) {
                 if (string == null || string.equals(""))
                     return null;
-                //return cb.getItems().get(0);
                 return cb.getItems().stream().filter(item -> string.equals(item.toString())).findFirst().orElse(null);
             }
         });
 
         cb.setItems(list);
+        cb.getEditor().focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) {
+                EE newEntity = cb.getConverter().fromString(cb.getEditor().getText());
+                cb.getEditor().setText(cb.getConverter().toString(newEntity));
+            }
+        });
+
         SuggestionProvider<EE> provider = SuggestionProvider.create(list);
         new AutoCompletionTextFieldBinding<>(cb.getEditor(), provider);
 
@@ -113,7 +126,7 @@ public abstract class DefaultController<E extends Entity> implements Initializab
 
     protected void initSpinner(Spinner<Integer> s, Integer start, Integer end) {
         s.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(start, end, start));
-        s.setEditable(true);
+        s.getEditor().setAlignment(Pos.CENTER);
         s.getEditor().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER)
                 try {
@@ -122,9 +135,9 @@ public abstract class DefaultController<E extends Entity> implements Initializab
                     s.getEditor().textProperty().set(start.toString());
                 }
         });
+
     }
 
-    //TODO why does it work?
     protected TextFieldTableCell<E, Integer> integerConverter() {
         return this.genericConverter(Integer::parseInt);
     }
@@ -186,31 +199,55 @@ public abstract class DefaultController<E extends Entity> implements Initializab
         }
     }
 
-    public void removeBackground(KeyEvent inputMethodEvent) {
-        TextField tf = (TextField) inputMethodEvent.getSource();
-        tf.setStyle("-fx-control-inner-background: white");
+    private void buttonSetup(JFXButton btn, String styleClass, TableView<E> tableView, int index, BiConsumer<Integer, E> onAction) {
+        btn.getStyleClass().add(styleClass);
+        btn.setButtonType(JFXButton.ButtonType.RAISED);
+        btn.setContentDisplay(ContentDisplay.CENTER);
+        btn.setOnAction((ActionEvent event) -> {
+            E entity = tableView.getItems().get(index);
+            try {
+                onAction.accept(index, entity);
+            } catch (ValidationException | RepositoryException e) {
+                showError("Eroare", e.getMessage());
+            }
+        });
     }
 
-    protected void addButtonToTable(TableColumn<E, Void> tc, String text, BiConsumer<Integer, E> function) {
+    protected void addButtonToTable(TableColumn<E, Void> tc, String styleClass, String text, BiConsumer<Integer, E> onAction) {
         tc.setCellFactory(new Callback<>() {
             @Override
             public TableCell<E, Void> call(final TableColumn<E, Void> param) {
                 return new TableCell<>() {
-                    private final Button btn = new Button(text);
+                    private final JFXButton btn = new JFXButton(text);
 
                     {
-                        //TODO CSS
-                        btn.setId(text);
-                        btn.setPadding(new Insets(4));
-                        btn.setMaxSize(100, 40);
-                        btn.setOnAction((ActionEvent event) -> {
-                            E entity = getTableView().getItems().get(getIndex());
-                            try {
-                                function.accept(getIndex(), entity);
-                            } catch (ValidationException | RepositoryException e) {
-                                showError("Eroare", e.getMessage());
-                            }
-                        });
+                        buttonSetup(btn, styleClass, getTableView(), getIndex(), onAction);
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+            }
+        });
+    }
+
+    protected void addButtonToTable(TableColumn<E, Void> tc, String styleClass, Supplier<Node> graphic, BiConsumer<Integer, E> onAction) {
+        tc.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<E, Void> call(final TableColumn<E, Void> param) {
+                return new TableCell<>() {
+                    private final JFXButton btn = new JFXButton(" ");
+
+                    {
+                        btn.setGraphic(graphic.get());
+                        buttonSetup(btn, styleClass, getTableView(), getIndex(), onAction);
                     }
 
                     @Override

@@ -1,5 +1,6 @@
 package ui.utility;
 
+import com.jfoenix.controls.JFXComboBox;
 import domain.Entity;
 import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
@@ -7,14 +8,15 @@ import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TableCell;
 import javafx.util.StringConverter;
 
 public class ComboBoxEditingCell<E extends Entity, T> extends TableCell<E, T> {
-    ObservableList<T> data;
-    private ComboBox<T> comboBox;
+    private ObservableList<T> data;
+    private JFXComboBox<T> comboBox;
 
     public ComboBoxEditingCell(ObservableList<T> data) {
         this.data = data;
@@ -59,7 +61,7 @@ public class ComboBoxEditingCell<E extends Entity, T> extends TableCell<E, T> {
     }
 
     private void createComboBox() {
-        comboBox = new ComboBox<>(data);
+        comboBox = new JFXComboBox<>(data);
         comboBox.setEditable(true);
         comboBoxConverter(comboBox);
         comboBox.valueProperty().set(getT());
@@ -70,8 +72,9 @@ public class ComboBoxEditingCell<E extends Entity, T> extends TableCell<E, T> {
         });
 
         comboBox.getEditor().focusedProperty().addListener((observable, oldValue, newValue) -> Platform.runLater(comboBox.getEditor()::selectAll));
-
-        comboBox.setConverter(new StringConverter<T>() {
+        comboBox.getEditor().setAlignment(Pos.CENTER);
+        comboBox.getEditor().getStyleClass().add("tableTextField");
+        comboBox.setConverter(new StringConverter<>() {
             @Override
             public String toString(T item) {
                 if (item != null)
@@ -90,28 +93,22 @@ public class ComboBoxEditingCell<E extends Entity, T> extends TableCell<E, T> {
         SuggestionProvider<T> provider = SuggestionProvider.create(data);
         new AutoCompletionTextFieldBinding<>(comboBox.getEditor(), provider);
 
-        data.addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
-                System.out.println("listening");
-                provider.clearSuggestions();
-                provider.addPossibleSuggestions(data);
-            }
+        data.addListener((InvalidationListener) observable -> {
+            provider.clearSuggestions();
+            provider.addPossibleSuggestions(data);
         });
     }
 
     private void comboBoxConverter(ComboBox<T> comboBox) {
-        comboBox.setCellFactory(c -> {
-            return new ListCell<T>() {
-                @Override
-                protected void updateItem(T item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item == null || empty)
-                        setText(null);
-                    else
-                        setText(item.toString());
-                }
-            };
+        comboBox.setCellFactory(c -> new ListCell<>() {
+            @Override
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty)
+                    setText(null);
+                else
+                    setText(item.toString());
+            }
         });
     }
 

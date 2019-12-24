@@ -1,8 +1,11 @@
 package ui.gui;
 
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import domain.Professor;
 import domain.Student;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.*;
@@ -42,6 +45,8 @@ public class StudentController extends DefaultController<Student> {
     public TextField searchGroup;
     public TextField addGroup;
 
+    private ObservableList<Professor> professors;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         studentTableId.setCellValueFactory(new PropertyValueFactory<>("Id"));
@@ -58,25 +63,25 @@ public class StudentController extends DefaultController<Student> {
         studentTableEmail.setCellValueFactory(new PropertyValueFactory<>("Email"));
         studentTableEmail.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        studentTableProfessor.setCellValueFactory((TableColumn.CellDataFeatures<Student, Professor> param) -> new ReadOnlyObjectWrapper<>(service.findOneProfessor(param.getValue().getLabProfessorId())));
+        studentTableProfessor.setCellValueFactory((TableColumn.CellDataFeatures<Student, Professor> param) ->
+                new ReadOnlyObjectWrapper<>(service.findOneProfessor(param.getValue().getLabProfessorId())));
 
-        addButtonToTable(studentTableDelete, "Delete", (i, p) -> {
+        addButtonToTable(studentTableDelete, "deleteButton", () -> new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE_OUTLINE, "30"), (i, p) -> {
             service.deleteStudent(p.getId());
             entities.remove(p);
-            allEntities.remove(p);
         });
     }
 
     @Override
     protected void postInit() {
-        setEntities(service.findAllStudent());
+        entities = iterableToObservableList(service.findAllStudent());
         studentTable.setItems(entities);
-        setAllEntities(service.findAllStudent());
 
-        studentTableProfessor.setCellFactory((TableColumn<Student, Professor> param) -> new ComboBoxEditingCell<>(menuController.allProfessors));
+        professors = iterableToObservableList(service.findAllProfessor());
+        studentTableProfessor.setCellFactory((TableColumn<Student, Professor> param) -> new ComboBoxEditingCell<>(professors));
 
-        makeAutoCompleBox(searchProfessorName, menuController.allProfessors);
-        makeAutoCompleBox(addProfessorName, menuController.allProfessors);
+        makeAutoCompleteBox(searchProfessorName, professors);
+        makeAutoCompleteBox(addProfessorName, professors);
 
         clearFields(null);
         updateAddFields();
@@ -102,7 +107,6 @@ public class StudentController extends DefaultController<Student> {
                         Student h = new Student(id, familyName, firstName, group, email, labProfessorId);
                         service.saveStudent(h);
                         entities.add(h);
-                        allEntities.add(h);
                         updateAddFields();
                     } catch (ValidationException e) {
                         showError("Eroare la adaugare", e.getMessage());
@@ -130,7 +134,7 @@ public class StudentController extends DefaultController<Student> {
         String email = searchEmail.getText();
         Professor professor = searchProfessorName.getValue();
 
-        setEntities(StreamSupport.stream(service.findAllStudent().spliterator(), false)
+        entities.setAll(StreamSupport.stream(service.findAllStudent().spliterator(), false)
                 .filter(h -> (id == null || h.getId().toString().contains(id.toString())) &&
                         (familyName == null || h.getFamilyName().contains(familyName)) &&
                         (group == null || h.getGroup().toString().contains(group.toString())) &&
@@ -167,7 +171,6 @@ public class StudentController extends DefaultController<Student> {
                         break;
                 }
                 service.updateStudent(student.getId(), student);
-                allEntities.set(allEntities.indexOf(backupStudent), new Student(student));
             } catch (ValidationException | RepositoryException e) {
                 showError("Eroare", e.getMessage());
                 entities.set(event.getTablePosition().getRow(), backupStudent);
@@ -189,6 +192,7 @@ public class StudentController extends DefaultController<Student> {
 
     @Override
     public void refreshTable() {
+        professors.setAll(iterableToList(service.findAllProfessor()));
         studentTable.refresh();
     }
 }

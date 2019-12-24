@@ -1,14 +1,18 @@
 package ui.gui;
 
-import javafx.application.Application;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
+import config.ApplicationContext;
+import domain.User;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import repository.sql.UserPostgreSQLRepository;
 import serviceManager.ServiceManager;
 
 import java.io.IOException;
@@ -17,32 +21,73 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
-    private ServiceManager service;
+    public JFXTextField logInUsername;
+    public JFXPasswordField logInPassword;
+    public JFXButton logInButton;
     private Stage stage;
+    private UserPostgreSQLRepository userRepo;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        String url = ApplicationContext.getPROPERTIES().getProperty("url");
+        String user = ApplicationContext.getPROPERTIES().getProperty("user");
+        String password = ApplicationContext.getPROPERTIES().getProperty("password");
+        try {
+            userRepo = new UserPostgreSQLRepository(url, user, password);
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void setService(ServiceManager service, Stage stage) {
-        this.service = service;
+    public void setStage(Stage stage) {
         this.stage = stage;
+        successfulLogIn(new User("admin", User.encodePassword("admin"), CleranceLevel.Admin));
     }
 
     public void logIn(ActionEvent actionEvent) {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/Menu.fxml"));
-            BorderPane rootLayout = loader.load();
-            MenuController controller = loader.getController();
-            controller.setService(service);
+        //userRepo.save(new User("student", User.encodePassword("student"), CleranceLevel.Student));
+        //userRepo.save(new User("professor", User.encodePassword("professor"), CleranceLevel.Professor));
+        //userRepo.save(new User("admin", User.encodePassword("admin"), CleranceLevel.Admin));
+        String username = logInUsername.getText();
+        String rawPassword = logInPassword.getText();
 
-            Scene scene = new Scene(rootLayout);
-            stage.setMinWidth(800);
-            stage.setMinHeight(400);
-            stage.setScene(scene);
-        } catch (IOException e) {
+        if (username.length() < 5 || username.length() > 50)
+            userNotFound();
+        else {
+            User user = userRepo.findUser(username);
+            if (user == null)
+                userNotFound();
+            else if (User.encodePassword(rawPassword).equals(user.getPassword()))
+                successfulLogIn(user);
+            else
+                wrongPassword();
+        }
+    }
+
+    private void userNotFound() {
+        logInUsername.getStyleClass().add("wrong-credentials");
+        logInPassword.getStyleClass().add("wrong-credentials");
+    }
+
+    private void wrongPassword() {
+        logInUsername.getStyleClass().remove("wrong-credentials");
+        logInPassword.getStyleClass().add("wrong-credentials");
+    }
+
+    private void successfulLogIn(User user) {
+        try {
+            stage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Menu.fxml"));
+            BorderPane root = loader.load();
+            MenuController controller = loader.getController();
+            controller.setService(new ServiceManager());
+
+            Stage newStage = new Stage(StageStyle.DECORATED);
+            newStage.setMinWidth(900);
+            newStage.setMinHeight(500);
+            newStage.setScene(new Scene(root));
+            newStage.show();
+        } catch (IOException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
