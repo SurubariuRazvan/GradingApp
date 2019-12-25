@@ -4,15 +4,16 @@ import domain.User;
 import ui.gui.CleranceLevel;
 import validation.ValidationException;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class UserPostgreSQLRepository {
     private Connection c;
 
-    public UserPostgreSQLRepository(String url, String user, String password) throws SQLException, ClassNotFoundException {
-        Class.forName("org.postgresql.Driver");
-        c = DriverManager.getConnection(url, user, password);
-
+    public UserPostgreSQLRepository(Connection c) {
+        this.c = c;
     }
 
     private String insertString(User user) {

@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
@@ -61,6 +62,7 @@ public class ReportController extends DefaultController<Student> {
     public PieChart pie3;
     public AreaChart<String, Double> chart4;
     public StackPane stackPane;
+    public GridPane bottom;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -71,6 +73,29 @@ public class ReportController extends DefaultController<Student> {
 
         chart1.getData().add(new XYChart.Series<>());
         chart4.getData().add(new XYChart.Series<>());
+    }
+
+    @Override
+    protected void postInit() {
+    }
+
+    @Override
+    protected void initAdminComponents() {
+
+    }
+
+    @Override
+    protected void initProfessorComponents() {
+    }
+
+    @Override
+    protected void initStudentComponents() {
+
+    }
+
+    @Override
+    protected void initAddComponents() {
+
     }
 
     private void initTable(TableColumn<Student, Integer> tc1, TableColumn<Student, String> tc2, TableColumn<Student, String> tc3, TableColumn<Student, Integer> tc4, TableColumn<Student, String> tc5, TableColumn<Student, Professor> tc6) {
@@ -118,17 +143,17 @@ public class ReportController extends DefaultController<Student> {
     private <E extends Entity> void addData(PdfPTable pdfTable, TableView<E> table, int nrRows, int nrColumns) {
         String[][] matrix = new String[nrRows][nrColumns];
         var columns = table.getColumns();
-        for (int j = 0; j < nrColumns; j++)
-            for (int i = 0; i < nrRows; i++)
+        for(int j = 0; j < nrColumns; j++)
+            for(int i = 0; i < nrRows; i++)
                 matrix[i][j] = columns.get(j).getCellData(i).toString();
-        for (int i = 0; i < nrRows; i++)
-            for (int j = 0; j < nrColumns; j++)
+        for(int i = 0; i < nrRows; i++)
+            for(int j = 0; j < nrColumns; j++)
                 pdfTable.addCell(matrix[i][j]);
     }
 
 
     private <E extends Entity> void addTableHeader(PdfPTable pdfTable, TableView<E> table) {
-        for (var column : table.getColumns()) {
+        for(var column : table.getColumns()) {
             PdfPCell header = new PdfPCell();
             header.setBackgroundColor(BaseColor.LIGHT_GRAY);
             header.setBorderWidth(2);
@@ -141,7 +166,7 @@ public class ReportController extends DefaultController<Student> {
     private Double getGradesAverage(Student student, Iterable<Grade> grades) {
         Double value = 0.0;
         Integer totalWeight = 0;
-        for (Grade grade : grades)
+        for(Grade grade : grades)
             if (grade.getId().getStudentId().equals(student.getId())) {
                 Homework homework = service.findOneHomework(grade.getId().getHomeworkId());
                 Integer weight = homework.getDeadlineWeek() - homework.getStartWeek();
@@ -158,7 +183,7 @@ public class ReportController extends DefaultController<Student> {
         gradesAveragePane1.toFront();
 
         HashMap<Double, Integer> chartData = new HashMap<>();
-        for (int i = 0; i < studentTable1.getItems().size(); i++) {
+        for(int i = 0; i < studentTable1.getItems().size(); i++) {
             Double givenGrade = studentTableGradesAverage1.getCellData(i);
             if (chartData.containsKey(givenGrade))
                 chartData.put(givenGrade, chartData.get(givenGrade) + 1);
@@ -183,7 +208,7 @@ public class ReportController extends DefaultController<Student> {
         Iterable<Student> students = service.findAllStudent();
         List<Student> onTimeStudents = StreamSupport.stream(students.spliterator(), false)
                 .filter(student -> {
-                    for (Grade grade : grades)
+                    for(Grade grade : grades)
                         if (grade.getId().getStudentId().equals(student.getId())) {
                             Homework homework = service.findOneHomework(grade.getId().getHomeworkId());
                             if (service.getWeek(grade.getHandOverDate()) > homework.getDeadlineWeek())
@@ -222,7 +247,7 @@ public class ReportController extends DefaultController<Student> {
     public void showHardestHomework(ActionEvent actionEvent) {
         Iterable<Grade> grades = service.findAllGrade();
         Map<Integer, Pair<Double, Integer>> data = new HashMap<>();
-        for (Grade grade : grades) {
+        for(Grade grade : grades) {
             Integer id = grade.getId().getHomeworkId();
             if (data.containsKey(id)) {
                 Pair<Double, Integer> value = data.get(id);
@@ -241,10 +266,6 @@ public class ReportController extends DefaultController<Student> {
         sortedHomeworks.forEach(x -> series.getData().add(new XYChart.Data<String, Double>(service.findOneHomework(x.getKey()).toString(), x.getValue())));
 
         chart4.getData().set(0, series);
-    }
-
-    @Override
-    protected void postInit() {
     }
 
     public void saveGradesAverageToPdf(ActionEvent actionEvent) {

@@ -4,13 +4,14 @@ import domain.Grade;
 import domain.GradeId;
 import validation.Validator;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class GradePostgreSQLRepository extends AbstractPostgreSQLRepository<GradeId, Grade> {
-    public GradePostgreSQLRepository(Validator<Grade> validator, String url, String user, String password) throws SQLException, ClassNotFoundException {
-        super(validator, url, user, password);
+    public GradePostgreSQLRepository(Validator<Grade> validator, Connection c) {
+        super(validator, c);
     }
 
     @Override

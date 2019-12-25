@@ -281,7 +281,7 @@
 
 .tab {
     -fx-background-color: -fx-primary;
-    -fx-pref-height: 60;
+    -fx-pref-height: 42;
     -fx-pref-width: 150;
 }
 
@@ -375,7 +375,7 @@
 }
 
 /*cancel disabled look*/
-* :disabled {
+.text-field :disabled, .combo-box:disabled {
     -fx-opacity: 1;
 }
 

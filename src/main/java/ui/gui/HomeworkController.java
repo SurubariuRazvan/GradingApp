@@ -8,6 +8,7 @@ import javafx.event.Event;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.GridPane;
 import repository.RepositoryException;
 import validation.ValidationException;
 
@@ -33,18 +34,33 @@ public class HomeworkController extends DefaultController<Homework> {
     public TableColumn<Homework, Integer> homeworkTableStartWeek;
     public TableColumn<Homework, Integer> homeworkTableDeadlineWeek;
     public TableColumn<Homework, Void> homeworkTableDelete;
+    public GridPane bottom;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         homeworkTableId.setCellValueFactory(new PropertyValueFactory<>("Id"));
-
         homeworkTableDescription.setCellValueFactory(new PropertyValueFactory<>("Description"));
-        homeworkTableDescription.setCellFactory(TextFieldTableCell.forTableColumn());
-
         homeworkTableStartWeek.setCellValueFactory(new PropertyValueFactory<>("StartWeek"));
-        homeworkTableStartWeek.setCellFactory(x -> integerConverter());
-
         homeworkTableDeadlineWeek.setCellValueFactory(new PropertyValueFactory<>("DeadlineWeek"));
+    }
+
+    @Override
+    protected void postInit() {
+        entities = iterableToObservableList(service.findAllHomework());
+        homeworkTable.setItems(entities);
+
+        initComponentsByClearance(bottom, CleranceLevel.Professor);
+    }
+
+    @Override
+    protected void initAdminComponents() {
+
+    }
+
+    @Override
+    protected void initProfessorComponents() {
+        homeworkTableDescription.setCellFactory(TextFieldTableCell.forTableColumn());
+        homeworkTableStartWeek.setCellFactory(x -> integerConverter());
         homeworkTableDeadlineWeek.setCellFactory(x -> integerConverter());
 
         addButtonToTable(homeworkTableDelete, "deleteButton", () -> new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE_OUTLINE, "30"), (i, h) -> {
@@ -54,17 +70,15 @@ public class HomeworkController extends DefaultController<Homework> {
     }
 
     @Override
-    protected void postInit() {
-        entities = iterableToObservableList(service.findAllHomework());
-        homeworkTable.setItems(entities);
-
-        initSpinner(addStartWeek, 1, 14);
-        initSpinner(addDeadlineWeek, 1, 14);
+    protected void initStudentComponents() {
         initSpinner(searchStartWeek, 0, 14);
         initSpinner(searchDeadlineWeek, 0, 14);
+    }
 
-        clearFields(null);
-        updateAddFields();
+    @Override
+    protected void initAddComponents() {
+        initSpinner(addStartWeek, 1, 14);
+        initSpinner(addDeadlineWeek, 1, 14);
     }
 
     @Override

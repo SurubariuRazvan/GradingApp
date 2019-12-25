@@ -6,7 +6,7 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="900.0" stylesheets="@../css/Menu.css"
             xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="ui.gui.MenuController">
     <center>
-        <JFXTabPane fx:id="menuTab">
+        <JFXTabPane fx:id="menuTable">
             <Tab fx:id="homeworkTabId" text="Teme">
                 <fx:include fx:id="homeworkTab" source="HomeworkTab.fxml"/>
             </Tab>
@@ -19,7 +19,7 @@
             <Tab fx:id="gradeTabId" text="Note">
                 <fx:include fx:id="gradeTab" source="GradeTab.fxml"/>
             </Tab>
-            <Tab text="Rapoarte">
+            <Tab fx:id="reportTabId" text="Rapoarte">
                 <fx:include fx:id="reportTab" source="ReportTab.fxml"/>
             </Tab>
         </JFXTabPane>

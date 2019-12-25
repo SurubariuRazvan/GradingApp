@@ -6,7 +6,10 @@ import repository.RepositoryException;
 import validation.ValidationException;
 import validation.Validator;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +18,9 @@ public abstract class AbstractPostgreSQLRepository<ID, E extends Entity<ID>> imp
     private Connection c;
     private Validator<E> validator;
 
-    AbstractPostgreSQLRepository(Validator<E> validator, String url, String user, String password) throws SQLException, ClassNotFoundException {
+    AbstractPostgreSQLRepository(Validator<E> validator, Connection c) {
         this.validator = validator;
-        Class.forName("org.postgresql.Driver");
-        c = DriverManager.getConnection(url,user,password);
-        //c.close();
+        this.c = c;
     }
 
     protected abstract E readEntity(ResultSet result) throws SQLException;

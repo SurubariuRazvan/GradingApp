@@ -5,15 +5,20 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" prefHeight="500.0" prefWidth="800.0"
+      styleClass="tab-content"
       stylesheets="@../css/Menu.css" xmlns="http://javafx.com/javafx/8.0.171"
-      fx:controller="ui.gui.ReportController" styleClass="tab-content">
+      fx:controller="ui.gui.ReportController">
     <StackPane fx:id="stackPane">
         <VBox fx:id="gradesAveragePane1" alignment="CENTER" styleClass="paintedBackground">
             <VBox alignment="CENTER">
                 <TableView fx:id="studentTable1" editable="true">
                     <columns>
                         <TableColumn fx:id="studentTableId1" maxWidth="35.0" minWidth="35.0" prefWidth="35.0"
-                                     resizable="false" text="ID"/>
+                                     resizable="false" text="ID">
+                            <graphic>
+                                <Region prefHeight="42.0" prefWidth="0.0"/>
+                            </graphic>
+                        </TableColumn>
                         <TableColumn fx:id="studentTableFamilyName1" maxWidth="100.0" minWidth="100.0" prefWidth="100.0"
                                      resizable="false" text="Nume"/>
                         <TableColumn fx:id="studentTableFirstName1" maxWidth="100.0" minWidth="100.0" prefWidth="100.0"
@@ -47,7 +52,11 @@
                 <TableView fx:id="studentTable2" editable="true">
                     <columns>
                         <TableColumn fx:id="studentTableId2" maxWidth="35.0" minWidth="35.0" prefWidth="35.0"
-                                     resizable="false" text="ID"/>
+                                     resizable="false" text="ID">
+                            <graphic>
+                                <Region prefHeight="42.0" prefWidth="0.0"/>
+                            </graphic>
+                        </TableColumn>
                         <TableColumn fx:id="studentTableFamilyName2" maxWidth="100.0" minWidth="100.0" prefWidth="100.0"
                                      resizable="false" text="Nume"/>
                         <TableColumn fx:id="studentTableFirstName2" maxWidth="100.0" minWidth="100.0" prefWidth="100.0"
@@ -72,7 +81,11 @@
                 <TableView fx:id="studentTable3" editable="true">
                     <columns>
                         <TableColumn fx:id="studentTableId3" maxWidth="35.0" minWidth="35.0" prefWidth="35.0"
-                                     resizable="false" text="ID"/>
+                                     resizable="false" text="ID">
+                            <graphic>
+                                <Region prefHeight="42.0" prefWidth="0.0"/>
+                            </graphic>
+                        </TableColumn>
                         <TableColumn fx:id="studentTableFamilyName3" maxWidth="100.0" minWidth="100.0" prefWidth="100.0"
                                      resizable="false" text="Nume"/>
                         <TableColumn fx:id="studentTableFirstName3" maxWidth="100.0" minWidth="100.0" prefWidth="100.0"

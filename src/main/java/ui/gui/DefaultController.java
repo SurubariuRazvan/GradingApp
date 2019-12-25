@@ -18,6 +18,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
@@ -36,7 +37,7 @@ public abstract class DefaultController<E extends Entity> implements Initializab
     protected MenuController menuController;
     protected ObservableList<E> entities;
     protected ServiceManager service;
-    protected User user;
+    User user;
 
     public static void addTextLimiter(final TextField tf, final int maxLength) {
         tf.textProperty().addListener((ov, oldValue, newValue) -> {
@@ -68,7 +69,7 @@ public abstract class DefaultController<E extends Entity> implements Initializab
         return FXCollections.observableList(iterableToList(entities));
     }
 
-    public <EE extends Entity> void makeAutoCompleteBox(ComboBox<EE> cb, ObservableList<EE> list) {
+    protected <EE extends Entity> void makeAutoCompleteBox(ComboBox<EE> cb, ObservableList<EE> list) {
         cb.setConverter(new StringConverter<>() {
             @Override
             public String toString(EE item) {
@@ -102,19 +103,19 @@ public abstract class DefaultController<E extends Entity> implements Initializab
         });
     }
 
-    public void addEntity(ActionEvent actionEvent) {
+    protected void addEntity(ActionEvent actionEvent) {
     }
 
-    public void searchEntity(Event actionEvent) {
+    protected void searchEntity(Event actionEvent) {
     }
 
-    public void updateEntity(TableColumn.CellEditEvent<E, Object> event) {
+    protected void updateEntity(TableColumn.CellEditEvent<E, Object> event) {
     }
 
-    public void clearFields(ActionEvent actionEvent) {
+    protected void clearFields(ActionEvent actionEvent) {
     }
 
-    public void updateAddFields() {
+    protected void updateAddFields() {
     }
 
     protected void initSpinner(Spinner<Integer> s, Integer start, Integer end) {
@@ -160,12 +161,12 @@ public abstract class DefaultController<E extends Entity> implements Initializab
         return cell;
     }
 
+    //TODO Dialog Box
     protected void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText("Eroare");
 
-        //TODO CSS
         Text text = new Text(message);
         alert.getDialogPane().setContent(text);
         alert.getDialogPane().setPadding(new Insets(0, 5, 0, 10));
@@ -255,5 +256,37 @@ public abstract class DefaultController<E extends Entity> implements Initializab
                 };
             }
         });
+    }
+
+    protected abstract void initAdminComponents();
+
+    protected abstract void initProfessorComponents();
+
+    protected abstract void initStudentComponents();
+
+    protected abstract void initAddComponents();
+
+    private void removeAddRow(GridPane gp) {
+        gp.getChildren().removeIf(node -> GridPane.getRowIndex(node) == 2 || GridPane.getRowIndex(node) == 3);
+        gp.getRowConstraints().get(2).setMinHeight(0);
+        gp.getRowConstraints().get(2).setPrefHeight(0);
+    }
+
+    protected void initComponentsByClearance(GridPane gp, CleranceLevel minClearanceForAdding) {
+        if (user.getCleranceLevel().ordinal() <= CleranceLevel.Student.ordinal())
+            initStudentComponents();
+        if (user.getCleranceLevel().ordinal() <= CleranceLevel.Professor.ordinal())
+            initProfessorComponents();
+        if (user.getCleranceLevel().ordinal() <= CleranceLevel.Admin.ordinal())
+            initAdminComponents();
+
+        if (user.getCleranceLevel().ordinal() > minClearanceForAdding.ordinal())
+            removeAddRow(gp);
+        else {
+            initAddComponents();
+            updateAddFields();
+        }
+
+        clearFields(null);
     }
 }

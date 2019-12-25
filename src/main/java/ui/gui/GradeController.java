@@ -53,11 +53,12 @@ public class GradeController extends DefaultController<Grade> {
     public GridPane addGivenGradeGrid;
     public Spinner<Integer> motivatedWeeks;
     public Spinner<Integer> lateWeeks;
-    public ObservableList<Professor> professors;
-    public ObservableList<Student> students;
-    public ObservableList<Homework> homeworks;
     public GridPane bottom;
+
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private ObservableList<Professor> professors;
+    private ObservableList<Student> students;
+    private ObservableList<Homework> homeworks;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -69,7 +70,14 @@ public class GradeController extends DefaultController<Grade> {
         gradeTableFeedback.setCellValueFactory(new PropertyValueFactory<>("Feedback"));
     }
 
-    private void initAddComponents() {
+    public void postInit() {
+        entities = iterableToObservableList(service.findAllGrade());
+        gradeTable.setItems(entities);
+
+        initComponentsByClearance(bottom, CleranceLevel.Professor);
+    }
+
+    protected void initAddComponents() {
         addGivenGrade.focusedProperty().addListener((observable, oldValue, newValue) -> focusState(newValue));
         makeAutoCompleteBox(addProfessorName, professors);
         makeAutoCompleteBox(addHomeworkId, homeworks);
@@ -82,39 +90,10 @@ public class GradeController extends DefaultController<Grade> {
         });
     }
 
-    public void postInit() {
-        entities = iterableToObservableList(service.findAllGrade());
-        gradeTable.setItems(entities);
-
-        if (user.getCleranceLevel().ordinal() <= CleranceLevel.Student.ordinal())
-            initStudentComponents();
-        if (user.getCleranceLevel().ordinal() <= CleranceLevel.Professor.ordinal())
-            initProfessorComponents();
-        if (user.getCleranceLevel().ordinal() <= CleranceLevel.Admin.ordinal())
-            initAdminComponents();
-
-        if (user.getCleranceLevel().ordinal() >= CleranceLevel.Student.ordinal())
-            removeAddRow();
-        clearFields(null);
+    protected void initAdminComponents() {
     }
 
-    private void removeAddRow() {
-        bottom.getChildren().forEach(node -> {
-            if (GridPane.getRowIndex(node) == 2 || GridPane.getRowIndex(node) == 3) {
-                node.setDisable(true);
-                node.setVisible(false);
-                node.setManaged(false);
-            }
-        });
-        bottom.getRowConstraints().get(2).setMinHeight(0);
-        bottom.getRowConstraints().get(2).setPrefHeight(0);
-    }
-
-
-    private void initAdminComponents() {
-    }
-
-    private void initProfessorComponents() {
+    protected void initProfessorComponents() {
         gradeTableGivenGrade.setCellFactory(x -> doubleConverter());
         gradeTableFeedback.setCellFactory((TableColumn<Grade, String> param) -> new TextAreaEditingCell<>());
         gradeTableHandOverDate.setCellFactory((TableColumn<Grade, LocalDate> param) -> new DateEditingCell<>(dateFormatter));
@@ -123,11 +102,9 @@ public class GradeController extends DefaultController<Grade> {
             service.deleteGrade(g.getId());
             entities.remove(g);
         });
-        initAddComponents();
-        updateAddFields();
     }
 
-    private void initStudentComponents() {
+    protected void initStudentComponents() {
         professors = iterableToObservableList(service.findAllProfessor());
         homeworks = iterableToObservableList(service.findAllHomework());
         students = iterableToObservableList(service.findAllStudent());
@@ -297,20 +274,26 @@ public class GradeController extends DefaultController<Grade> {
     }
 
     private void focusState(boolean value) {
-        if (value)
+        if (value) {
             addGivenGradeGrid.setVisible(true);
-        else if (!addGivenGradeGrid.isHover())
+            addGivenGradeGrid.setDisable(false);
+        } else if (!addGivenGradeGrid.isHover()) {
             addGivenGradeGrid.setVisible(false);
+            addGivenGradeGrid.setDisable(true);
+        }
     }
 
     public void openAddGivenGradeGrid(MouseEvent mouseEvent) {
         addGivenGradeGrid.setVisible(true);
+        addGivenGradeGrid.setDisable(false);
     }
 
 
     public void closeAddGivenGradeGrid(MouseEvent mouseEvent) {
-        if (!addGivenGrade.focusedProperty().get())
+        if (!addGivenGrade.focusedProperty().get()) {
             addGivenGradeGrid.setVisible(false);
+            addGivenGradeGrid.setDisable(true);
+        }
     }
 
     @Override

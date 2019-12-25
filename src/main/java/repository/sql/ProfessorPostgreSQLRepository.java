@@ -3,12 +3,13 @@ package repository.sql;
 import domain.Professor;
 import validation.Validator;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ProfessorPostgreSQLRepository extends AbstractPostgreSQLRepository<Integer, Professor> {
-    public ProfessorPostgreSQLRepository(Validator<Professor> validator, String url, String user, String password) throws SQLException, ClassNotFoundException {
-        super(validator, url, user, password);
+    public ProfessorPostgreSQLRepository(Validator<Professor> validator, Connection c) {
+        super(validator, c);
     }
 
     @Override

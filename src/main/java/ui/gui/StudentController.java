@@ -11,6 +11,7 @@ import javafx.event.Event;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.GridPane;
 import repository.RepositoryException;
 import ui.utility.ComboBoxEditingCell;
 import validation.ValidationException;
@@ -44,32 +45,19 @@ public class StudentController extends DefaultController<Student> {
     public ComboBox<Professor> addProfessorName;
     public TextField searchGroup;
     public TextField addGroup;
+    public GridPane bottom;
 
     private ObservableList<Professor> professors;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         studentTableId.setCellValueFactory(new PropertyValueFactory<>("Id"));
-
         studentTableFamilyName.setCellValueFactory(new PropertyValueFactory<>("FamilyName"));
-        studentTableFamilyName.setCellFactory(TextFieldTableCell.forTableColumn());
-
         studentTableFirstName.setCellValueFactory(new PropertyValueFactory<>("FirstName"));
-        studentTableFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
-
         studentTableGroup.setCellValueFactory(new PropertyValueFactory<>("Group"));
-        studentTableGroup.setCellFactory(x -> integerConverter());
-
         studentTableEmail.setCellValueFactory(new PropertyValueFactory<>("Email"));
-        studentTableEmail.setCellFactory(TextFieldTableCell.forTableColumn());
-
         studentTableProfessor.setCellValueFactory((TableColumn.CellDataFeatures<Student, Professor> param) ->
                 new ReadOnlyObjectWrapper<>(service.findOneProfessor(param.getValue().getLabProfessorId())));
-
-        addButtonToTable(studentTableDelete, "deleteButton", () -> new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE_OUTLINE, "30"), (i, p) -> {
-            service.deleteStudent(p.getId());
-            entities.remove(p);
-        });
     }
 
     @Override
@@ -77,14 +65,36 @@ public class StudentController extends DefaultController<Student> {
         entities = iterableToObservableList(service.findAllStudent());
         studentTable.setItems(entities);
 
-        professors = iterableToObservableList(service.findAllProfessor());
+        initComponentsByClearance(bottom, CleranceLevel.Admin);
+    }
+
+    @Override
+    protected void initAdminComponents() {
+        studentTableFamilyName.setCellFactory(TextFieldTableCell.forTableColumn());
+        studentTableFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
+        studentTableGroup.setCellFactory(x -> integerConverter());
+        studentTableEmail.setCellFactory(TextFieldTableCell.forTableColumn());
         studentTableProfessor.setCellFactory((TableColumn<Student, Professor> param) -> new ComboBoxEditingCell<>(professors));
+        addButtonToTable(studentTableDelete, "deleteButton", () -> new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE_OUTLINE, "30"), (i, p) -> {
+            service.deleteStudent(p.getId());
+            entities.remove(p);
+        });
+    }
 
+    @Override
+    protected void initProfessorComponents() {
+
+    }
+
+    @Override
+    protected void initStudentComponents() {
+        professors = iterableToObservableList(service.findAllProfessor());
         makeAutoCompleteBox(searchProfessorName, professors);
-        makeAutoCompleteBox(addProfessorName, professors);
+    }
 
-        clearFields(null);
-        updateAddFields();
+    @Override
+    protected void initAddComponents() {
+        makeAutoCompleteBox(addProfessorName, professors);
     }
 
     @Override

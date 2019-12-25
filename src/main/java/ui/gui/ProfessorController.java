@@ -11,6 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.GridPane;
 import repository.RepositoryException;
 import validation.ValidationException;
 
@@ -37,18 +38,28 @@ public class ProfessorController extends DefaultController<Professor> {
     public TextField addFirstName;
     public TextField searchEmail;
     public TextField addEmail;
+    public GridPane bottom;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         professorTableId.setCellValueFactory(new PropertyValueFactory<>("Id"));
-
         professorTableFamilyName.setCellValueFactory(new PropertyValueFactory<>("FamilyName"));
-        professorTableFamilyName.setCellFactory(TextFieldTableCell.forTableColumn());
-
         professorTableFirstName.setCellValueFactory(new PropertyValueFactory<>("FirstName"));
-        professorTableFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
-
         professorTableEmail.setCellValueFactory(new PropertyValueFactory<>("Email"));
+    }
+
+    @Override
+    protected void postInit() {
+        entities = iterableToObservableList(service.findAllProfessor());
+        professorTable.setItems(entities);
+
+        initComponentsByClearance(bottom, CleranceLevel.Admin);
+    }
+
+    @Override
+    protected void initAdminComponents() {
+        professorTableFamilyName.setCellFactory(TextFieldTableCell.forTableColumn());
+        professorTableFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
         professorTableEmail.setCellFactory(TextFieldTableCell.forTableColumn());
 
         addButtonToTable(professorTableDelete, "deleteButton", () -> new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE_OUTLINE, "30"), (i, p) -> {
@@ -58,12 +69,18 @@ public class ProfessorController extends DefaultController<Professor> {
     }
 
     @Override
-    protected void postInit() {
-        entities = iterableToObservableList(service.findAllProfessor());
-        professorTable.setItems(entities);
+    protected void initProfessorComponents() {
 
-        clearFields(null);
-        updateAddFields();
+    }
+
+    @Override
+    protected void initStudentComponents() {
+
+    }
+
+    @Override
+    protected void initAddComponents() {
+
     }
 
     @Override

@@ -17,6 +17,8 @@ import serviceManager.ServiceManager;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -29,12 +31,13 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        String url = ApplicationContext.getPROPERTIES().getProperty("url");
+        String url = ApplicationContext.getPROPERTIES().getProperty("usersUrl");
         String user = ApplicationContext.getPROPERTIES().getProperty("user");
         String password = ApplicationContext.getPROPERTIES().getProperty("password");
         try {
-            userRepo = new UserPostgreSQLRepository(url, user, password);
-        } catch (SQLException | ClassNotFoundException e) {
+            Connection c = DriverManager.getConnection(url, user, password);
+            userRepo = new UserPostgreSQLRepository(c);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -86,7 +89,7 @@ public class MainWindowController implements Initializable {
             newStage.setMinHeight(500);
             newStage.setScene(new Scene(root));
             newStage.show();
-        } catch (IOException | ClassNotFoundException | SQLException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

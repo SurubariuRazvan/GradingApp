@@ -13,6 +13,8 @@ import service.ProfessorService;
 import service.StudentService;
 import validation.*;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Vector;
@@ -25,34 +27,42 @@ public class ServiceManager {
     private StudentService studentServo;
     private ProfessorService professorServo;
     private UniversityYearStructure year;
-    private String filePath;
+    private Connection c;
 
-    public ServiceManager() throws SQLException, ClassNotFoundException {
+    public ServiceManager() {
         year = yearSetUp();
-        filePath = ApplicationContext.getPROPERTIES().getProperty("filePath");
+        String filePath = ApplicationContext.getPROPERTIES().getProperty("filePath");
         String url = ApplicationContext.getPROPERTIES().getProperty("url");
         String user = ApplicationContext.getPROPERTIES().getProperty("user");
         String password = ApplicationContext.getPROPERTIES().getProperty("password");
+        try {
+            c = DriverManager.getConnection(url, user, password);
+            Validator<Homework> homeworkVali = new HomeworkValidator();
+            CrudRepository<Integer, Homework> homeworkRepo = new HomeworkPostgreSQLRepository(homeworkVali, c);
+            //CrudRepository<Integer, Homework> homeworkRepo = new HomeworkJsonFileRepository(homeworkVali, filePath + "Homework.json");
+            homeworkServo = new HomeworkService(homeworkRepo, homeworkVali, year);
 
-        Validator<Homework> homeworkVali = new HomeworkValidator();
-        CrudRepository<Integer, Homework> homeworkRepo = new HomeworkPostgreSQLRepository(homeworkVali, url, user, password);
-        //CrudRepository<Integer, Homework> homeworkRepo = new HomeworkJsonFileRepository(homeworkVali, filePath + "Homework.json");
-        homeworkServo = new HomeworkService(homeworkRepo, homeworkVali, year);
+            Validator<Grade> gradeVali = new GradeValidator();
+            CrudRepository<GradeId, Grade> gradeRepo = new GradePostgreSQLRepository(gradeVali, c);
+            //CrudRepository<GradeId, Grade> gradeRepo = new GradeXmlFileRepository(gradeVali, filePath + "Grade.xml");
+            gradeServo = new GradeService(gradeRepo, gradeVali, year);
 
-        Validator<Grade> gradeVali = new GradeValidator();
-        CrudRepository<GradeId, Grade> gradeRepo = new GradePostgreSQLRepository(gradeVali, url, user, password);
-        //CrudRepository<GradeId, Grade> gradeRepo = new GradeXmlFileRepository(gradeVali, filePath + "Grade.xml");
-        gradeServo = new GradeService(gradeRepo, gradeVali, year);
+            Validator<Student> studentVali = new StudentValidator();
+            CrudRepository<Integer, Student> studentRepo = new StudentPostgreSQLRepository(studentVali, c);
+            //CrudRepository<Integer, Student> studentRepo = new StudentJsonFileRepository(studentVali, filePath + "Student.json");
+            studentServo = new StudentService(studentRepo, studentVali, year);
 
-        Validator<Student> studentVali = new StudentValidator();
-        CrudRepository<Integer, Student> studentRepo = new StudentPostgreSQLRepository(studentVali, url, user, password);
-        //CrudRepository<Integer, Student> studentRepo = new StudentJsonFileRepository(studentVali, filePath + "Student.json");
-        studentServo = new StudentService(studentRepo, studentVali, year);
+            Validator<Professor> professorVali = new ProfessorValidator();
+            CrudRepository<Integer, Professor> professorRepo = new ProfessorPostgreSQLRepository(professorVali, c);
+            //CrudRepository<Integer, Professor> professorRepo = new ProfessorJsonFileRepository(professorVali, filePath + "Professor.json");
+            professorServo = new ProfessorService(professorRepo, professorVali, year);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-        Validator<Professor> professorVali = new ProfessorValidator();
-        CrudRepository<Integer, Professor> professorRepo = new ProfessorPostgreSQLRepository(professorVali, url, user, password);
-        //CrudRepository<Integer, Professor> professorRepo = new ProfessorJsonFileRepository(professorVali, filePath + "Professor.json");
-        professorServo = new ProfessorService(professorRepo, professorVali, year);
+    public void closeConnection() throws SQLException {
+        c.close();
     }
 
     /**

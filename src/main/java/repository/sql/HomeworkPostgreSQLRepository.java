@@ -3,12 +3,13 @@ package repository.sql;
 import domain.Homework;
 import validation.Validator;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class HomeworkPostgreSQLRepository extends AbstractPostgreSQLRepository<Integer, Homework> {
-    public HomeworkPostgreSQLRepository(Validator<Homework> validator, String url, String user, String password) throws SQLException, ClassNotFoundException {
-        super(validator, url, user, password);
+    public HomeworkPostgreSQLRepository(Validator<Homework> validator, Connection c) {
+        super(validator, c);
     }
 
     @Override
