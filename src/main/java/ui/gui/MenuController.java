@@ -28,11 +28,9 @@ public class MenuController implements Initializable {
     GradeController gradeTabController;
     @FXML
     ReportController reportTabController;
-    private ServiceManager service;
     private User user;
 
     void setService(ServiceManager service, User user) {
-        this.service = service;
         this.user = user;
         homeworkTabController.setService(service, user);
         professorTabController.setService(service, user);

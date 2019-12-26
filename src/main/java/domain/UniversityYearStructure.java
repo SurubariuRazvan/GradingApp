@@ -3,9 +3,9 @@ package domain;
 import java.time.LocalDate;
 
 public class UniversityYearStructure extends Entity<Integer> {
-    private Integer universityYear;
-    private UniversitySemesterStructure sem1;
-    private UniversitySemesterStructure sem2;
+    private final Integer universityYear;
+    private final UniversitySemesterStructure sem1;
+    private final UniversitySemesterStructure sem2;
 
     public UniversityYearStructure(Integer id, Integer universityYear, UniversitySemesterStructure sem1, UniversitySemesterStructure sem2) {
         super.setId(id);

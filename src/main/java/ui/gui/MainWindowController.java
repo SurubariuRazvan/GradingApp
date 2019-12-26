@@ -78,6 +78,7 @@ public class MainWindowController implements Initializable {
 
     private void successfulLogIn(User user) {
         try {
+            userRepo.closeConnection();
             stage.close();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Menu.fxml"));
             BorderPane root = loader.load();
@@ -89,7 +90,7 @@ public class MainWindowController implements Initializable {
             newStage.setMinHeight(500);
             newStage.setScene(new Scene(root));
             newStage.show();
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
     }

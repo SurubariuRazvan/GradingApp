@@ -33,7 +33,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public abstract class DefaultController<E extends Entity> implements Initializable {
+public abstract class DefaultController<E extends Entity<?>> implements Initializable {
     protected MenuController menuController;
     protected ObservableList<E> entities;
     protected ServiceManager service;
@@ -69,7 +69,7 @@ public abstract class DefaultController<E extends Entity> implements Initializab
         return FXCollections.observableList(iterableToList(entities));
     }
 
-    protected <EE extends Entity> void makeAutoCompleteBox(ComboBox<EE> cb, ObservableList<EE> list) {
+    protected <EE extends Entity<?>> void makeAutoCompleteBox(ComboBox<EE> cb, ObservableList<EE> list) {
         cb.setConverter(new StringConverter<>() {
             @Override
             public String toString(EE item) {
@@ -193,20 +193,6 @@ public abstract class DefaultController<E extends Entity> implements Initializab
         }
     }
 
-    private void buttonSetup(JFXButton btn, String styleClass, TableView<E> tableView, int index, BiConsumer<Integer, E> onAction) {
-        btn.getStyleClass().add(styleClass);
-        btn.setButtonType(JFXButton.ButtonType.RAISED);
-        btn.setContentDisplay(ContentDisplay.CENTER);
-        btn.setOnAction((ActionEvent event) -> {
-            E entity = tableView.getItems().get(index);
-            try {
-                onAction.accept(index, entity);
-            } catch (ValidationException | RepositoryException e) {
-                showError("Eroare", e.getMessage());
-            }
-        });
-    }
-
     protected void addButtonToTable(TableColumn<E, Void> tc, String styleClass, String text, BiConsumer<Integer, E> onAction) {
         tc.setCellFactory(new Callback<>() {
             @Override
@@ -215,7 +201,17 @@ public abstract class DefaultController<E extends Entity> implements Initializab
                     private final JFXButton btn = new JFXButton(text);
 
                     {
-                        buttonSetup(btn, styleClass, getTableView(), getIndex(), onAction);
+                        btn.getStyleClass().add(styleClass);
+                        btn.setButtonType(JFXButton.ButtonType.RAISED);
+                        btn.setContentDisplay(ContentDisplay.CENTER);
+                        btn.setOnAction((ActionEvent event) -> {
+                            E entity = getTableView().getItems().get(getIndex());
+                            try {
+                                onAction.accept(getIndex(), entity);
+                            } catch (ValidationException | RepositoryException e) {
+                                showError("Eroare", e.getMessage());
+                            }
+                        });
                     }
 
                     @Override
@@ -241,7 +237,17 @@ public abstract class DefaultController<E extends Entity> implements Initializab
 
                     {
                         btn.setGraphic(graphic.get());
-                        buttonSetup(btn, styleClass, getTableView(), getIndex(), onAction);
+                        btn.getStyleClass().add(styleClass);
+                        btn.setButtonType(JFXButton.ButtonType.RAISED);
+                        btn.setContentDisplay(ContentDisplay.CENTER);
+                        btn.setOnAction((ActionEvent event) -> {
+                            E entity = getTableView().getItems().get(getIndex());
+                            try {
+                                onAction.accept(getIndex(), entity);
+                            } catch (ValidationException | RepositoryException e) {
+                                showError("Eroare", e.getMessage());
+                            }
+                        });
                     }
 
                     @Override

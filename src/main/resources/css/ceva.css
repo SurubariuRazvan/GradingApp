@@ -196,7 +196,7 @@
     -fx-min-width: 14;
     -fx-pref-width: 14;
     -fx-max-width: 14;
-    -fx-background-color: derive(-fx-primary, 40%);
+    -fx-background-color: derive(-fx-tertiary, -50%);
 }
 
 .table-view .filler {
@@ -375,6 +375,7 @@
     -fx-opacity: 1;
 }
 
+/*noinspection ALL,CssUnusedSymbol*/
 .input-focused-line:disabled {
     -fx-background-color: transparent;
 }

@@ -6,7 +6,6 @@ import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
@@ -14,8 +13,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TableCell;
 import javafx.util.StringConverter;
 
-public class ComboBoxEditingCell<E extends Entity, T> extends TableCell<E, T> {
-    private ObservableList<T> data;
+public class ComboBoxEditingCell<E extends Entity<?>, T> extends TableCell<E, T> {
+    private final ObservableList<T> data;
     private JFXComboBox<T> comboBox;
 
     public ComboBoxEditingCell(ObservableList<T> data) {

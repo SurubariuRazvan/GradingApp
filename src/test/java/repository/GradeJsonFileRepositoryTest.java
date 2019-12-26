@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GradeJsonFileRepositoryTest {
-    private Validator<Grade> vali = new GradeValidator();
+    private final Validator<Grade> vali = new GradeValidator();
 
     @Test
     void writeAndReadEntity() {

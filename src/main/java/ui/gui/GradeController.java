@@ -55,7 +55,7 @@ public class GradeController extends DefaultController<Grade> {
     public Spinner<Integer> lateWeeks;
     public GridPane bottom;
 
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private ObservableList<Professor> professors;
     private ObservableList<Student> students;
     private ObservableList<Homework> homeworks;
@@ -126,7 +126,7 @@ public class GradeController extends DefaultController<Grade> {
 
         if (validateInputs(homework, student, givenGrade, professor)) {
             Double finalGrade = service.getFinalGrade(givenGrade, homework.getDeadlineWeek(), lateProfessor + motivated);
-            Integer penalization = (int) (givenGrade - finalGrade);
+            int penalization = (int) (givenGrade - finalGrade);
             if (feedback.length() > 0)
                 feedback += "\n";
             if (penalization > 0)
@@ -134,7 +134,7 @@ public class GradeController extends DefaultController<Grade> {
             if (addGradeConfirmation(homework, student, handOverDate, professor, finalGrade, feedback, penalization))
                 try {
                     Grade g = new Grade(new GradeId(homework.getId(), student.getId()), handOverDate, professor.getId(), finalGrade, feedback);
-                    service.saveGrade(g, homework, student);
+                    service.saveGrade(g, homework, professor, student);
                     entities.add(g);
                     updateAddFields();
                 } catch (ValidationException e) {

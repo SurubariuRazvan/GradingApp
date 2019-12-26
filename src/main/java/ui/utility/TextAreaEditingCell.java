@@ -2,12 +2,11 @@ package ui.utility;
 
 import domain.Entity;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 
-public class TextAreaEditingCell<E extends Entity, T> extends TableCell<E, String> {
+public class TextAreaEditingCell<E extends Entity<?>, T> extends TableCell<E, String> {
     private TextArea textArea;
 
     public TextAreaEditingCell() {

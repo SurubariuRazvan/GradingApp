@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InMemoryRepository<ID, E extends Entity<ID>> implements CrudRepository<ID, E> {
-    private Map<ID, E> data = new HashMap<>();
-    private Validator<E> validator;
+    private final Map<ID, E> data = new HashMap<>();
+    private final Validator<E> validator;
 
     public InMemoryRepository(Validator<E> validator) {
         this.validator = validator;

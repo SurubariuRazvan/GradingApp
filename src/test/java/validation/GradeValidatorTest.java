@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 class GradeValidatorTest {
-    private Validator<Grade> vali = new GradeValidator();
+    private final Validator<Grade> vali = new GradeValidator();
 
     @Test
     void validate() {

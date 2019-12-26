@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ProfessorValidatorTest {
-    private Validator<Professor> vali = new ProfessorValidator();
+    private final Validator<Professor> vali = new ProfessorValidator();
 
     @Test
     void validate() {

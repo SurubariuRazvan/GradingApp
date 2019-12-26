@@ -7,10 +7,7 @@ import repository.sql.GradePostgreSQLRepository;
 import repository.sql.HomeworkPostgreSQLRepository;
 import repository.sql.ProfessorPostgreSQLRepository;
 import repository.sql.StudentPostgreSQLRepository;
-import service.GradeService;
-import service.HomeworkService;
-import service.ProfessorService;
-import service.StudentService;
+import service.*;
 import validation.*;
 
 import java.sql.Connection;
@@ -26,8 +23,9 @@ public class ServiceManager {
     private GradeService gradeServo;
     private StudentService studentServo;
     private ProfessorService professorServo;
-    private UniversityYearStructure year;
+    private final UniversityYearStructure year;
     private Connection c;
+    private final MessageSender messageSender;
 
     public ServiceManager() {
         year = yearSetUp();
@@ -59,6 +57,10 @@ public class ServiceManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        String emailUsername = ApplicationContext.getPROPERTIES().getProperty("emailUsername");
+        String emailPassword = ApplicationContext.getPROPERTIES().getProperty("emailPassword");
+        messageSender = new MessageSender(emailUsername, emailPassword);
     }
 
     public void closeConnection() throws SQLException {
@@ -117,6 +119,9 @@ public class ServiceManager {
         if (h.getId() == null)
             h = homeworkServo.createHomework(h.getDescription(), h.getDeadlineWeek());
         homeworkServo.save(h);
+        String message = "The new homework has the starting week: " + h.getStartWeek() + " and the deadline: " + h.getDeadlineWeek() + ".\n" + h.getDescription();
+        messageSender.send(h + " was added.", message,
+                StreamSupport.stream(studentServo.findAll().spliterator(), false).map(Student::getEmail).collect(Collectors.toList()));
     }
 
     /**
@@ -156,11 +161,15 @@ public class ServiceManager {
             g = gradeServo.createGrade(student, professor, g.getGivenGrade(), homework, g.getFeedback(), lateProfessor);
         gradeServo.save(g);
         gradeServo.saveInStudentNameFile(g, homework, student);
+        String message = "The grade is " + g.getGivenGrade() + ", added on " + g.getHandOverDate() + " with the mentions: " + g.getFeedback();
+        messageSender.send(professor + " added a new grade.", message, student.getEmail());
     }
 
-    public void saveGrade(Grade g, Homework homework, Student student) throws ValidationException {
+    public void saveGrade(Grade g, Homework homework, Professor professor, Student student) throws ValidationException {
         gradeServo.save(g);
         gradeServo.saveInStudentNameFile(g, homework, student);
+        String message = "The grade is " + g.getGivenGrade() + ", added on " + g.getHandOverDate() + " with the mentions: " + g.getFeedback();
+        messageSender.send(professor + " added a new grade.", message, student.getEmail());
     }
 
     public Double getFinalGrade(Double givenGrade, Integer deadlineWeek, Integer lateProfessor) {
@@ -184,7 +193,10 @@ public class ServiceManager {
      * @param id of the Homework to be deleted
      */
     public void deleteHomework(int id) {
-        homeworkServo.delete(id);
+        Homework h = homeworkServo.delete(id);
+//        String message = "The homework with the starting week: " + h.getStartWeek() + " and the deadline: " + h.getDeadlineWeek() + ".\n" + h.getDescription();
+//        messageSender.send(h + " was deleted.", message,
+//                StreamSupport.stream(studentServo.findAll().spliterator(), false).map(Student::getEmail).collect(Collectors.toList()));
     }
 
     /**
@@ -225,7 +237,12 @@ public class ServiceManager {
             h = homeworkServo.createHomework(h.getDescription(), h.getDeadlineWeek());
             h.setId(id);
         }
+        Homework oldH = homeworkServo.findOne(id);
         homeworkServo.update(h);
+        String message = "The homework with the starting week: " + oldH.getStartWeek() + " and the deadline: " + oldH.getDeadlineWeek() + ".\n" + oldH.getDescription() + "\n"
+                + "Was changed with the homework with the starting week: " + h.getStartWeek() + " and the deadline: " + h.getDeadlineWeek() + ".\n" + h.getDescription();
+        messageSender.send(oldH + " was changed with " + h + ".", message,
+                StreamSupport.stream(studentServo.findAll().spliterator(), false).map(Student::getEmail).collect(Collectors.toList()));
     }
 
     /**
@@ -272,6 +289,7 @@ public class ServiceManager {
 
     public void updateGrade(GradeId id, Grade g) throws ValidationException {
         gradeServo.update(g);
+
     }
 
     /**

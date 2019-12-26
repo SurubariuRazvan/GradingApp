@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class UserPostgreSQLRepository {
-    private Connection c;
+    private final Connection c;
 
     public UserPostgreSQLRepository(Connection c) {
         this.c = c;
@@ -66,4 +66,7 @@ public class UserPostgreSQLRepository {
         return entity;
     }
 
+    public void closeConnection() throws SQLException {
+        c.close();
+    }
 }

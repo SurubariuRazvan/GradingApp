@@ -5,7 +5,7 @@ import repository.InMemoryRepository;
 import validation.Validator;
 
 public abstract class AbstractInFileRepository<ID, E extends Entity<ID>> extends InMemoryRepository<ID, E> {
-    String fileName;
+    final protected String fileName;
 
     AbstractInFileRepository(Validator<E> validator, String fileName) {
         super(validator);

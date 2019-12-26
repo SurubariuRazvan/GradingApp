@@ -8,9 +8,9 @@ import validation.ValidationException;
 import validation.Validator;
 
 public abstract class Service<ID, E extends Entity<ID>> {
-    UniversityYearStructure year;
-    Validator<E> vali;
-    private CrudRepository<ID, E> repo;
+    final UniversityYearStructure year;
+    final Validator<E> vali;
+    private final CrudRepository<ID, E> repo;
 
     Service(CrudRepository<ID, E> repo, Validator<E> vali, UniversityYearStructure year) {
         this.year = year;
@@ -58,9 +58,11 @@ public abstract class Service<ID, E extends Entity<ID>> {
      * @param id of the entity to be deleted
      * @throws ValidationException if the entity isn't in the repo
      */
-    public void delete(ID id) throws ValidationException {
-        if (repo.delete(id) == null)
+    public E delete(ID id) throws ValidationException {
+        E entity = repo.delete(id);
+        if (entity == null)
             throw new ValidationException("Entitate inexistenta");
+        return entity;
     }
 
     /**

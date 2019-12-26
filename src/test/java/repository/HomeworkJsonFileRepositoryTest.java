@@ -9,7 +9,7 @@ import validation.Validator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HomeworkJsonFileRepositoryTest {
-    private Validator<Homework> vali = new HomeworkValidator();
+    private final Validator<Homework> vali = new HomeworkValidator();
 
     @Test
     void writeAndReadEntity() {

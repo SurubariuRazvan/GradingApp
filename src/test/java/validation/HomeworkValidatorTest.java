@@ -4,7 +4,7 @@ import domain.Homework;
 import org.junit.jupiter.api.Test;
 
 class HomeworkValidatorTest {
-    private Validator<Homework> vali = new HomeworkValidator();
+    private final Validator<Homework> vali = new HomeworkValidator();
 
     @Test
     void validate1() {

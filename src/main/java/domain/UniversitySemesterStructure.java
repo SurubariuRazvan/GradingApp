@@ -7,8 +7,8 @@ import java.time.temporal.WeekFields;
 import java.util.Vector;
 
 public class UniversitySemesterStructure extends Entity<Integer> {
-    private LocalDate startingDate;
-    private Vector<Holiday> freeWeeks;
+    private final LocalDate startingDate;
+    private final Vector<Holiday> freeWeeks;
 
     public UniversitySemesterStructure(LocalDate startingDate, Vector<Holiday> freeWeeks) {
         this.startingDate = startingDate;

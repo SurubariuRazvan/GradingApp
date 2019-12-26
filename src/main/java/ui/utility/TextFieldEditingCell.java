@@ -4,15 +4,14 @@ import domain.Entity;
 import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
 import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
 
-class TextFieldEditingCell<E extends Entity, T> extends TableCell<E, String> {
-    ObservableList<T> data;
+class TextFieldEditingCell<E extends Entity<?>, T> extends TableCell<E, String> {
+    final ObservableList<T> data;
     private TextField textField;
 
     private TextFieldEditingCell(ObservableList<T> data) {

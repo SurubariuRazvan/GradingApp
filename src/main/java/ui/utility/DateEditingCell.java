@@ -7,7 +7,7 @@ import javafx.scene.control.TableCell;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class DateEditingCell<E extends Entity> extends TableCell<E, LocalDate> {
+public class DateEditingCell<E extends Entity<?>> extends TableCell<E, LocalDate> {
 
     private final DateTimeFormatter formatter;
     private DatePicker datePicker;

@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ConsoleUI {
-    private ServiceManager service;
+    private final ServiceManager service;
 
     public ConsoleUI() {
         service = new ServiceManager();

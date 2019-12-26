@@ -2,8 +2,6 @@ plugins {
     id 'java'
     id 'org.openjfx.javafxplugin' version '0.0.8'
     id 'application'
-    //id 'org.springframework.boot'
-    //id 'io.spring.dependency-management'
 }
 
 version '1.0-SNAPSHOT'
@@ -29,6 +27,7 @@ dependencies {
     compile 'de.jensd:fontawesomefx-fontawesome:4.7.0-9.1.2'
     compile 'de.jensd:fontawesomefx-materialdesignfont:2.0.26-9.1.2'
     compile 'de.jensd:fontawesomefx-materialicons:2.2.0-9.1.2'
+    compile group: 'javax.mail', name: 'mail', version: '1.4'
 }
 
 javafx {
