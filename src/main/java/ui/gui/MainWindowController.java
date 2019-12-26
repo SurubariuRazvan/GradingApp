@@ -85,7 +85,7 @@ public class MainWindowController implements Initializable {
             controller.setService(new ServiceManager(), user);
 
             Stage newStage = new Stage(StageStyle.DECORATED);
-            newStage.setMinWidth(900);
+            newStage.setMinWidth(800);
             newStage.setMinHeight(500);
             newStage.setScene(new Scene(root));
             newStage.show();

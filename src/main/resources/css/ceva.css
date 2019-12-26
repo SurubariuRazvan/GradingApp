@@ -140,7 +140,6 @@
 }
 
 /*TableView Default*/
-
 .table-view {
     -fx-background-color: derive(-fx-primary, 10%);
     -fx-font-size: 11pt;
@@ -194,16 +193,13 @@
 }
 
 .table-view .scroll-bar * {
-    -fx-min-width: 0;
-    -fx-pref-width: 0;
-    -fx-max-width: 0;
-    -fx-min-height: 0;
-    -fx-pref-height: 0;
-    -fx-max-height: 0;
+    -fx-min-width: 14;
+    -fx-pref-width: 14;
+    -fx-max-width: 14;
+    -fx-background-color: derive(-fx-primary, 40%);
 }
 
 .table-view .filler {
-    -fx-fill: -fx-primary;
     -fx-background-color: -fx-primary;
 }
 
