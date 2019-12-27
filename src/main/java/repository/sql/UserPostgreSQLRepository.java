@@ -20,7 +20,8 @@ public class UserPostgreSQLRepository {
         return "INSERT INTO \"user\" (\"username\", \"password\", \"cleranceLevel\") " +
                 "VALUES ('" + user.getId()
                 + "','" + user.getPassword()
-                + "','" + user.getCleranceLevel().toString() + "');";
+                + "','" + user.getCleranceLevel().toString()
+                + "'," + user.getUsernameID() + ");";
     }
 
     public User save(User entity) throws ValidationException {
@@ -46,7 +47,8 @@ public class UserPostgreSQLRepository {
         String username = result.getString("username");
         String password = result.getString("password");
         CleranceLevel cleranceLevel = CleranceLevel.valueOf(result.getString("cleranceLevel"));
-        return new User(username, password, cleranceLevel);
+        Integer usernameID = Integer.parseInt(result.getString("usernameID"));
+        return new User(username, password, cleranceLevel, usernameID);
     }
 
     public User findUser(String username) {

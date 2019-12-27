@@ -78,6 +78,7 @@ public class StudentController extends DefaultController<Student> {
         addButtonToTable(studentTableDelete, "deleteButton", () -> new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE_OUTLINE, "30"), (i, p) -> {
             service.deleteStudent(p.getId());
             entities.remove(p);
+            refresh.replace(Tables.GradeTab, true);
         });
     }
 
@@ -118,6 +119,7 @@ public class StudentController extends DefaultController<Student> {
                         service.saveStudent(h);
                         entities.add(h);
                         updateAddFields();
+                        refresh.replace(Tables.GradeTab, true);
                     } catch (ValidationException e) {
                         showError("Eroare la adaugare", e.getMessage());
                     }

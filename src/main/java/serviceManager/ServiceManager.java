@@ -85,7 +85,7 @@ public class ServiceManager {
      */
     private UniversityYearStructure yearSetUp() {
         Vector<Holiday> v1 = new Vector<>();
-        v1.add(new Holiday(LocalDate.of(2019, 12, 25), 2));
+        v1.add(new Holiday(LocalDate.of(2019, 12, 23), 2));
         v1.add(new Holiday(LocalDate.of(2020, 2, 10), 1));
         Vector<Holiday> v2 = new Vector<>();
         v2.add(new Holiday(LocalDate.of(2020, 4, 20), 1));

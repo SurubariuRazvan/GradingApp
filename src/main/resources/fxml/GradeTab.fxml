@@ -10,8 +10,8 @@
       stylesheets="@../css/Menu.css" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="ui.gui.GradeController">
     <TableView fx:id="gradeTable" editable="true" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="gradeTableHomework" editable="false" maxWidth="100.0" minWidth="100.0"
-                         onEditCommit="#updateEntity" prefWidth="100.0" resizable="false" text="Homework"/>
+            <TableColumn fx:id="gradeTableHomework" editable="false" maxWidth="106.0" minWidth="106.0"
+                         onEditCommit="#updateEntity" prefWidth="106.0" resizable="false" text="Homework"/>
             <TableColumn fx:id="gradeTableStudent" editable="false" maxWidth="139.0" minWidth="139.0"
                          onEditCommit="#updateEntity" prefWidth="139.0" resizable="false" text="Student"/>
             <TableColumn fx:id="gradeTableGivenGrade" maxWidth="55.0" minWidth="55.0" onEditCommit="#updateEntity"
@@ -36,7 +36,7 @@
     <GridPane fx:id="bottom" hgap="4.0" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
               VBox.vgrow="SOMETIMES">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="94.0" prefWidth="94.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0"/>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="135.0" minWidth="135.0" prefWidth="135.0"/>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="51.0" minWidth="51.0" prefWidth="51.0"/>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="135.0" minWidth="135.0" prefWidth="135.0"/>

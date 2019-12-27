@@ -47,9 +47,9 @@ public class MainWindowController implements Initializable {
     }
 
     public void logIn(ActionEvent actionEvent) {
-//        userRepo.save(new User("student", User.encodePassword("student"), CleranceLevel.Student));
-//        userRepo.save(new User("professor", User.encodePassword("professor"), CleranceLevel.Professor));
-//        userRepo.save(new User("admin", User.encodePassword("admin"), CleranceLevel.Admin));
+//        userRepo.save(new User("student", User.encodePassword("student"), CleranceLevel.Student, 2));
+//        userRepo.save(new User("professor", User.encodePassword("professor"), CleranceLevel.Professor, 3));
+//        userRepo.save(new User("admin", User.encodePassword("admin"), CleranceLevel.Admin, 1));
         String username = logInUsername.getText();
         String rawPassword = logInPassword.getText();
 

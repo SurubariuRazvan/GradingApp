@@ -27,6 +27,8 @@ import serviceManager.ServiceManager;
 import validation.ValidationException;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -37,7 +39,8 @@ public abstract class DefaultController<E extends Entity<?>> implements Initiali
     protected MenuController menuController;
     protected ObservableList<E> entities;
     protected ServiceManager service;
-    User user;
+    protected User user;
+    protected Map<Tables, Boolean> refresh;
 
     public static void addTextLimiter(final TextField tf, final int maxLength) {
         tf.textProperty().addListener((ov, oldValue, newValue) -> {
@@ -48,6 +51,9 @@ public abstract class DefaultController<E extends Entity<?>> implements Initiali
 
     void init(MenuController menuController) {
         this.menuController = menuController;
+        refresh = new TreeMap<>();
+        for(Tables tab : Tables.values())
+            refresh.put(tab, false);
     }
 
     public abstract void refreshTable();

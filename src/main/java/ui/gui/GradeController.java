@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class GradeController extends DefaultController<Grade> {
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     public TableView<Grade> gradeTable;
     public JFXButton clearButton;
     public JFXButton addButton;
@@ -54,8 +55,6 @@ public class GradeController extends DefaultController<Grade> {
     public Spinner<Integer> motivatedWeeks;
     public Spinner<Integer> lateWeeks;
     public GridPane bottom;
-
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private ObservableList<Professor> professors;
     private ObservableList<Student> students;
     private ObservableList<Homework> homeworks;
@@ -182,11 +181,15 @@ public class GradeController extends DefaultController<Grade> {
         StreamSupport.stream(service.findAllHomework().spliterator(), false)
                 .filter(h -> h.getDeadlineWeek().equals(service.getWeek()))
                 .findFirst().ifPresent(homework -> addHomeworkId.setValue(homework));
-        addHandOverDate.setText(LocalDate.now().format(dateFormatter));
+        addStudentName.setValue(null);
+        addGivenGrade.setText("");
         lateWeeks.getValueFactory().setValue(0);
         motivatedWeeks.getValueFactory().setValue(0);
-        addGivenGrade.setText("");
-        addStudentName.setValue(null);
+        if (user.getCleranceLevel().ordinal() == CleranceLevel.Professor.ordinal()) {
+            addProfessorName.setValue(professors.stream().filter(s -> s.getId().equals(user.getUsernameID())).findFirst().orElse(null));
+            addProfessorName.setDisable(true);
+        } else addProfessorName.setValue(null);
+        addHandOverDate.setText(LocalDate.now().format(dateFormatter));
         addFeedback.setText("");
     }
 
@@ -262,10 +265,9 @@ public class GradeController extends DefaultController<Grade> {
     public void clearFields(ActionEvent actionEvent) {
         searchHomeworkId.setValue(null);
         if (user.getCleranceLevel().ordinal() == CleranceLevel.Student.ordinal()) {
-            searchStudentName.setValue(students.stream().filter(s -> s.getId().equals(2)).findFirst().orElse(null));
+            searchStudentName.setValue(students.stream().filter(s -> s.getId().equals(user.getUsernameID())).findFirst().orElse(null));
             searchStudentName.setDisable(true);
-        } else
-            searchStudentName.setValue(null);
+        } else searchStudentName.setValue(null);
         searchGivenGrade.setText("");
         searchProfessorName.setValue(null);
         searchHandOverDate.setText("");
@@ -302,5 +304,6 @@ public class GradeController extends DefaultController<Grade> {
         students.setAll(iterableToList(service.findAllStudent()));
         homeworks.setAll(iterableToList(service.findAllHomework()));
         gradeTable.refresh();
+        updateAddFields();
     }
 }

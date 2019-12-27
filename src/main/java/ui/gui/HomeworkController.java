@@ -66,6 +66,7 @@ public class HomeworkController extends DefaultController<Homework> {
         addButtonToTable(homeworkTableDelete, "deleteButton", () -> new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE_OUTLINE, "30"), (i, h) -> {
             service.deleteHomework(h.getId());
             entities.remove(h);
+            refresh.replace(Tables.GradeTab, true);
         });
     }
 
@@ -93,6 +94,7 @@ public class HomeworkController extends DefaultController<Homework> {
                 service.saveHomework(h);
                 entities.add(h);
                 updateAddFields();
+                refresh.replace(Tables.GradeTab, true);
             } catch (ValidationException e) {
                 showError("Eroare la adaugare", e.getMessage());
             }
@@ -145,6 +147,7 @@ public class HomeworkController extends DefaultController<Homework> {
 
             try {
                 service.updateHomework(homework.getId(), homework);
+                refresh.replace(Tables.GradeTab, true);
             } catch (ValidationException | RepositoryException e) {
                 showError("Eroare", e.getMessage());
                 entities.set(event.getTablePosition().getRow(), backupHomework);

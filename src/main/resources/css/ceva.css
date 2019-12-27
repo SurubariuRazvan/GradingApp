@@ -166,7 +166,7 @@
 .table-row-cell {
     -fx-background-color: -fx-primary;
     -fx-table-cell-border-color: transparent;
-    -fx-cell-size: 42px;
+    -fx-cell-size: 44px;
 }
 
 .table-view .column-header {
@@ -277,7 +277,7 @@
 
 .tab {
     -fx-background-color: -fx-primary;
-    -fx-pref-height: 42;
+    -fx-pref-height: 44;
     -fx-pref-width: 150;
 }
 
@@ -371,7 +371,7 @@
 }
 
 /*cancel disabled look*/
-.text-field :disabled, .combo-box:disabled {
+* :disabled {
     -fx-opacity: 1;
 }
 

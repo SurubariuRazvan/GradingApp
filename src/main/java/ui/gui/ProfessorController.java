@@ -65,6 +65,8 @@ public class ProfessorController extends DefaultController<Professor> {
         addButtonToTable(professorTableDelete, "deleteButton", () -> new MaterialDesignIconView(MaterialDesignIcon.MINUS_CIRCLE_OUTLINE, "30"), (i, p) -> {
             service.deleteProfessor(p.getId());
             entities.remove(p);
+            refresh.replace(Tables.StudentTab, true);
+            refresh.replace(Tables.GradeTab, true);
         });
     }
 
@@ -95,6 +97,8 @@ public class ProfessorController extends DefaultController<Professor> {
                 service.saveProfessor(h);
                 entities.add(h);
                 updateAddFields();
+                refresh.replace(Tables.StudentTab, true);
+                refresh.replace(Tables.GradeTab, true);
             } catch (ValidationException e) {
                 showError("Eroare la adaugare", e.getMessage());
             }
@@ -144,6 +148,8 @@ public class ProfessorController extends DefaultController<Professor> {
 
             try {
                 service.updateProfessor(professor.getId(), professor);
+                refresh.replace(Tables.StudentTab, true);
+                refresh.replace(Tables.GradeTab, true);
             } catch (ValidationException | RepositoryException e) {
                 showError("Eroare", e.getMessage());
                 entities.set(event.getTablePosition().getRow(), backupProfessor);

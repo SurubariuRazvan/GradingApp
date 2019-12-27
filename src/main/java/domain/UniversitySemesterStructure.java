@@ -1,9 +1,7 @@
 package domain;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.temporal.TemporalField;
-import java.time.temporal.WeekFields;
+import java.time.temporal.ChronoUnit;
 import java.util.Vector;
 
 public class UniversitySemesterStructure extends Entity<Integer> {
@@ -32,16 +30,14 @@ public class UniversitySemesterStructure extends Entity<Integer> {
     public Integer getWeek(LocalDate currentDate) {
         if (currentDate == null)
             throw new IllegalArgumentException();
-        TemporalField week = WeekFields.of(DayOfWeek.MONDAY, 1).weekOfWeekBasedYear();
 
-        int startingWeek = startingDate.get(week);
-        int currentWeek = currentDate.get(week);
-        if (startingDate.getYear() < currentDate.getYear())
-            currentWeek = currentWeek + 52;
-        int weekNr = currentWeek - startingWeek + 1;
+        Integer weekNr = (int) ChronoUnit.WEEKS.between(startingDate, currentDate) + 1;
         for(var i : freeWeeks)
             if (i.getStartDate().isBefore(currentDate))
-                weekNr = weekNr - i.getDuration();
-        return weekNr;
+                if (currentDate.isBefore(i.getStartDate().plusWeeks(i.getDuration())))
+                    weekNr -= (int) ChronoUnit.WEEKS.between(i.getStartDate(), currentDate);
+                else
+                    weekNr -= i.getDuration();
+        return Math.min(weekNr, 14);
     }
 }
