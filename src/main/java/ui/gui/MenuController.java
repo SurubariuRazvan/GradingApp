@@ -52,16 +52,17 @@ public class MenuController implements Initializable {
         professorTabController.init(this);
         gradeTabController.init(this);
         reportTabController.init(this);
+        //TODO add observable variables to every controller and refresh table only if it is necessary, maybe use an enum
         menuTable.getSelectionModel().selectedItemProperty().addListener((param, oldTab, newTab) -> {
             if (homeworkTabId.getId().equals(newTab.getId()))
-                        homeworkTabController.refreshTable();
+                homeworkTabController.refreshTable();
             else if (studentTabId.getId().equals(newTab.getId()))
-                        studentTabController.refreshTable();
+                studentTabController.refreshTable();
             else if (professorTabId.getId().equals(newTab.getId()))
-                        professorTabController.refreshTable();
+                professorTabController.refreshTable();
             else if (gradeTabId.getId().equals(newTab.getId()))
-                        if (user.getCleranceLevel().ordinal() < CleranceLevel.Student.ordinal())
-                            gradeTabController.refreshTable();
+                if (user.getCleranceLevel().ordinal() < CleranceLevel.Student.ordinal())
+                    gradeTabController.refreshTable();
                 }
         );
     }
