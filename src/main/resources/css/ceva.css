@@ -25,7 +25,7 @@
     -fx-border-color: -fx-secondary;
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
-    -fx-font-size: 11pt;
+    -fx-font-size: 12pt;
 }
 
 .button:hover, .button:focused {
@@ -334,21 +334,34 @@
 
 /*JFXDialog styling*/
 .jfx-layout-heading {
-    -fx-background-color: -fx-blue;
+    -fx-background-color: derive(-fx-tertiary, -20%);
+    -fx-alignment: Center;
+    -fx-padding: 10 20 10 20;
+}
+
+.errorHeading .jfx-layout-heading {
+    -fx-background-color: derive(-fx-red, -40%);
 }
 
 .jfx-layout-heading .label {
-    -fx-text-fill: white;
-    -fx-font-size: 11pt;
+    -fx-text-fill: -fx-primarytext;
+    -fx-font-size: 18pt;
 }
 
 .jfx-layout-body, .jfx-layout-actions {
     -fx-background-color: -fx-primary;
+    -fx-alignment: Center;
+}
+
+.jfx-layout-actions .button {
+    -fx-padding: 0 10 0 10;
+    -fx-font-size: 14pt;
 }
 
 .jfx-layout-body .label {
-    -fx-text-fill: white;
+    -fx-text-fill: -fx-primarytext;
     -fx-padding: 20px 0 0 0;
+    -fx-font-size: 14pt;
 }
 
 /*auto-complete popup*/

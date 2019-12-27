@@ -9,7 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import repository.sql.UserPostgreSQLRepository;
@@ -81,7 +81,7 @@ public class MainWindowController implements Initializable {
             userRepo.closeConnection();
             stage.close();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Menu.fxml"));
-            BorderPane root = loader.load();
+            StackPane root = loader.load();
             MenuController controller = loader.getController();
             controller.setService(new ServiceManager(), user);
 

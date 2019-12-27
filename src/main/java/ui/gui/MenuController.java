@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.StackPane;
 import serviceManager.ServiceManager;
 
 import java.net.URL;
@@ -19,6 +20,7 @@ public class MenuController implements Initializable {
     public Tab gradeTabId;
     public Tab reportTabId;
     public TabPane menuTable;
+    public StackPane rootPane;
 
     @FXML
     HomeworkController homeworkTabController;

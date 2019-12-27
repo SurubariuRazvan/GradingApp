@@ -2,11 +2,12 @@ plugins {
     id 'java'
     id 'org.openjfx.javafxplugin' version '0.0.8'
     id 'application'
+    id "com.github.johnrengelman.shadow" version "4.0.2"
 }
 
 version '1.0-SNAPSHOT'
 
-//sourceCompatibility = 1.11
+sourceCompatibility = 1.11
 
 repositories {
     mavenCentral()
@@ -39,3 +40,4 @@ test {
     useJUnitPlatform()
 }
 
+mainClassName = 'ui.GraphicalUI'

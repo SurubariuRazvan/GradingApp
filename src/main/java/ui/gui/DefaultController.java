@@ -1,6 +1,9 @@
 package ui.gui;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.events.JFXDialogEvent;
 import domain.Entity;
 import domain.User;
 import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;
@@ -11,15 +14,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import repository.RepositoryException;
@@ -169,18 +172,19 @@ public abstract class DefaultController<E extends Entity<?>> implements Initiali
 
     //TODO Dialog Box
     protected void showError(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText("Eroare");
+        JFXDialogLayout dialogLayout = new JFXDialogLayout();
+        JFXButton button = new JFXButton("OK");
+        JFXDialog dialog = new JFXDialog(menuController.rootPane, dialogLayout, JFXDialog.DialogTransition.TOP);
+        button.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> dialog.close());
 
-        Text text = new Text(message);
-        alert.getDialogPane().setContent(text);
-        alert.getDialogPane().setPadding(new Insets(0, 5, 0, 10));
-        alert.getDialogPane().setMinWidth(200);
-        text.setWrappingWidth(200);
-
-        alert.showAndWait();
-        System.out.println(message);
+        dialogLayout.setHeading(new Label(title));
+        dialogLayout.getStyleClass().add("errorHeading");
+        dialogLayout.setBody(new Label(message));
+        dialogLayout.setActions(button);
+        dialog.show();
+        BoxBlur blur = new BoxBlur(3, 3, 2);
+        menuController.menuTable.setEffect(blur);
+        dialog.setOnDialogClosed((JFXDialogEvent event) -> menuController.menuTable.setEffect(null));
     }
 
     protected Integer IntegerInput(String s) {

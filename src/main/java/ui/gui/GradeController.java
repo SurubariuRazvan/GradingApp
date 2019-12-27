@@ -1,8 +1,7 @@
 package ui.gui;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
+import com.jfoenix.controls.events.JFXDialogEvent;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import domain.*;
@@ -10,8 +9,12 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import repository.RepositoryException;
@@ -130,32 +133,48 @@ public class GradeController extends DefaultController<Grade> {
                 feedback += "\n";
             if (penalization > 0)
                 feedback += "NOTA A FOST DIMINUATA CU " + penalization + " PUNCTE DATORITA INTARZIERILOR";
-            if (addGradeConfirmation(homework, student, handOverDate, professor, finalGrade, feedback, penalization))
-                try {
-                    Grade g = new Grade(new GradeId(homework.getId(), student.getId()), handOverDate, professor.getId(), finalGrade, feedback);
-                    service.saveGrade(g, homework, professor, student);
-                    entities.add(g);
-                    updateAddFields();
-                } catch (ValidationException e) {
-                    showError("Eroare la adaugare", e.getMessage());
-                }
+            addGradeConfirmation(homework, student, handOverDate, professor, finalGrade, feedback, penalization);
         }
     }
 
-    private Boolean addGradeConfirmation(Homework homework, Student student, LocalDate handOverDate, Professor professor, Double finalGrade, String feedback, Integer penalization) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmare adaugare");
-        alert.setHeaderText("Sunteti sigur ca doriti sa salvati aceasta nota?");
+    private void addGrade(Homework homework, Student student, LocalDate handOverDate, Professor professor, Double finalGrade, String feedback) {
+        try {
+            Grade g = new Grade(new GradeId(homework.getId(), student.getId()), handOverDate, professor.getId(), finalGrade, feedback);
+            service.saveGrade(g, homework, professor, student);
+            entities.add(g);
+            updateAddFields();
+        } catch (ValidationException e) {
+            showError("Eroare la adaugare", e.getMessage());
+        }
+    }
 
-        String newGradeString = "Tema: " + homework + "\n"
+    private void addGradeConfirmation(Homework homework, Student student, LocalDate handOverDate, Professor professor, Double finalGrade, String feedback, Integer penalization) {
+        String message = "Tema: " + homework + "\n"
                 + "Student: " + student + "\n"
                 + "Data: " + handOverDate.format(dateFormatter) + "\n"
                 + "Profesor: " + professor + "\n"
                 + "Nota finala: " + finalGrade + ", penalizata cu " + penalization + " puncte\n"
                 + "Feedback: " + feedback;
 
-        alert.setContentText(newGradeString);
-        return alert.showAndWait().filter(buttonType -> buttonType == ButtonType.OK).isPresent();
+        JFXDialogLayout dialogLayout = new JFXDialogLayout();
+        JFXDialog dialog = new JFXDialog(menuController.rootPane, dialogLayout, JFXDialog.DialogTransition.TOP);
+        JFXButton cancelButton = new JFXButton("Cancel");
+        cancelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
+            dialog.close();
+        });
+        JFXButton addButton = new JFXButton("Add");
+        addButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
+            dialog.close();
+            addGrade(homework, student, handOverDate, professor, finalGrade, feedback);
+        });
+
+        dialogLayout.setHeading(new Label("Sunteti sigur ca doriti sa salvati aceasta nota?"));
+        dialogLayout.setBody(new Label(message));
+        dialogLayout.setActions(addButton, cancelButton);
+        dialog.show();
+        BoxBlur blur = new BoxBlur(3, 3, 2);
+        menuController.menuTable.setEffect(blur);
+        dialog.setOnDialogClosed((JFXDialogEvent event) -> menuController.menuTable.setEffect(null));
     }
 
     private Boolean validateInputs(Homework homework, Student student, Double givenGrade, Professor professor) {
