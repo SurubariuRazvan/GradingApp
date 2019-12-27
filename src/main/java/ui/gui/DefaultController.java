@@ -170,7 +170,6 @@ public abstract class DefaultController<E extends Entity<?>> implements Initiali
         return cell;
     }
 
-    //TODO Dialog Box
     protected void showError(String title, String message) {
         JFXDialogLayout dialogLayout = new JFXDialogLayout();
         JFXButton button = new JFXButton("OK");
