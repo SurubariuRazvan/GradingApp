@@ -28,6 +28,10 @@
     -fx-font-size: 12pt;
 }
 
+.button.login, .text-field.login {
+    -fx-font-size: 12.5pt;
+}
+
 .button:hover, .button:focused {
     -fx-text-fill: -fx-primary;
     -fx-background-color: -fx-secondary;
