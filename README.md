@@ -32,14 +32,7 @@ The app has 3 clerance levels:
       </li>
   </ul>
 
-<div style="overflow: hidden; display: flex; justify-content:space-around;">
-  <div class="" style="max-width: 20%; max-height: 20%;">
-    <img src="images/login1.png" width=45%>
-  </div>
-  <div class="" style="max-width: 100%; max-height: 100%;">
-    <img src="images/login2.png" width=45%>
-  </div>
-</div>
+<img src="images/login1.png" width=45% hspace="20"><img src="images/login2.png" width=45%>
 
 <img src="images/homework_tab.png">
 
