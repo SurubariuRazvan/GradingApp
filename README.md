@@ -2,7 +2,7 @@
 
 The app has 3 clerance levels:
   <ul>
-    <li>student:</li>
+  student:
     <li>
       <ul>
         <li>can see only his/hers grades</li>
