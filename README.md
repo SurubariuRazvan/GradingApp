@@ -2,10 +2,10 @@
 
 The app has 3 clerance levels:
   <dl>
-    <dt>student: 
-      <dd>can see only his/hers grades, the teachers and the homeworks
-    <dt>professor: 
-      <dd>can see all 
+    <dt>student: </dt>
+      <dd>can see only his/hers grades, the teachers and the homeworks </dd>
+    <dt>professor: </dt>
+      <dd>can see all </dd>
   </dl>
 An app that gives teachers the option to give grades to students and to generate reports based on the given grades.
 
