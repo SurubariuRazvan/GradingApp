@@ -32,9 +32,18 @@ The app has 3 clerance levels:
       </li>
   </ul>
 
-<img src="images/login1.png">
+ <div>
+    <div style="display: inline-block">
+        <img src="images/login1.png">
+    </div>
 
-<img src="images/login2.png">
+    <div style="display: inline-block">
+        <img src="images/login2.png">
+    </div>
+</div>
+
+
+
 
 <img src="images/homework_tab.png">
 
