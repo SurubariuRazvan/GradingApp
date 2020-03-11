@@ -32,7 +32,7 @@ The app has 3 clerance levels:
       </li>
   </ul>
 
-<img src="images/login1.png" width=50%><img src="images/login2.png" width=50%>
+<img src="images/login1.png" width=45%><div width=10%/><img src="images/login2.png" width=45%>
 
 
 
