@@ -38,6 +38,9 @@ The app has 3 clerance levels:
 <img src="images/login1.png" width=45% hspace="20"><img src="images/login2.png" width=45% hspace="20">
 
 # Tabs
+  The content is viewed as a table, if you have the clerance a double click on any of the cells of the table will make you enter editing mode, and pressing enter will make you submit the change.
+  Remove<img src="images/remove.png">, clear the search bar<img src="images/clear_search.png">, and add<img src="images/add.png"> buttons are located on the right side of the screen.
+
 <img src="images/homework_tab.png">
 <img src="images/auto-complete.png">
 <img src="images/search_bar.png">
