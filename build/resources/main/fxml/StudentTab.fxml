@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="studentTabId" alignment="CENTER" styleClass="tab-content"
+      stylesheets="@../css/ceva.css" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="ui.gui.StudentController">
+    <TableView fx:id="studentTable" editable="true" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="studentTableId" maxWidth="41.0" minWidth="41.0" prefWidth="41.0" resizable="false"
+                         text="ID"/>
+            <TableColumn fx:id="studentTableFamilyName" maxWidth="114.0" minWidth="114.0" onEditCommit="#updateEntity"
+                         prefWidth="114.0" resizable="false" text="Family name"/>
+            <TableColumn fx:id="studentTableFirstName" maxWidth="114.0" minWidth="114.0" onEditCommit="#updateEntity"
+                         prefWidth="114.0" resizable="false" text="First name"/>
+            <TableColumn fx:id="studentTableGroup" maxWidth="60.0" minWidth="60.0" onEditCommit="#updateEntity"
+                         prefWidth="60.0" resizable="false" text="Group"/>
+            <TableColumn fx:id="studentTableEmail" maxWidth="1.7976931348623157E308" minWidth="104.0"
+                         onEditCommit="#updateEntity" prefWidth="204.0" text="Email"/>
+            <TableColumn fx:id="studentTableProfessor" maxWidth="164.0" minWidth="164.0" onEditCommit="#updateEntity"
+                         prefWidth="164.0" resizable="false" text="Professor"/>
+            <TableColumn fx:id="studentTableDelete" editable="false" maxWidth="42.0" minWidth="42.0" prefWidth="42.0"
+                         resizable="false" sortable="false">
+                <graphic>
+                    <Region prefHeight="42.0" prefWidth="0.0"/>
+                </graphic>
+            </TableColumn>
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TableView>
+    <GridPane fx:id="bottom" hgap="4.0" VBox.vgrow="SOMETIMES">
+        <columnConstraints>
+            <ColumnConstraints maxWidth="35.0" minWidth="35.0" prefWidth="35.0"/>
+            <ColumnConstraints maxWidth="110.0" minWidth="110.0" prefWidth="110.0"/>
+            <ColumnConstraints maxWidth="110.0" minWidth="110.0" prefWidth="110.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="56.0" minWidth="56.0" prefWidth="56.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="200.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="160.0" prefWidth="160.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="36.0" minWidth="36.0" prefWidth="36.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0"/>
+            <RowConstraints/>
+            <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0"/>
+            <RowConstraints/>
+        </rowConstraints>
+        <JFXTextField fx:id="searchId" alignment="CENTER" labelFloat="true" onKeyTyped="#searchEntity" promptText="ID"
+                      styleClass="search" GridPane.rowIndex="1"/>
+        <JFXTextField fx:id="searchFamilyName" alignment="CENTER" labelFloat="true" onKeyTyped="#searchEntity"
+                      promptText="Family name" styleClass="search" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <JFXTextField fx:id="searchFirstName" alignment="CENTER" labelFloat="true" layoutX="45.0" layoutY="75.0"
+                      onKeyTyped="#searchEntity" promptText="First name" styleClass="search" GridPane.columnIndex="2"
+                      GridPane.rowIndex="1"/>
+        <JFXTextField fx:id="searchGroup" alignment="CENTER" labelFloat="true" onKeyTyped="#searchEntity"
+                      promptText="Group" styleClass="search" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+        <JFXTextField fx:id="searchEmail" alignment="CENTER" labelFloat="true" onKeyTyped="#searchEntity"
+                      promptText="Email" styleClass="search" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+        <JFXComboBox fx:id="searchProfessorName" editable="true" labelFloat="true" onAction="#searchEntity"
+                     promptText="Professor name" styleClass="search" GridPane.columnIndex="5" GridPane.rowIndex="1"/>
+        <JFXButton fx:id="clearButton" buttonType="RAISED" contentDisplay="CENTER" onAction="#clearFields"
+                   styleClass="search" text=" " GridPane.columnIndex="6" GridPane.rowIndex="1">
+            <graphic>
+                <MaterialIconView glyphName="FIND_REPLACE" size="30"/>
+            </graphic>
+        </JFXButton>
+        <JFXTextField fx:id="addId" alignment="CENTER" editable="false" labelFloat="true" promptText="ID"
+                      styleClass="add" GridPane.rowIndex="3"/>
+        <JFXTextField fx:id="addFamilyName" alignment="CENTER" labelFloat="true" promptText="Family name"
+                      styleClass="add" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <JFXTextField fx:id="addFirstName" alignment="CENTER" labelFloat="true" promptText="First name" styleClass="add"
+                      GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+        <JFXTextField fx:id="addGroup" alignment="CENTER" labelFloat="true" promptText="Group" styleClass="add"
+                      GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+        <JFXTextField fx:id="addEmail" alignment="CENTER" labelFloat="true" promptText="Email" styleClass="add"
+                      GridPane.columnIndex="4" GridPane.rowIndex="3"/>
+        <JFXComboBox fx:id="addProfessorName" editable="true" labelFloat="true" promptText="Professor name"
+                     styleClass="add" GridPane.columnIndex="5" GridPane.rowIndex="3"/>
+        <JFXButton fx:id="addButton" buttonType="RAISED" contentDisplay="CENTER" onAction="#addEntity" styleClass="add"
+                   text=" " GridPane.columnIndex="6" GridPane.rowIndex="3">
+            <graphic>
+                <MaterialIconView glyphName="ADD_CIRCLE_OUTLINE" size="30"/>
+            </graphic>
+        </JFXButton>
+        <padding>
+            <Insets bottom="10.0" left="4.0" right="4.0"/>
+        </padding>
+    </GridPane>
+</VBox>

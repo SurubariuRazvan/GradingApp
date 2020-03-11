@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Array>
+    <Grade>
+        <studentId>4</studentId>
+        <homeworkId>4</homeworkId>
+        <professorId>0</professorId>
+        <handOverDate>2019-11-09</handOverDate>
+        <givenGrade>4.5</givenGrade>
+        <feedback>-</feedback>
+    </Grade>
+    <Grade>
+        <studentId>3</studentId>
+        <homeworkId>2</homeworkId>
+        <professorId>2</professorId>
+        <handOverDate>2019-11-09</handOverDate>
+        <givenGrade>8.9</givenGrade>
+        <feedback>-</feedback>
+    </Grade>
+    <Grade>
+        <studentId>3</studentId>
+        <homeworkId>1</homeworkId>
+        <professorId>2</professorId>
+        <handOverDate>2019-11-09</handOverDate>
+        <givenGrade>5.9</givenGrade>
+        <feedback>-</feedback>
+    </Grade>
+</Array>

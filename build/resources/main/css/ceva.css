@@ -1,0 +1,402 @@
+* {
+    -fx-primary: #2A2E37;
+    -fx-secondary: #FFD85E;
+    -fx-tertiary: #43a047;
+    -fx-add: #5e35b1;
+    -fx-search: #29b6f6;
+    -fx-primarytext: #B2B2B2;
+    -fx-blue: #1976D2;
+    -fx-red: #FF0000;
+}
+
+.root {
+    -fx-background-color: -fx-primary;
+}
+
+.glyph-icon {
+    -fx-fill: -fx-primarytext;
+}
+
+/*Button*/
+
+.button {
+    -fx-text-fill: -fx-primarytext;
+    -fx-background-color: -fx-primary;
+    -fx-border-color: -fx-secondary;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-font-size: 12pt;
+}
+
+.button.login, .text-field.login {
+    -fx-font-size: 12.5pt;
+}
+
+.button:hover, .button:focused {
+    -fx-text-fill: -fx-primary;
+    -fx-background-color: -fx-secondary;
+    -fx-border-color: -fx-secondary;
+}
+
+.button.add {
+    -fx-border-color: -fx-add;
+}
+
+.button:hover.add, .button:focused.add {
+    -fx-background-color: -fx-add;
+    -fx-border-color: -fx-add;
+}
+
+.button.search {
+    -fx-border-color: -fx-search;
+}
+
+.button:hover.search, .button:focused.search {
+    -fx-background-color: -fx-search;
+    -fx-border-color: -fx-search;
+}
+
+#clearButton, #addButton, .deleteButton {
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 2px;
+}
+
+/*Combo-Box*/
+.combo-box {
+    -fx-font-size: 11pt;
+    -jfx-focus-color: -fx-secondary;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0 0 0 0, 0;
+    -fx-padding: 0 2 0 0;
+}
+
+.combo-box .combo-box-popup .list-view, .combo-box .combo-box-popup .list-cell {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: -fx-primarytext;
+}
+
+
+.combo-box .combo-box-popup .list-cell:hover {
+    -fx-background-color: -fx-secondary;
+    -fx-text-fill: -fx-primary;
+}
+
+.jfx-combo-box.add {
+    -jfx-focus-color: -fx-add;
+}
+
+.jfx-combo-box.search {
+    -jfx-focus-color: -fx-search;
+}
+
+/*Text-Field*/
+.text-field {
+    -fx-font-size: 11pt;
+    -jfx-focus-color: -fx-secondary;
+    -fx-text-fill: derive(-fx-secondary, 20%);
+}
+
+.table-cell .text-field {
+    -fx-background-color: derive(-fx-secondary, 20%);
+    -fx-text-fill: -fx-primary;
+    -fx-alignment: center;
+}
+
+.alwaysFocused {
+    -fx-prompt-text-fill: -fx-secondary;
+}
+
+.text-field.add {
+    -jfx-focus-color: -fx-add;
+    -fx-text-fill: derive(-fx-add, 20%);
+}
+
+.alwaysFocused.add {
+    -fx-prompt-text-fill: -fx-add;
+}
+
+.text-field.search {
+    -jfx-focus-color: -fx-search;
+    -fx-text-fill: derive(-fx-search, 20%);
+}
+
+.alwaysFocused.search {
+    -fx-prompt-text-fill: -fx-search;
+}
+
+.add > .text-field {
+    -fx-text-fill: -fx-add;
+}
+
+.search > .text-field {
+    -fx-text-fill: -fx-search;
+}
+
+/*Login Screen Specific*/
+
+.wrong-credentials {
+    -jfx-unfocus-color: #ef5350;
+    -jfx-focus-color: #ef5350;
+}
+
+/*TableView Default*/
+.table-view {
+    -fx-background-color: derive(-fx-primary, 10%);
+    -fx-font-size: 11pt;
+    -fx-border-color: derive(-fx-secondary, -60%);
+}
+
+.table-view:focused {
+    -fx-background-color: derive(-fx-primary, 20%);
+}
+
+.table-view .column-header-background .label {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-primarytext;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: -fx-primarytext;
+}
+
+.table-row-cell:focused, .table-cell:focused {
+    -fx-text-fill: -fx-primary;
+}
+
+.table-row-cell {
+    -fx-background-color: -fx-primary;
+    -fx-table-cell-border-color: transparent;
+    -fx-cell-size: 44px;
+}
+
+.table-view .column-header {
+    -fx-background-color: derive(-fx-tertiary, -20%);
+    -fx-font-size: 13pt;
+}
+
+.table-column {
+    -fx-alignment: CENTER;
+}
+
+.table-row-cell:even {
+    -fx-background-color: derive(-fx-primary, 10%);
+}
+
+.table-row-cell:selected {
+    -fx-background-color: derive(-fx-secondary, 20%);
+    -fx-text-fill: -fx-primary;
+    -fx-background-insets: 0;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: -fx-primary;
+}
+
+.table-view .scroll-bar * {
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+    -fx-background-color: derive(-fx-tertiary, -50%);
+}
+
+.table-view .filler {
+    -fx-background-color: -fx-primary;
+}
+
+.table-context {
+    -fx-base: -fx-primary;
+}
+
+/*Spinner*/
+.spinner {
+    -fx-background-color: -fx-primarytext;
+    -fx-background-insets: 1;
+    -fx-text-alignment: center;
+}
+
+.spinner > .text-field {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: -fx-secondary;
+    -fx-background-insets: 0;
+    -fx-text-alignment: center;
+}
+
+#motivatedWeeks > .text-field, #lateWeeks > .text-field {
+    -fx-text-fill: -fx-add;
+}
+
+.spinner.add > .text-field {
+    -fx-text-fill: -fx-add;
+}
+
+.spinner.search > .text-field {
+    -fx-text-fill: -fx-search;
+}
+
+.spinner .increment-arrow-button {
+    -fx-body-color: -fx-primary;
+    -fx-background-insets: 0 0 -1 0;
+}
+
+.spinner .decrement-arrow-button {
+    -fx-body-color: -fx-primary;
+    -fx-background-insets: -1 0 -1 0;
+}
+
+.split-arrows-horizontal .increment-arrow-button,
+.split-arrows-horizontal .decrement-arrow-button {
+    -fx-background-insets: 0;
+}
+
+.spinner .increment-arrow-button:hover > .increment-arrow,
+.spinner .decrement-arrow-button:hover > .decrement-arrow {
+    -fx-background-color: -fx-secondary;
+    -fx-background-insets: 0;
+}
+
+.spinner .increment-arrow-button:pressed > .increment-arrow,
+.spinner .decrement-arrow-button:pressed > .decrement-arrow {
+    -fx-background-color: -fx-tertiary;
+    -fx-background-insets: 0;
+}
+
+/*label*/
+#hardestHomeworkLabel4 {
+    -fx-font-size: 20pt;
+    -fx-text-fill: -fx-primarytext;
+}
+
+/*Main Screen CSS Styling starts here*/
+
+/*TablePane styling*/
+/*.tab-content {*/
+/*    -fx-border-color: -fx-secondary;*/
+/*    -fx-border-width: 0 1 1 1;*/
+/*    -fx-border-style: solid;*/
+/*}*/
+
+.tab {
+    -fx-background-color: -fx-primary;
+    -fx-pref-height: 44;
+    -fx-pref-width: 150;
+}
+
+.tab-header-background {
+    -fx-background-color: -fx-primary;
+}
+
+.tab-label {
+    -fx-text-fill: -fx-secondary;
+    -fx-font-size: 16pt;
+}
+
+/*Hamburger Styling*/
+.jfx-hamburger-icon {
+    -fx-spacing: 7;
+}
+
+.jfx-hamburger-icon StackPane {
+    -fx-background-color: -fx-secondary;
+    -fx-background-radius: 5px;
+}
+
+/*Chart Styling*/
+.chart-title {
+    -fx-text-fill: -fx-primarytext;
+    -fx-font-size: 16pt;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.axis-label {
+    -fx-text-fill: -fx-secondary;
+}
+
+.axis {
+    -fx-tick-label-fill: -fx-primarytext;
+}
+
+.data0.chart-pie {
+    -fx-pie-color: -fx-secondary;
+    -fx-border-color: derive(-fx-secondary, -30%);
+}
+
+.data1.chart-pie {
+    -fx-pie-color: derive(-fx-primary, 30%);
+    -fx-border-color: derive(-fx-primary, 30%);
+}
+
+.chart-pie-label {
+    -fx-fill: -fx-primarytext;
+}
+
+/*JFXDialog styling*/
+.jfx-layout-heading {
+    -fx-background-color: derive(-fx-tertiary, -20%);
+    -fx-alignment: Center;
+    -fx-padding: 10 20 10 20;
+}
+
+.errorHeading .jfx-layout-heading {
+    -fx-background-color: derive(-fx-red, -40%);
+}
+
+.jfx-layout-heading .label {
+    -fx-text-fill: -fx-primarytext;
+    -fx-font-size: 18pt;
+}
+
+.jfx-layout-body, .jfx-layout-actions {
+    -fx-background-color: -fx-primary;
+    -fx-alignment: Center;
+}
+
+.jfx-layout-actions .button {
+    -fx-padding: 0 10 0 10;
+    -fx-font-size: 14pt;
+}
+
+.jfx-layout-body .label {
+    -fx-text-fill: -fx-primarytext;
+    -fx-padding: 20px 0 0 0;
+    -fx-font-size: 14pt;
+}
+
+/*auto-complete popup*/
+.auto-complete-popup > .list-view {
+    -fx-background-insets: 0 0 0 0, 0 0 0 0;
+}
+
+.auto-complete-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: -fx-primarytext;
+}
+
+.auto-complete-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected {
+    -fx-text-fill: -fx-primary;
+}
+
+/*special classes*/
+.paintedBackground {
+    -fx-background-color: -fx-primary;
+}
+
+/*cancel disabled look*/
+* :disabled {
+    -fx-opacity: 1;
+}
+
+/*noinspection ALL,CssUnusedSymbol*/
+.input-focused-line:disabled {
+    -fx-background-color: transparent;
+}
+
+.input-line:disabled {
+    -fx-background-insets: 0;
+}

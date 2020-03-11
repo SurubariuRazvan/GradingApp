@@ -1,0 +1,5 @@
+@import "ceva.css";
+
+#addGivenGradeGrid {
+    -fx-background-color: -fx-primary;
+}
