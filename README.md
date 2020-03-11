@@ -33,10 +33,10 @@ The app has 3 clerance levels:
   </ul>
 
  <div>
-    <div style="display: inline-block; width:50%;" >
+    <div style="display: inline-block; max-width:50%;">
         <img src="images/login1.png"/>
     </div>
-    <div style="display: inline-block;width:50%;">
+    <div style="display: inline-block; max-width:50%;">
         <img src="images/login2.png">
     </div>
 </div>
