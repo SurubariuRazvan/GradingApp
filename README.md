@@ -1,5 +1,7 @@
 # GradingApp
 
+An app that gives teachers the option to give grades to students and to generate reports based on the given grades.
+
 The app has 3 clerance levels:
   <ul>
     <li>
@@ -13,21 +15,22 @@ The app has 3 clerance levels:
     <li>
       professor:
       <ul>
-          <li>can see and add homeworks</li>
-          <li>can see and add grades</li>
+          <li>can see and add/remove homeworks</li>
+          <li>can see and add/remove grades</li>
           <li>can see the teachers</li>
+          <li>can generate reports</li>
       </ul>
     </li>
     <li>
       admin:
         <ul>
-          <li>can see and add homeworks</li>
-          <li>can see and add grades</li>
-          <li>can see and the teachers</li>
+          <li>can see and add/remove homeworks</li>
+          <li>can see and add/remove grades</li>
+          <li>can see and add/remove teachers</li>
+          <li>can generate reports</li>
         </ul>
       </li>
   </ul>
-An app that gives teachers the option to give grades to students and to generate reports based on the given grades.
 
 <img src="images/login1.png">
 
