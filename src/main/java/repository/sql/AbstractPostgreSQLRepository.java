@@ -13,7 +13,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-// extends PagingAndSortingRepository<E, Long>
 public abstract class AbstractPostgreSQLRepository<ID, E extends Entity<ID>> implements CrudRepository<ID, E> {
     private final Connection c;
     private final Validator<E> validator;

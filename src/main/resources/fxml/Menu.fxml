@@ -7,19 +7,19 @@
            stylesheets="@../css/Menu.css"
            xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="ui.gui.MenuController">
     <JFXTabPane fx:id="menuTable">
-        <Tab fx:id="homeworkTabId" text="Teme">
+        <Tab fx:id="homeworkTabId" text="Homeworks">
             <fx:include fx:id="homeworkTab" source="HomeworkTab.fxml"/>
         </Tab>
-        <Tab fx:id="studentTabId" text="Studenti">
+        <Tab fx:id="studentTabId" text="Students">
             <fx:include fx:id="studentTab" source="StudentTab.fxml"/>
         </Tab>
-        <Tab fx:id="professorTabId" text="Profesori">
+        <Tab fx:id="professorTabId" text="Professors">
             <fx:include fx:id="professorTab" source="ProfessorTab.fxml"/>
         </Tab>
-        <Tab fx:id="gradeTabId" text="Note">
+        <Tab fx:id="gradeTabId" text="Grades">
             <fx:include fx:id="gradeTab" source="GradeTab.fxml"/>
         </Tab>
-        <Tab fx:id="reportTabId" text="Rapoarte">
+        <Tab fx:id="reportTabId" text="Reports">
             <fx:include fx:id="reportTab" source="ReportTab.fxml"/>
         </Tab>
     </JFXTabPane>
