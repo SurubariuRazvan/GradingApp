@@ -2,8 +2,8 @@
 
 The app has 3 clerance levels:
   <ul>
-  student:
     <li>
+      student:
       <ul>
         <li>can see only his/hers grades</li>
         <li>can see the teachers and the homeworks</li>
