@@ -9,9 +9,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <HBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" maxHeight="1.7976931348623157E308"
-      maxWidth="1.7976931348623157E308"
-      prefHeight="400.0" stylesheets="@../css/ceva.css" xmlns="http://javafx.com/javafx/8.0.171"
-      fx:controller="ui.gui.MainWindowController">
+      maxWidth="1.7976931348623157E308" prefHeight="400.0" stylesheets="@../css/ceva.css"
+      xmlns="http://javafx.com/javafx/8.0.171" fx:controller="ui.gui.MainWindowController">
     <GridPane alignment="CENTER">
         <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="140.0" minWidth="140.0"
@@ -26,9 +25,10 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         </rowConstraints>
         <HBox.margin>
-            <Insets bottom="35.0" left="55.0" right="55.0" top="25.0"/>
+            <Insets bottom="35.0" left="20.0" right="20.0" top="25.0"/>
         </HBox.margin>
-        <FontAwesomeIconView glyphName="USER_CIRCLE_ALT" size="80"/>
+        <FontAwesomeIconView glyphName="USER_CIRCLE_ALT" size="80" GridPane.halignment="CENTER"
+                             GridPane.valignment="CENTER"/>
         <JFXTextField fx:id="logInUsername" alignment="CENTER" labelFloat="true" promptText="Username"
                       styleClass="login" GridPane.rowIndex="2"/>
         <JFXPasswordField fx:id="logInPassword" alignment="CENTER" labelFloat="true" promptText="Password"
@@ -36,10 +36,16 @@
         <JFXButton fx:id="logInButton" onAction="#logIn" styleClass="login" text="    Log in    "
                    GridPane.rowIndex="5"/>
     </GridPane>
-    <Pane maxWidth="2.0" minWidth="2.0" prefWidth="2.0" style="-fx-background-color: white;"/>
     <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
-        <ImageView fitHeight="400.0" fitWidth="400.0">
-            <Image url="@../css/cringe.jpg"/>
-        </ImageView>
+        <children>
+            <ImageView fitHeight="114.0" fitWidth="400.0">
+                <image>
+                    <Image url="@../css/UBB_logo.png"/>
+                </image>
+            </ImageView>
+        </children>
     </HBox>
+    <padding>
+        <Insets left="20.0" right="20.0"/>
+    </padding>
 </HBox>
