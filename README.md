@@ -1,13 +1,11 @@
 # GradingApp
 
 The app has 3 clerance levels:
-  <ul>
-    <li>
-        student: can see only his/hers grades, the teachers and the homeworks
-    </li>
-    <li>
-        professor: can see all 
-    <li>
+  <dl>
+    <dt>student: 
+      <dd>can see only his/hers grades, the teachers and the homeworks
+    <dt>professor: 
+      <dd>can see all 
   </ul>
 An app that gives teachers the option to give grades to students and to generate reports based on the given grades.
 
