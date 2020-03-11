@@ -5,12 +5,27 @@ The app has 3 clerance levels:
     <li>
       student:
       <ul>
+        <li>can see the homeworks</li>
         <li>can see only his/hers grades</li>
-        <li>can see the teachers and the homeworks</li>
-    <li>professor:
-      can see all
+        <li>can see the teachers</li>
+      </ul>
     </li>
+    <li>
+      professor:
+      <ul>
+          <li>can see and add homeworks</li>
+          <li>can see and add grades</li>
+          <li>can see the teachers</li>
+      </ul>
     </li>
+    <li>
+      admin:
+        <ul>
+          <li>can see and add homeworks</li>
+          <li>can see and add grades</li>
+          <li>can see and the teachers</li>
+        </ul>
+      </li>
   </ul>
 An app that gives teachers the option to give grades to students and to generate reports based on the given grades.
 
