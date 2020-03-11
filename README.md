@@ -40,6 +40,7 @@
 # Tabs
   <p>The content is viewed as a table, if you have the clerance a double click on any of the cells of the table will make you enter editing mode, and pressing enter will make you submit the change.</p>
   <p>Remove<img src="images/remove.png" width=18>, clear the search bar<img src="images/clear_search.png" width=18>, and add<img src="images/add.png" width=18> buttons are located on the right side of the screen.</p>
+  <p>Text fields have autocomplete with sugestions from a drop down list.</p>
 
 <img src="images/homework_tab.png">
 <img src="images/auto-complete.png">
