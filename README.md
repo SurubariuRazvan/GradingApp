@@ -2,7 +2,7 @@
 
 <p>An app that gives teachers the option to give grades to students and generate reports based on the given grades.</p>
 
-The app has 3 clerance levels:
+<p>The app has 3 clerance levels:</p>
   <ul>
     <li>
       student:
