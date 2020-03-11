@@ -4,6 +4,7 @@ The app has 3 clerance levels:
   <dl>
     <dt>student: </dt>
       <dd>can see only his/hers grades, the teachers and the homeworks </dd>
+      <dd>can see only his/hers grades, the teachers and the homeworks </dd>
     <dt>professor: </dt>
       <dd>can see all </dd>
   </dl>
