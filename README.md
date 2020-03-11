@@ -1,6 +1,6 @@
 # GradingApp
 
-An app that gives teachers the option to give grades to students and to generate reports based on the given grades.
+An app that gives teachers the option to give grades to students and generate reports based on the given grades.
 
 The app has 3 clerance levels:
   <ul>
