@@ -46,3 +46,5 @@
 <img src="images/auto-complete.png">
 <img src="images/search_bar.png">
 <img src="images/reports_tab.png">
+
+<p>Made with java, javaFX, jfoenix, and postgreSQL.</p>
